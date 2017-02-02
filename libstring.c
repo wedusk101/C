@@ -9,11 +9,11 @@ with ANSI/ISO standards, as I didn't put in security checks for the user input. 
 #include <stdlib.h>  // Don't know if there's a sign function, ended up using abs() for implementing it in a single line. Didn't write a separate function.
 #define SIZE 200
 
-int strlength(char[]);
-int strcmpr(char[], char[]);
-void strcopy(char[], char[]);
-void strrevrs(char[]);
-void strcncat(char[], char[]);
+int strlength(char*);
+int strcmpr(char*, char*);
+void strcopy(char*, char*);
+void strrevrs(char*);
+void strcncat(char*, char*);
 
 int main()
 {	
@@ -85,7 +85,7 @@ int main()
         return 0; // End of main()
  }
  
- int strlength(char str1[]) // Calculates the length of the string
+ int strlength(char *str1) // Calculates the length of the string
  {
     	int len = 0;
     	while(str1[len] != '\0')
@@ -95,7 +95,7 @@ int main()
     	return len;
  }
  
- int strcmpr(char str1[], char str2[]) // Compares the strings and returns -1, 0 or 1
+ int strcmpr(char *str1, char *str2) // Compares the strings and returns -1, 0 or 1
  {                 
  	int i = 0, d = 0, len1 = 0, len2 = 0, len = 0;
 	while(str1[len1] != '\0')
@@ -129,7 +129,7 @@ int main()
 		return 0;
 }
 
-void strcopy(char dest[], char src[]) // Copies source string to destination string including the NULL terminating character
+void strcopy(char *dest, char *src) // Copies source string to destination string including the NULL terminating character
 {
      	int len = 0, i = 0;
      	while(src[len] != '\0') // Calculates the length of the destination string. This gives us the index from where to start copying the source string.
@@ -145,7 +145,7 @@ void strcopy(char dest[], char src[]) // Copies source string to destination str
      	printf("The new string is %s.\n", dest);
 }
 
-void strrevrs(char str[]) // Reverses a string.Swaps the characters starting from the ends and traversing to the middle.
+void strrevrs(char *str) // Reverses a string.Swaps the characters starting from the ends and traversing to the middle.
 {
 	int len = 0, i = 0, j = 0, tmp = 0, c = 0;
 	while(str[len] != '\0') // Calculates the length of the string for using in the loop.
@@ -165,7 +165,7 @@ void strrevrs(char str[]) // Reverses a string.Swaps the characters starting fro
         printf("The new string is %s.\n", str);
  }
  
- void strcncat(char dest[], char src[]) // Appends two strings and returns the joined string.
+ void strcncat(char *dest, char *src) // Appends two strings and returns the joined string.
  {
 	int len = 0, i = 0, j = 0, c = 0;
         while(dest[len] != '\0') // Calculates the length of the destination string
