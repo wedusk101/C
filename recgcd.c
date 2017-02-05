@@ -8,7 +8,7 @@ int main()
 	printf("Please enter two numbers such that the first number is less than the second number.\n");
 	scanf("%d", &first_number);
 	scanf("%d", &second_number);
-	printf("The GCD of %d and %d is %d.", first_number, second_number, gcd(first_number, second_number));
+	printf("The GCD of %d and %d is %d.\n", first_number, second_number, gcd(first_number, second_number));
 	return 0;
 }
 
