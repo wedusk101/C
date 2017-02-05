@@ -11,7 +11,6 @@ using fornat specifiers and displayed to the user along with their frequencies.*
 int main()
 {
 	char input[30];
-	int i = 0, counter[128] = {0}, j = 0, cast = 0; // counter array initialized to zero
 	printf("Please enter a string.\n");
 	fgets(input, 30, stdin);
 	strtok(input, "\n"); // removes pending newline from the buffer
