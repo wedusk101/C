@@ -31,12 +31,12 @@ int main()
 	printf("\n");
 	for(i = 0; i < 3; i++) // sorts the structures in descending order according to the total marks
 	{
-		for( j = 0; j < 2; j++)
+		for( j = i + 1; j < 3; j++)
 		{
-			if(stu[j].total < stu[j+1].total)
+			if(stu[i].total < stu[j].total)
 			{
-				tmp = stu[j+1];
-				stu[j+1] = stu[j];
+				tmp = stu[i];
+				stu[i] = stu[j];
 				stu[j] = tmp;
 			}
 			else
