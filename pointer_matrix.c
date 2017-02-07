@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int** createMatrix(int, int);
-void inputMatrix(int**, int, int);
-void displayMatrix(int**, int, int);
+int** createMatrix(int, int); // allocates memory dynamically for the matrix
+void inputMatrix(int**, int, int); // takes user input
+void displayMatrix(int**, int, int); // displays the matrix
 
 int main()
 {
@@ -19,38 +19,38 @@ int main()
 	displayMatrix(mat, row, col);	
 }
 
-int** createMatrix(int r, int c) // allocates memory dynamically for the matrix
+int** createMatrix(int r, int c) 
 {
 	int i = 0, **pmat;
-	pmat = malloc(r * sizeof(int*));// allocates memory for the array of pointers
+	pmat = malloc(r * sizeof(int*)); // allocates memory for the array of pointers
 	for(i = 0; i < r; i++)
 	{
-		*(pmat + i) = (int *)malloc(c * sizeof(int));	// allocates memory for the arrays of integers	
+		*(pmat + i) = (int *)malloc(c * sizeof(int)); // allocates memory for the arrays of integers	
 	}
 	return pmat;	
 }
 
-void inputMatrix(int **mt, int r, int c) // takes user input
+void inputMatrix(int **mt, int r, int c) 
 {
 	int i = 0, j = 0;
 	for(i = 0; i < r; i++)
 	{
 		for(j = 0; j < c; j++)
 		{
-			scanf("%d", *(mt + i) + j);  
+			scanf("%d", *(mt + i) + j);  // takes user input
 		}	
 	}
 	
 }
 
-void displayMatrix(int** mt, int r, int c) // displays the matrix
+void displayMatrix(int** mt, int r, int c) 
 {
 	int i = 0, j = 0;
 	for(i = 0; i < r; i++)
 	{
 		for(j = 0; j < c; j++)
 		{
-			printf("%d ", *(*(mt + i) + j));
+			printf("%d ", *(*(mt + i) + j)); // prints the matrix
 		}
 		printf("\n");
 	}
