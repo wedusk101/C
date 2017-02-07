@@ -19,7 +19,7 @@ int main()
 	displayMatrix(mat, row, col);	
 }
 
-int** createMatrix(int r, int c)
+int** createMatrix(int r, int c) // allocates memory dynamically for the matrix
 {
 	int i = 0, **pmat;
 	pmat = malloc(r * sizeof(int*));// allocates memory for the array of pointers
