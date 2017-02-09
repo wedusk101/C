@@ -16,7 +16,8 @@ int main()
 	printf("Please enter the elements of the matrix.\n");
 	inputMatrix(mat, row, col); 
 	printf("The maxtrix you have entered is : \n");
-	displayMatrix(mat, row, col);	
+	displayMatrix(mat, row, col);
+	free(mat);
 }
 
 int** createMatrix(int r, int c) 
