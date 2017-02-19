@@ -56,9 +56,6 @@ Transpose in COO format
 As of February 9th, 2017, this code fails with a segfault for other inputs.*/
 
 
-
-
-
 #include<stdio.h>
 #include<stdlib.h>
 
