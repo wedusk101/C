@@ -63,8 +63,8 @@ int** createMatrix(int,int);        // prototype to allocate memory for a matrix
 void inputMatrix(int **,int,int);   // prototype to populate matrix 
 void displayMatrix(int **,int,int); // prototype to display elements of the matrix 
 int count(int **,int,int);          // prototype to count non-zero elements of a matrix 
-int **sparse(int **, int,int);      // prototype to store a matrix in compressed form  
-int **transposeSp(int **);          // prototype to transpose a sparse matrix 
+int** sparse(int **, int,int);      // prototype to store a matrix in compressed form  
+int** transposeSp(int **);          // prototype to transpose a sparse matrix 
 
 int main(void)
 {
