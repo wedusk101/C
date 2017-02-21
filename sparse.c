@@ -1,60 +1,7 @@
 /*The following code takes as input a two dimensional sparse matrix and
 generates its compressed representation and transpose in COO (coordinate)
 format.The original sparse matrix is then deleted and the compressed
-representation is used to generate the transpose for the sparse matrix.
-Program subject to extensive validation check.Sample inputs and results
-are given below.
-
-Sparse Matrix
--------------
-
-0	11	0	0	0	0	0
-
-0	0	0	0	22	0	0
-
--15	33	0	0	0	23	0
-
-0	-6	0	0	0	0	0
-
-
-Compressed representation in COO format
----------------------------------------
-
-4	7	6
-
-0	1	11
-
-1	4	22
-
-2	0	-15
-
-2	1	33
-
-2	5	23
-
-3	1	-6
-
-
-Transpose in COO format
------------------------
-
-7	4	6
-
-0	2	-15
-
-1	0	11
-
-1	2	33
-
-1	3	-6
-
-4	1	22
-
-5	2	23
-
-
-As of February 9th, 2017, this code fails with a segfault for other inputs.*/
-
+representation is used to generate the transpose for the sparse matrix.*/
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -70,7 +17,7 @@ int main(void)
 {
 	int row = 0, col = 0, i = 0;
 	int **mat, **compr, **trans, nzc = 0; 
-	printf("Enter the order of matrix (row and column):\n");
+	printf("Please enter the order of the matrix (row and column):\n");
 	scanf("%d%d",&row, &col);
 	mat = createMatrix(row, col);		
 	printf("Please enter the elements of the matrix:\n");
@@ -82,10 +29,10 @@ int main(void)
 	nzc = count(mat, row, col); // holds the number of non zero elements
 	printf("Number of non-zero elements is %d.\n", nzc);
 	free(mat); // memory for the original matrix is deallocated
-	printf("\nCompressed representation:\n\n");
+	printf("\nCompressed representation in COO format:\n\n");
 	displayMatrix(compr, nzc + 1, 3); // displays the compressed matrix
 	trans = transposeSp(compr);
-	printf("\nTranspose: \n\n");
+	printf("\nTranspose in COO format: \n\n");
 	displayMatrix(trans, nzc + 1, 3);	// displays the transpose
 	return 0;
 }
@@ -162,7 +109,6 @@ int** sparse(int **arr, int x, int y) // creates the compressed matrix in COO fo
                 sprs[k][2] = arr[i][j]; 
                 ++k;                        
             }
-                            
         }
     }
     return sprs;
@@ -171,7 +117,7 @@ int** sparse(int **arr, int x, int y) // creates the compressed matrix in COO fo
 
 int** transposeSp(int **arr) // uses the compressed matrix to create the transpose
 {
-    int i = 0, j = 0, row = arr[0][1], col = 3, k = 1, **trns;
+    int i = 0, j = 0, row = arr[0][2] + 1, col = 3, k = 1, **trns;
 	trns = createMatrix(row, col); // allocates memory for the transposed matrix
 	trns[0][0] = arr[0][1];
 	trns[0][1] = arr[0][0];
