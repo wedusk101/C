@@ -122,7 +122,7 @@ int** transposeSp(int **arr) // uses the compressed matrix to create the transpo
 	trns[0][0] = arr[0][1];
 	trns[0][1] = arr[0][0];
 	trns[0][2] = arr[0][2];
-	for(i = 0; i < row; i++)
+	for(i = 0; i < arr[0][1]; i++) // arr[0][1] = number of columns in the original sparse matrix
     {
 		for(j = 1; j < row; j++)
 		{
