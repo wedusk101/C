@@ -54,12 +54,12 @@ int empty(struct stack *ps)
         	return FALSE;
 }
 
-void initStack(struct stack *ps)/* DoIt: function definition for initStack */
+void initStack(struct stack *ps)
 {	
 	ps->top = -1;
 }
 
-void push(struct stack *ps, int x)/* DoIt: function definition for push */
+void push(struct stack *ps, int x)
 {
     	if(ps->top == MAXSTACK - 1)
     	{
@@ -75,7 +75,7 @@ void push(struct stack *ps, int x)/* DoIt: function definition for push */
 } 
 
 
-void pop(struct stack *ps) /* DoIt: function definition for pop */
+void pop(struct stack *ps) 
 {
     	int pop = 0;
     	if(empty(ps))
