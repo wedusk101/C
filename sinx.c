@@ -31,10 +31,10 @@ int factorial(int n)
 {
     	int j = 1, fact = 1;
     	for(j = 1; j <= n; j++)
-	{
+		{
             fact = fact * j;
         }
-	return fact;
+		return fact;
 }
     
     
