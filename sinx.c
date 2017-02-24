@@ -34,7 +34,7 @@ int factorial(int n)
 		{
             fact = fact * j;
         }
-		return fact;
+	return fact;
 }
     
     
