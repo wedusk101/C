@@ -34,7 +34,8 @@ int main(void)
 int linearSearch(int *arr, int size, int key) // returns -1 if the search fails
 {
 	int i = 0;
-	for(i = 0; arr[i] != key; i++);
+	for(i = 0; arr[i] != key; i++)
+		; // loop without body gets the index of the key element
 	if(i == size)
 		return -1;
 	else
