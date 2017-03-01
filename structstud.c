@@ -29,7 +29,7 @@ int main()
 		stu[i].total = stu[i].phys_marks + stu[i].chem_marks + stu[i].math_marks;		
 	}
 	printf("\n");
-	for(i = 0; i < 3; i++) // sorts the structures in descending order according to the total marks
+	for(i = 0; i < 2; i++) // sorts the structures in descending order according to the total marks
 	{
 		for( j = i + 1; j < 3; j++)
 		{

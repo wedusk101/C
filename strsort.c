@@ -28,7 +28,7 @@ int main()
 		printf("%s\n", *(list + i));
 	}
 	printf("\n");
-	for(i = 0; i < size; i++)
+	for(i = 0; i < size - 1; i++)
 	{
 		for(j = i + 1; j < size; j++)
 		{
