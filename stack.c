@@ -43,52 +43,53 @@ int main(void)
 			default:	printf("\nInvalid choice. Try again.\n");
 		}
 	}while(choice != 3);
+	printf("Thank you.\n")
 	return 0;
 }// end of main 
 
 int empty(struct stack *ps)
 {
-    	if(ps->top == -1)
+    if(ps->top == -1)
 		return TRUE;
-    	else
-        	return FALSE;
+    else
+        return FALSE;
 }
 
-void initStack(struct stack *ps)
+void initStack(struct stack *ps)/* DoIt: function definition for initStack */
 {	
 	ps->top = -1;
 }
 
-void push(struct stack *ps, int x)
+void push(struct stack *ps, int x)/* DoIt: function definition for push */
 {
-    	if(ps->top == MAXSTACK - 1)
-    	{
+    if(ps->top == MAXSTACK - 1)
+    {
 		printf("\nStack Overflow! Cannot push into a full stack.\n");
 		return;
-    	}
-    	else
-    	{
+    }
+    else
+    {
 		ps->top = ps->top + 1;
-        	ps->items[ps->top] = x;
-    	}
-    	printf("\nElement has been pushed successfully.\n");
+        ps->items[ps->top] = x;
+    }
+    printf("\nElement has been pushed successfully.\n");
 } 
 
 
-void pop(struct stack *ps) 
+void pop(struct stack *ps) /* DoIt: function definition for pop */
 {
-    	int pop = 0;
-    	if(empty(ps))
-    	{
+    int pop = 0;
+    if(empty(ps))
+    {
 		printf("\nStack Underflow! Cannot pop from an empty stack.\n");
-        	return;
-    	}
-    	else
-    	{
+        return;
+    }
+    else
+    {
 		pop = ps->items[ps->top];
-        	ps->top = ps->top - 1;
-    	}
-    	printf("\nPopped element is %d.\n", pop);
+        ps->top = ps->top - 1;
+    }
+    printf("\nPopped element is %d.\n", pop);
 }
     
 
