@@ -2,9 +2,11 @@
 of Mersenne Primes to display.A Mersenne prime is of the form M = (2^N) - 1 where
 M is a prime number and N is a positive integer. Please note that due to the 
 very nature of Mersenne Primes, which are exceedingly rare, this program is very
-slow for anything beyond very small input sizes.The program can be made significantly
-more efficient using a few techniques. For example, the prime generator used here
-can be replaced by something like the Sieve of Eratosthenes or the Sieve of Atkin.
+slow for anything beyond very small input sizes.The program will also fail once it
+exceeds the precision of the standard integer format. Handling large numbers like
+Mersenne Primes require special methods not implemented here. The code can be made
+significantly more efficient using a few techniques. For example, the prime generator
+used here can be replaced by something like the Sieve of Eratosthenes or the Sieve of Atkin.
 The function isMersenne() can also be made faster by limiting the number of iterations.
 Finally, multithreading the program can result in much better performance.*/
 
