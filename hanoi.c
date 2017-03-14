@@ -20,7 +20,7 @@ int main()
 void moveTower(int height, char from, char to, char spare) // recursively calculates the required moves
 {
 	if(height == 1)
-		printf("Moving disk %d from tower %c to tower %c.\n", height, from, to); // base case moves the disk from the source to the destination tower directly
+		printf("Moving disk %d from tower %c to tower %c.\n", height, from, to); // base case moves the disk from the source tower to the destination tower directly
 	else
 	{
 		moveTower(height - 1, from, spare, to);
