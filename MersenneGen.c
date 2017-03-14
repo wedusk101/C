@@ -2,7 +2,11 @@
 of Mersenne Primes to display.A Mersenne prime is of the form M = (2^N) - 1 where
 M is a prime number and N is a positive integer. Please note that due to the 
 very nature of Mersenne Primes, which are exceedingly rare, this program is very
-slow for anything beyond very small input sizes.*/
+slow for anything beyond very small input sizes.The program can be made significantly
+more efficient using a few techniques. For example, the prime generator used here
+can be replaced by something like the Sieve of Eratosthenes or the Sieve of Atkin.
+The function isMersenne() can also be made faster by limiting the number of iterations.
+Finally, multithreading the program can result in much better performance.*/
 
 #include<stdio.h>
 #include<math.h>
@@ -19,7 +23,7 @@ int main()
 	printf("How many Mersenne Primes would you like to generate?\n");
 	scanf("%d", &num);
 	printf("The list is:\n");
-	while(1)
+	while(1) 
 	{
 		if(isPrime(i) && isMersenne(i))
 		{
@@ -49,7 +53,7 @@ int isPrime(int n) // checks if a number is prime or not
 int isMersenne(int m) // generates Mersenne Primes
 {
 	int var = 0, exp = 1;
-    while(exp < m)
+    while(exp < m) // the number of iterations here can be reduced using logarithms
     {
         var = (int)pow(2,exp);
         if(var == (m + 1))
