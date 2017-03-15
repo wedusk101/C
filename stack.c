@@ -7,14 +7,14 @@
 
 struct stack
 {
-       int items[MAXSTACK];
-       int top;
+	int items[MAXSTACK];
+    int top;
 };
 
-int empty(struct stack*); // function prototype for empty; returns TRUE if the stack is empty, FALSE otherwise
-void initStack(struct stack*); // function prototype for initStack; initializes the stack to empty state 
-void push(struct stack*, int); // function prototype for push 
-void pop(struct stack*); // function prototype for pop 
+int empty(struct stack*); 
+void initStack(struct stack*);  
+void push(struct stack*, int); 
+void pop(struct stack*); 
 
 int main(void)
 {
@@ -47,7 +47,7 @@ int main(void)
 	return 0;
 }// end of main 
 
-int empty(struct stack *ps)
+int empty(struct stack *ps) // checks if the stack is empty
 {
     if(ps->top == -1)
 		return TRUE;
@@ -55,12 +55,12 @@ int empty(struct stack *ps)
         return FALSE;
 }
 
-void initStack(struct stack *ps)/* DoIt: function definition for initStack */
+void initStack(struct stack *ps) // initalizes the stack
 {	
 	ps->top = -1;
 }
 
-void push(struct stack *ps, int x)/* DoIt: function definition for push */
+void push(struct stack *ps, int x) // pushes elements into the top of the stack
 {
     if(ps->top == MAXSTACK - 1)
     {
@@ -76,7 +76,7 @@ void push(struct stack *ps, int x)/* DoIt: function definition for push */
 } 
 
 
-void pop(struct stack *ps) /* DoIt: function definition for pop */
+void pop(struct stack *ps) // pops elements off the top of the stack
 {
     int pop = 0;
     if(empty(ps))
