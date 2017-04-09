@@ -36,6 +36,7 @@ int main()
 			break;
 		i++;
 	}
+	return 0;
 } // end
 
 int isPrime(int n) // checks if a number is prime or not
