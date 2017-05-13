@@ -28,9 +28,9 @@ int main()
 	printf("This program implements a queue with the following basic operations.\n");
 	do
 	{
-		printf("\n----------- MENU -------------\n");
+		printf("\n-------------------- MENU-----------------------\n");
         printf("\n 1.APPEND    2.SERVE	3.REINITIALIZE   4.EXIT\n");
-        printf("\n------------------------------\n");
+        printf("\n------------------------------------------------\n");
         printf("\nPlease enter your choice (1 / 2 / 3 / 4): ");
         scanf("%d",&choice);
 		switch(choice)
