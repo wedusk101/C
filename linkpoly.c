@@ -65,11 +65,6 @@ void insertEndList(NODEPTR *plist, NODEPTR *lastNode)
 
 void displayPolynomial(NODEPTR plist)
 {
-	if(plist == NULL)
-	{
-		printf("First create a polynomial! Operation aborted.\n");
-		return;
-	}
 	while(plist != NULL)
 	{
 		if(plist->exp == 0)
@@ -77,12 +72,17 @@ void displayPolynomial(NODEPTR plist)
 			printf("%d", plist->coeff);
 			return;
 		}
-		if(plist -> next == NULL)
+		if(plist->next == NULL && plist->coeff == 0)
+		{
+			printf("0");
+			return;
+		}
+		if(plist->next == NULL)
 		{
 			printf("%dx^%d", plist->coeff, plist->exp);
 			return;
 		}
-		if(plist -> coeff != 0 && (plist->exp != 0 && plist->exp != 1))
+		if(plist->coeff != 0 && (plist->exp != 0 && plist->exp != 1))
 		{
 			printf("%dx^%d + ", plist->coeff, plist->exp);
 		}
