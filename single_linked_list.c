@@ -346,8 +346,8 @@ void insertAfterx(NODEPTR *plist, int key, int element, NODEPTR *lastNode) // no
 void deleteNodePos(NODEPTR *plist, int posNode, NODEPTR *lastNode)
 {
 	int pos = 1, count = countNode(*plist);
-	NODEPTR tmp, tp;
-	tmp = *plist;
+	NODEPTR bak, tp, delNode;
+	bak = *plist;
 	if(*plist == NULL)
 	{
 		printf("List is empty! Operation aborted.\n");
@@ -360,10 +360,12 @@ void deleteNodePos(NODEPTR *plist, int posNode, NODEPTR *lastNode)
 	}	
 	if(posNode == 1)
 	{
-		tmp = (*plist)->next;
+		delNode = *plist;
+		bak = (*plist)->next;
 		(*plist)->next = NULL;
-		*plist = tmp;
+		*plist = bak;
 		printf("Node deleted successfully.\n");
+		free(delNode);
 		return;		
 	}
 	if(posNode == count)
@@ -373,10 +375,12 @@ void deleteNodePos(NODEPTR *plist, int posNode, NODEPTR *lastNode)
 			*plist = (*plist)->next;
 			pos++;
 		}
+		delNode = (*plist)->next;
 		(*plist)->next = NULL;
 		*lastNode = *plist;
-		*plist = tmp;
+		*plist = bak;
 		printf("Node deleted successfully.\n");
+		free(delNode);
 		return;
 	}
 	while(pos != posNode)
@@ -385,16 +389,18 @@ void deleteNodePos(NODEPTR *plist, int posNode, NODEPTR *lastNode)
 		pos++;		
 	}
 	tp = *plist;
+	delNode = tp;
 	pos = 1;
-	*plist = tmp;
+	*plist = bak;
 	while(pos != posNode - 1)
 	{
 		*plist = (*plist)->next;
 		pos++;		
 	}
 	(*plist)->next = tp->next;
-	*plist = tmp;
-	printf("Node deleted successfully.\n");	
+	*plist = bak;
+	printf("Node deleted successfully.\n");
+	free(delNode);	
 }
 
 void deleteFirst(NODEPTR *plist, NODEPTR *lastNode)
