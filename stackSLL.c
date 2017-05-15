@@ -43,6 +43,7 @@ int main()
 				break;
 				
 			case 4:
+				printf("Bye!\n");
 				break;
 				
 			default:
@@ -55,6 +56,11 @@ void push(NODEPTR *list, int x)
 {
 	NODEPTR newNode;
 	newNode = malloc(sizeof(struct node));
+	if(newNode == NULL)
+	{
+		printf("Stack overflow! Operation aborted.\n");
+		return;
+	}
 	newNode->info = x;
 	if(*list == NULL)
 	{
@@ -70,6 +76,7 @@ void push(NODEPTR *list, int x)
 
 void pop(NODEPTR* list)
 {
+	NODEPTR delNode;
 	int val = 0;
 	if(*list == NULL)
 	{
@@ -77,8 +84,10 @@ void pop(NODEPTR* list)
 		return;
 	}
 	val = (*list)->info;
+	delNode = *list;
 	*list = (*list)->next;
-	printf("The popped element is %d.\n\n", val);	
+	printf("The popped element is %d.\n\n", val);
+	free(delNode);	
 }
 
 void peek(NODEPTR list)
