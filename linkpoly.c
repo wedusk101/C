@@ -21,7 +21,7 @@ int main()
 	initList(&list);
 	printf("\nPlease enter the terms of the polynomial in the following format:\n");
 	printf("(a_n * x ^ n) + (a_n-1 * x ^ n-1) + ... + (a_1 * x) + a_0\n");
-	printf("\nWhere a_n to a_0 represent the coefficients in descending order \nand ^ n, ^ n-1 and so on represent the coefficients in descending order.\n\n");
+	printf("\nWhere a_n to a_0 represent the coefficients in descending order \nand ^ n, ^ n-1 and so on represent the exponents in descending order.\n\n");
 	insertEndList(&list, &lastNode);
 	printf("The polynomial is ");
 	displayPolynomial(list);
