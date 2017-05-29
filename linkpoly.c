@@ -92,7 +92,7 @@ void displayPolynomial(NODEPTR plist)
 		}
 		if(plist->coeff != 0 && plist->exp == 1)
 		{
-			printf("x^%d + ", plist->coeff);
+			printf("%dx + ", plist->coeff);
 		}
 		plist = plist->next;
 	}
