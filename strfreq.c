@@ -3,7 +3,7 @@ Note that this is case sensitive. I have used an integer array to store the freq
 The frequency counter array is first initialized to zero. The characters are then type casted to their 
 ASCII equivalent which is used as the index for their corresponding cell in the frequency counter array.
 Finally the non empty indices of the counter array are implicitly casted back to their character equivalents
-using fornat specifiers and displayed to the user along with their frequencies.*/
+using format specifiers and displayed to the user along with their frequencies.*/
 
 #include <stdio.h>
 #include <string.h>
