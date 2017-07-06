@@ -14,26 +14,26 @@ struct treeNode
 
 typedef struct treeNode *NODEPTR;
 
-int countNodeBST(NODEPTR); 							// counts the number of nodes in the tree
-void insertNodeBST(NODEPTR*, int); 					// inserts a node into the tree
-void deleteNodeBST(NODEPTR*, NODEPTR*, int); 		// deletes a node from the tree
-int countLeafBST(NODEPTR); 							// counts the number of leaf nodes in the tree
-int calcHeightBST(NODEPTR); 						// calculates the height of the tree
-NODEPTR createTree(int); 							// creates a new binary search tree
-void displayInorderBST(NODEPTR);				    // displays the inorder traversal of the tree
-void displayPreorderBST(NODEPTR);					// displays the preorder traversal of the tree
-void displayPostorderBST(NODEPTR); 					// displays the post order traversal of the tree
-int searchBST(NODEPTR, NODEPTR*, int); 				// searches the tree for a particular element
-void initTree(NODEPTR*); 							// initializes the tree
-int max(int, int);                  			    // returns the greater of two values
-void delRoot(NODEPTR*);								// deletes the root of the tree
+int countNodeBST(NODEPTR); 											// counts the number of nodes in the tree
+void insertNodeBST(NODEPTR*, int); 									// inserts a node into the tree
+void deleteNodeBST(NODEPTR*, NODEPTR*, NODEPTR*, int, int*); 		// deletes a node from the tree
+int countLeafBST(NODEPTR); 											// counts the number of leaf nodes in the tree
+int calcHeightBST(NODEPTR); 										// calculates the height of the tree
+NODEPTR createTree(int); 											// creates a new binary search tree
+void displayInorderBST(NODEPTR);								    // displays the inorder traversal of the tree
+void displayPreorderBST(NODEPTR);									// displays the preorder traversal of the tree
+void displayPostorderBST(NODEPTR); 									// displays the post order traversal of the tree
+int searchBST(NODEPTR, NODEPTR*, NODEPTR*, int, int*); 				// searches the tree for a particular element
+void initTree(NODEPTR*); 											// initializes the tree
+int max(int, int);                  							    // returns the greater of two values
+void delRoot(NODEPTR*);												// deletes the root of the tree
 
 int main()
 {
-	NODEPTR root, index;
+	NODEPTR root, index, parentIndex;
 	initTree(&root);
-	index = NULL;
-	int choice = 0, x = 0;
+	index = parentIndex = NULL;
+	int choice = 0, x = 0, child = 0;
 	printf("This program implements a binary search tree with the following basic operations.\n");
 	do
 	{
@@ -66,7 +66,7 @@ int main()
 					
 			case 3: 	printf("Please enter the element to delete.\n");
 						scanf("%d",&x);
-						deleteNodeBST(&root, &index, x);
+						deleteNodeBST(&root, &index, &parentIndex, x, &child); // this function is dependent on searchBST()
 						break;
 						
 			case 4:		printf("The number of nodes in the tree is %d.\n", countNodeBST(root));
@@ -104,7 +104,7 @@ int main()
 						
 			case 10:	printf("Please enter the element to search for.\n");
 						scanf("%d",&x);
-						if(searchBST(root, &index, x) == TRUE)
+						if(searchBST(root, &index, &parentIndex, x, &child) == TRUE) 
 							printf("Element found!\n");
 						else
 							printf("Element not found.\n");
@@ -210,8 +210,10 @@ int countLeafBST(NODEPTR root) // recursively counts the leaf nodes in the tree
 	}
 }
 
-int searchBST(NODEPTR root, NODEPTR* index, int val) // recursively searches the tree for an element
+int searchBST(NODEPTR root, NODEPTR* index, NODEPTR* parentIndex, int val, int* child) // recursively searches the tree for an element
 {
+	NODEPTR tmp;
+	tmp = root; // backs up the pointer to the root into a temporary pointer
 	if(root == NULL)
 		return FALSE;
 	if((root->data) == val)
@@ -220,9 +222,41 @@ int searchBST(NODEPTR root, NODEPTR* index, int val) // recursively searches the
 		return TRUE;
 	}
 	if(val < (root->data))
-		searchBST(root->left, index, val);
+	{
+		if(root->left == NULL)
+			return FALSE;
+		else
+			root = root->left;
+		if((root->data) == val) // checks if the left child is the required element
+		{
+			*index = root;
+			root = tmp;
+			*parentIndex = root; // returns a pointer to the parent of the found element
+			*child = -1; // -1 for left child
+			return TRUE;
+		}
+	}
+	root = tmp; // restores the backed up pointer to the original root of the tree
+	if(val > (root->data))
+	{
+		if(root->right == NULL)
+			return FALSE;
+		else
+			root = root->right;
+		if((root->data) == val)	// checks if the right child is the required element
+		{
+			*index = root;
+			root = tmp;
+			*parentIndex = root;
+			*child = 1; 	// 1 for right child
+			return TRUE;
+		}
+	}
+	root = tmp;
+	if(val < (root->data))
+		searchBST(root->left, index, parentIndex, val, child);
 	else
-		searchBST(root->right, index, val);		
+		searchBST(root->right, index, parentIndex, val, child);		
 }
 
 int calcHeightBST(NODEPTR root) // recursively calculates the height of the tree
@@ -241,21 +275,25 @@ int max(int x, int y)
 		return y;
 }
 
-void deleteNodeBST(NODEPTR* proot, NODEPTR* index, int val) // deletes a node with specific value
+void deleteNodeBST(NODEPTR* proot, NODEPTR* index, NODEPTR* parentIndex, int val, int* child) // deletes a node with specific value
 {
 	if(proot == NULL)
 	{
 		printf("Empty tree. Operation aborted.\n");
 		return;
 	}
-	if(searchBST(*proot, index, val) == FALSE) // searches for the element to be deleted and returns a pointer to it if found
+	if(searchBST(*proot, index, parentIndex, val, child) == FALSE) // searches for the element to be deleted and returns pointers to the found element and its parent 
 	{
 		printf("Element not found! Operation failed.\n");
 		return;
 	}
 	else
 	{
-		delRoot(index); // deletes the found element
+		delRoot(index); // deletes the found element using the pointer returned by searchBST()
+		if(*child == -1)
+			(*parentIndex)->left = NULL; // sets the left child of the parent of the element to be deleted to NULL
+		if(*child == 1)
+			(*parentIndex)->right = NULL; // sets the right child of the parent of the element to be deleted to NULL
 		return;
 	}
 }
