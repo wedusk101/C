@@ -66,6 +66,7 @@ int main()
 			case 3: 	printf("Please enter the element to delete.\n");
 						scanf("%d",&x);
 						index = parentIndex = NULL;
+						child = 0;
 						deleteNodeBST(&root, &index, &parentIndex, x, &child); // this function is dependent on searchBST() and delRoot()
 						break;
 						
@@ -104,6 +105,7 @@ int main()
 						
 			case 10:	printf("Please enter the element to search for.\n");
 						scanf("%d",&x);
+						child = 0;
 						index = parentIndex = NULL;
 						if(searchBST(root, &index, &parentIndex, x, &child) == TRUE) 
 							printf("Element found!\n");
