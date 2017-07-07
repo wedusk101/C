@@ -23,7 +23,7 @@ NODEPTR createTree(int); 											// creates a new binary search tree
 void displayInorderBST(NODEPTR);								    // displays the inorder traversal of the tree
 void displayPreorderBST(NODEPTR);									// displays the preorder traversal of the tree
 void displayPostorderBST(NODEPTR); 									// displays the post order traversal of the tree
-int searchBST(NODEPTR, NODEPTR*, NODEPTR*, int, int*); 				// searches the tree for a particular element
+int searchBST(NODEPTR, NODEPTR*, NODEPTR*, int, int*); 				// searches the tree for a particular element and returns a pointer to the node and its parent
 void initTree(NODEPTR*); 											// initializes the tree
 int max(int, int);                  							    // returns the greater of two values
 void delRoot(NODEPTR*);												// deletes the root of the tree
@@ -66,7 +66,7 @@ int main()
 					
 			case 3: 	printf("Please enter the element to delete.\n");
 						scanf("%d",&x);
-						deleteNodeBST(&root, &index, &parentIndex, x, &child); // this function is dependent on searchBST()
+						deleteNodeBST(&root, &index, &parentIndex, x, &child); // this function is dependent on searchBST() and delRoot()
 						break;
 						
 			case 4:		printf("The number of nodes in the tree is %d.\n", countNodeBST(root));
@@ -282,25 +282,46 @@ void deleteNodeBST(NODEPTR* proot, NODEPTR* index, NODEPTR* parentIndex, int val
 		printf("Empty tree. Operation aborted.\n");
 		return;
 	}
-	if(searchBST(*proot, index, parentIndex, val, child) == FALSE) // searches for the element to be deleted and returns pointers to the found element and its parent 
+	if(searchBST(*proot, index, parentIndex, val, child) == FALSE) // search for the element fails 
 	{
 		printf("Element not found! Operation failed.\n");
 		return;
 	}
+	else if((*index)->left != NULL && (*index)->right == NULL)	// the node to be deleted has only left child
+	{
+		if(*child == 1)
+			(*parentIndex)->right = (*index)->left; // connects the right child of the parent to the left child of the node to be deleted
+		if(*child == -1)
+			(*parentIndex)->left = (*index)->left;	// connects the left child of the parent to the left child of the node to be deleted
+		delRoot(index);
+		return;
+	}
+	else if((*index)->left == NULL && (*index)->right != NULL)	// the node to be deleted has only right child
+	{
+		if(*child == 1)
+			(*parentIndex)->right = (*index)->right; // connects the right child of the parent to the left child of the node to be deleted
+		if(*child == -1)
+			(*parentIndex)->left = (*index)->right;	// connects the left child of the parent to the left child of the node to be deleted
+		delRoot(index);
+		return;
+	}
 	else
 	{
+		if((*index)->left == NULL && (*index)->right == NULL) // the node to be deleted has no children
+		{
+			if(*child == -1)
+				(*parentIndex)->left = NULL; // sets the left child of the parent of the element to be deleted to NULL
+			if(*child == 1)
+				(*parentIndex)->right = NULL; // sets the right child of the parent of the element to be deleted to NULL
+		}
 		delRoot(index); // deletes the found element using the pointer returned by searchBST()
-		if(*child == -1)
-			(*parentIndex)->left = NULL; // sets the left child of the parent of the element to be deleted to NULL
-		if(*child == 1)
-			(*parentIndex)->right = NULL; // sets the right child of the parent of the element to be deleted to NULL
 		return;
 	}
 }
 
 void delRoot(NODEPTR* proot) // deletes the root node of the tree
 {
-	NODEPTR toDel, parent;
+	NODEPTR toDel, parent, tmp;
 	if((*proot)->left == NULL && (*proot)->right == NULL) // root has no child
 	{
 		free(*proot);
@@ -324,10 +345,8 @@ void delRoot(NODEPTR* proot) // deletes the root node of the tree
 		parent = toDel;				// holds the pointer to the parent of the current node
 		if(((*proot)->left == NULL && (*proot)->right == NULL) || ((*proot)->left == NULL && (*proot)->right != NULL)) // the right child has no children or only has right child
 		{
-			toDel->data = (*proot)->data;
-			parent->right = NULL;   // sets the right child of the parent to NULL
-			free(*proot);
-			*proot = toDel;
+			(*proot)->left = toDel->left;
+			free(toDel);
 			printf("Element deleted succesfully.\n");
 			return;
 		}
@@ -337,7 +356,11 @@ void delRoot(NODEPTR* proot) // deletes the root node of the tree
 			*proot = (*proot)->left;
 		}
 		toDel->data = (*proot)->data;
-		parent->left = NULL; 		// sets the left child of the parent to NULL
+		tmp = parent->left; 		// traverses to the left of the right child of the node to be deleted
+		if(tmp->left == NULL && tmp->right != NULL)
+			parent->left = tmp->right;
+		else
+			parent->left = NULL; 	// sets the left child of the parent to NULL
 		free(*proot);
 		*proot = toDel;
 		toDel = NULL;
