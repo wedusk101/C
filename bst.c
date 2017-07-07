@@ -32,7 +32,6 @@ int main()
 {
 	NODEPTR root, index, parentIndex;
 	initTree(&root);
-	index = parentIndex = NULL;
 	int choice = 0, x = 0, child = 0;
 	printf("This program implements a binary search tree with the following basic operations.\n");
 	do
@@ -66,6 +65,7 @@ int main()
 					
 			case 3: 	printf("Please enter the element to delete.\n");
 						scanf("%d",&x);
+						index = parentIndex = NULL;
 						deleteNodeBST(&root, &index, &parentIndex, x, &child); // this function is dependent on searchBST() and delRoot()
 						break;
 						
@@ -104,6 +104,7 @@ int main()
 						
 			case 10:	printf("Please enter the element to search for.\n");
 						scanf("%d",&x);
+						index = parentIndex = NULL;
 						if(searchBST(root, &index, &parentIndex, x, &child) == TRUE) 
 							printf("Element found!\n");
 						else
@@ -304,6 +305,17 @@ void deleteNodeBST(NODEPTR* proot, NODEPTR* index, NODEPTR* parentIndex, int val
 			(*parentIndex)->left = (*index)->right;	// connects the left child of the parent to the left child of the node to be deleted
 		delRoot(index);
 		return;
+	}
+	else if((*index)->left == NULL && (*index)->right == NULL && (*parentIndex) == NULL) // the node to be deleted is the only node in the tree
+	{
+		*proot = NULL;
+		delRoot(index);
+		return;
+	}
+	else if(*index == *proot) // if the node to be deleted is the root of the tree
+	{
+		delRoot(proot); // deletes the root of the tree
+		return;		
 	}
 	else
 	{
