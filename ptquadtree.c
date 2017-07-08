@@ -339,7 +339,7 @@ void relDirection(NODEPTR root, NODEPTR* index, float valx1, float valy1, float 
 		
 	}
 	else
-		printf("One or both points is/are not in the tree.Operayion aborted.\n");
+		printf("One or both points is/are not in the tree.Operation aborted.\n");
 }
 
 int countNodePQT(NODEPTR root) // recursively counts the number of nodes in the tree
@@ -350,7 +350,7 @@ int countNodePQT(NODEPTR root) // recursively counts the number of nodes in the 
 		return 0;
 }
 
-int countLeafBST(NODEPTR root) // recursively counts the leaf nodes in the tree
+int countLeafPQT(NODEPTR root) // recursively counts the leaf nodes in the tree
 {
 	if(root == NULL)
 		return 0;
