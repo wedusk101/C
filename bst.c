@@ -1,4 +1,5 @@
 /*The following code implements a binary search tree with a few of its basic operations.*/
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -280,6 +281,8 @@ int max(int x, int y)
 
 void deleteNodeBST(NODEPTR* proot, NODEPTR* index, NODEPTR* parentIndex, int val, int* child) // deletes a node with specific value
 {
+	NODEPTR tmp;
+	tmp = *index;
 	if(proot == NULL)
 	{
 		printf("Empty tree. Operation aborted.\n");
@@ -316,7 +319,8 @@ void deleteNodeBST(NODEPTR* proot, NODEPTR* index, NODEPTR* parentIndex, int val
 	}
 	else if(*index == *proot) // if the node to be deleted is the root of the tree
 	{
-		delRoot(proot); // deletes the root of the tree
+		delRoot(index); // deletes the root of the tree
+		*proot = *index; // restores the original pointer to the root of the tree
 		return;		
 	}
 	else
@@ -328,8 +332,21 @@ void deleteNodeBST(NODEPTR* proot, NODEPTR* index, NODEPTR* parentIndex, int val
 			if(*child == 1)
 				(*parentIndex)->right = NULL; // sets the right child of the parent of the element to be deleted to NULL
 		}
-		delRoot(index); // deletes the found element using the pointer returned by searchBST()
-		return;
+		if((*index)->left != NULL && (*index)->right != NULL)	// the node to be deleted has both children
+		{
+			if(*child == -1)
+			{
+				delRoot(index);
+				(*parentIndex)->left = *index;
+				return;
+			}
+			if(*child == 1)
+			{
+				delRoot(index);
+				(*parentIndex)->right = *index;
+				return;
+			}
+		}
 	}
 }
 
