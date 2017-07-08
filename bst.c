@@ -335,13 +335,13 @@ void deleteNodeBST(NODEPTR* proot, NODEPTR* index, NODEPTR* parentIndex, int val
 			if(*child == -1)
 			{
 				delRoot(index);
-				(*parentIndex)->left = *index;
+				(*parentIndex)->left = *index;	// sets the left child of the parent to the element that has replaced the deleted element
 				return;
 			}
 			if(*child == 1)
 			{
 				delRoot(index);
-				(*parentIndex)->right = *index;
+				(*parentIndex)->right = *index;	// sets the right child of the parent to the element that has replaced the deleted element
 				return;
 			}
 		}
