@@ -30,7 +30,7 @@ int searchPQT(NODEPTR, NODEPTR*, float, float);
 //nearest neighbor search
 //distance radius search
 void relDirection(NODEPTR, NODEPTR*, float, float, float, float);
-void insertNodePQT(NODEPTR*, char*, float, float);
+void insertNodePQT(NODEPTR*, NODEPTR*, char*, float, float);
 void displayTree(NODEPTR);
 float calcDistance(NODEPTR, NODEPTR*, float, float, float, float);
 int countNodePQT(NODEPTR);
@@ -68,7 +68,7 @@ int main()
 						setbuf(stdin, NULL);	// removes pending newline from the buffer from the last input
 						fgets(inputName, 10, stdin);
 						strtok(inputName, "\n");	// removes pending newline from the buffer after the string input
-						insertNodePQT(&center, inputName, key_x, key_y);
+						insertNodePQT(&center, &index, inputName, key_x, key_y);
 						break;
 			
 			case 2:		printf("Please enter the point to search for.\n");
@@ -126,7 +126,7 @@ int main()
 	}while(choice != 0);
 } // end
 
-void insertNodePQT(NODEPTR *proot, char* pname, float valx, float valy) // recursively inserts a point into the tree
+void insertNodePQT(NODEPTR *proot, NODEPTR* index, char* pname, float valx, float valy) // recursively inserts a point into the tree
 {
 	NODEPTR tmp;
 	tmp = malloc(sizeof(struct treeNode));
@@ -134,96 +134,97 @@ void insertNodePQT(NODEPTR *proot, char* pname, float valx, float valy) // recur
 	tmp->coo.y = valy;
 	strncpy(tmp->coo.name, pname, 10);
 	tmp->nw = tmp->ne = tmp->se = tmp->sw = NULL;
-	if(*proot == NULL)
+	if(searchPQT(*proot, index, valx, valy) != TRUE)
 	{
-		*proot = tmp;
-		printf("Point inserted succesfully.\n");
-		return;
-	}
-	if(valx == (*proot)->coo.x) // handles multiple points on an axis with the same x coordinate
-	{
-		if(valy > (*proot)->coo.y)
+		if(*proot == NULL)
 		{
-			if((*proot)->nw == NULL)
-			{
-				insertNodePQT(&(*proot)->nw, &(*pname), valx, valy);
-				return;
-			}
-			if((*proot)->ne == NULL)
-			{
-				insertNodePQT(&(*proot)->ne, &(*pname), valx, valy);
-				return;
-			}
-			printf("Error occured! Point could not be inserted."); // this condition needs to be handled somehow
-			return;			
-		}
-		else if(valy < (*proot)->coo.y)
-		{
-			if((*proot)->sw != NULL)
-			{
-				insertNodePQT(&(*proot)->sw, &(*pname), valx, valy);
-				return;
-			}
-			if((*proot)->se != NULL)
-			{
-				insertNodePQT(&(*proot)->se, &(*pname), valx, valy);
-				return;
-			}
-			printf("Error occured! Point could not be inserted."); // this condition needs to be handled somehow
+			*proot = tmp;
+			printf("Point inserted succesfully.\n");
 			return;
 		}
-	}
-	else if(valy == (*proot)->coo.y)	// handles multiple points on an axis with the same Y coordinate
-	{
-		if(valx > (*proot)->coo.x)
+		if(valx == (*proot)->coo.x) // handles multiple points on an axis with the same x coordinate
 		{
-			if((*proot)->ne != NULL)
+			if(valy > (*proot)->coo.y)
 			{
-				insertNodePQT(&(*proot)->ne, &(*pname), valx, valy);
+				if((*proot)->nw == NULL)
+				{
+					insertNodePQT(&(*proot)->nw, index, &(*pname), valx, valy);
+					return;
+				}
+				if((*proot)->ne == NULL)
+				{
+					insertNodePQT(&(*proot)->ne, index, &(*pname), valx, valy);
+					return;
+				}
+				printf("Error occured! Point could not be inserted."); // this condition needs to be handled somehow
+				return;			
+			}
+			else if(valy < (*proot)->coo.y)
+			{
+				if((*proot)->sw != NULL)
+				{
+					insertNodePQT(&(*proot)->sw, index, &(*pname), valx, valy);
+					return;
+				}
+				if((*proot)->se != NULL)
+				{
+					insertNodePQT(&(*proot)->se, index, &(*pname), valx, valy);
+					return;
+				}
+				printf("Error occured! Point could not be inserted. Try inserting some other point first."); // this condition needs to be handled somehow
 				return;
 			}
-			if((*proot)->se != NULL)
+		}
+		else if(valy == (*proot)->coo.y)	// handles multiple points on an axis with the same Y coordinate
+		{
+			if(valx > (*proot)->coo.x)
 			{
-				insertNodePQT(&(*proot)->ne, &(*pname), valx, valy);
+				if((*proot)->ne != NULL)
+				{
+					insertNodePQT(&(*proot)->ne, index, &(*pname), valx, valy);
+					return;
+				}
+				if((*proot)->se != NULL)
+				{
+					insertNodePQT(&(*proot)->ne, index, &(*pname), valx, valy);
+					return;
+				}
+				printf("Error occured! Point could not be inserted. Try inserting some other point first.");
+				return; 				
+			}
+			else if(valx > (*proot)->coo.x)
+			{
+				if((*proot)->nw != NULL)
+				{
+					insertNodePQT(&(*proot)->nw, index, &(*pname), valx, valy);
+					return;
+				}
+				if((*proot)->sw != NULL)
+				{
+					insertNodePQT(&(*proot)->sw, index, &(*pname), valx, valy);
+					return;
+				}
+				printf("Error occured! Point could not be inserted. Try inserting some other point first.");
 				return;
 			}
-			printf("Error occured! Point could not be inserted. Try inserting some other point first."); 				
 		}
 		else if(valx > (*proot)->coo.x)
 		{
-			if((*proot)->nw != NULL)
-			{
-				insertNodePQT(&(*proot)->nw, &(*pname), valx, valy);
-				return;
-			}
-			if((*proot)->sw != NULL)
-			{
-				insertNodePQT(&(*proot)->sw, &(*pname), valx, valy);
-				return;
-			}
-			printf("Error occured! Point could not be inserted. Try inserting some other point first.");
+			if(valy > (*proot)->coo.y)
+				insertNodePQT(&(*proot)->ne, index, &(*pname), valx, valy);
+			else if(valy < (*proot)->coo.y)
+				insertNodePQT(&(*proot)->se, index, &(*pname), valx, valy);			
+		}
+		else if(valx < (*proot)->coo.x)
+		{
+			if(valy > (*proot)->coo.y)
+				insertNodePQT(&(*proot)->nw, index, &(*pname), valx, valy);
+			else if(valy < (*proot)->coo.y)
+				insertNodePQT(&(*proot)->sw, index, &(*pname), valx, valy);
 		}
 	}
-	else if(valx > (*proot)->coo.x)
-	{
-		if(valy > (*proot)->coo.y)
-			insertNodePQT(&(*proot)->ne, &(*pname), valx, valy);
-		else if(valy < (*proot)->coo.y)
-			insertNodePQT(&(*proot)->se, &(*pname), valx, valy);			
-	}
-	else if(valx < (*proot)->coo.x)
-	{
-		if(valy > (*proot)->coo.y)
-			insertNodePQT(&(*proot)->nw, &(*pname), valx, valy);
-		else if(valy < (*proot)->coo.y)
-			insertNodePQT(&(*proot)->sw, &(*pname), valx, valy);
-	}
-	else if(valx == (*proot)->coo.x	&& valy == (*proot)->coo.y)
-	{
-		printf("Operation failed! Point alreasy exists.\n");
-		return;
-	}
-	 
+	else
+		printf("Operation failed! Point already exists.\n");
 }
 
 void initTree(NODEPTR* proot) // initiliazes the tree with (0,0) as the origin
