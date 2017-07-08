@@ -177,8 +177,10 @@ void displayInorderBST(NODEPTR root) // recursively displays the inorder travers
 
 int countNodeBST(NODEPTR root) // recursively counts the number of nodes in the tree
 {
-	if(root  != NULL)
+	if(root	!=	NULL)
 		return 1 + countNodeBST(root->left) + countNodeBST(root->right);
+	else
+		return 0;
 }
 
 void displayPreorderBST(NODEPTR root) // recursively displays the preorder traversal of the tree
