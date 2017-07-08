@@ -281,8 +281,6 @@ int max(int x, int y)
 
 void deleteNodeBST(NODEPTR* proot, NODEPTR* index, NODEPTR* parentIndex, int val, int* child) // deletes a node with specific value
 {
-	NODEPTR tmp;
-	tmp = *index;
 	if(proot == NULL)
 	{
 		printf("Empty tree. Operation aborted.\n");
