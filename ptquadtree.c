@@ -75,7 +75,10 @@ int main()
 						scanf("%f",&key_x);
 						scanf("%f",&key_y);
 						if(searchPQT(center, &index, key_x, key_y) == TRUE)
+						{
 							printf("Point found!\n");
+							printf("The point is %s(%4.2f,%4.2f).", index->coo.name, index->coo.x, index->coo.y);
+						}
 						else
 							printf("Point not found.\n");
 						break;
@@ -156,7 +159,7 @@ void insertNodePQT(NODEPTR *proot, NODEPTR* index, char* pname, float valx, floa
 					insertNodePQT(&(*proot)->ne, index, &(*pname), valx, valy);
 					return;
 				}
-				printf("Error occured! Point could not be inserted."); // this condition needs to be handled somehow
+				printf("Error occured! Point could not be inserted. Try inserting some other point first."); // this condition needs to be handled somehow
 				return;			
 			}
 			else if(valy < (*proot)->coo.y)
@@ -337,7 +340,6 @@ void relDirection(NODEPTR root, NODEPTR* index, float valx1, float valy1, float 
 				return;
 			}
 		}
-		
 	}
 	else
 		printf("One or both points is/are not in the tree.Operation aborted.\n");
