@@ -1,4 +1,5 @@
 /*The following code is work in progess and implements a point quad tree with a few of its basic operations.*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -25,16 +26,17 @@ struct treeNode
 
 typedef struct treeNode *NODEPTR;
 
-void initTree(NODEPTR*); 
-int searchPQT(NODEPTR, NODEPTR*, NODEPTR*, float, float, int*);
-//nearest neighbor search
-//distance radius search
-void relDirection(NODEPTR, NODEPTR*, NODEPTR*, float, float, float, float, int*);
-void insertNodePQT(NODEPTR*, NODEPTR*, NODEPTR*, char*, float, float, int*);
-void displayTree(NODEPTR);
-float calcDistance(float, float, float, float);
-int countNodePQT(NODEPTR);
-int countLeafPQT(NODEPTR);
+void initTree(NODEPTR*); 																	// initiliazes the tree
+int searchPQT(NODEPTR, NODEPTR*, NODEPTR*, float, float, int*);								// searches for a point in the quadtree and returns a pointer to it and its parent
+//nearest neighbor search																	// returns the nearest neighbor of a particular point
+//distance radius search																	// searches for points in a given radius from a given point
+void relDirection(NODEPTR, NODEPTR*, NODEPTR*, float, float, float, float, int*); 			// returns the relative direction between a source and a destination
+void insertNodePQT(NODEPTR*, NODEPTR*, NODEPTR*, char*, float, float, int*);				// inserts a point into the quad tree
+void displayTree(NODEPTR);																	// displays all the points in the tree
+float calcDistance(float, float, float, float);												// calculates the Euclidean distance between two points
+int countNodePQT(NODEPTR);																	// returns the total number of nodes in a tree
+int countLeafPQT(NODEPTR);																	// returns the total number of leaf nodes in a tree
+// delete a point																			// deletes a point from the tree
 
 int main()
 {
@@ -278,11 +280,11 @@ int searchPQT(NODEPTR root, NODEPTR* index, NODEPTR* parentIndex, float valx, fl
 				return FALSE;
 			else
 				root = root->ne;
-			if((root->coo.x) == valx && (root->coo.y) == valy)
+			if((root->coo.x) == valx && (root->coo.y) == valy) // checks if the search succeeds
 			{
-				*index = root;
+				*index = root;	// returns a pointer to the node being searched for in case of a successful search
 				root = tmp;
-				*parentIndex = root;
+				*parentIndex = root; // returns a pointer to the parent node of the point being searched for
 				*child = 1; // NE quadrant
 				return TRUE;
 			}
@@ -340,7 +342,7 @@ int searchPQT(NODEPTR root, NODEPTR* index, NODEPTR* parentIndex, float valx, fl
 			
 		}
 	}
-	if(valx > (root->coo.x))
+	if(valx > (root->coo.x)) 
 	{
 		if(valy > (root->coo.y))
 			searchPQT(root->ne, index, parentIndex, valx, valy, child);
@@ -363,7 +365,7 @@ float calcDistance(float valx1, float valy1, float valx2, float valy2)
 
 void relDirection(NODEPTR root, NODEPTR* index, NODEPTR* parentIndex, float valx1, float valy1, float valx2, float valy2, int* child)
 {
-	if(searchPQT(root, index, parentIndex, valx1, valy1, child) == TRUE	&& searchPQT(root, index, parentIndex, valx2, valy2, child) == TRUE)
+	if(searchPQT(root, index, parentIndex, valx1, valy1, child) == TRUE	&& searchPQT(root, index, parentIndex, valx2, valy2, child) == TRUE) // checks if the points are present in the tree
 	{
 		if(valx2 > valx1)
 		{
