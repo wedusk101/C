@@ -51,14 +51,14 @@ int main()
 	do
 	{
 		printf("\n----------- MENU -------------\n");
-        printf("\n 1.	Insert a point into the point quad tree.\n");
-		printf("\n 2.	Search for a point in the tree.\n");
-		printf("\n 3.	Display the contents of the point quad tree.\n");
-		printf("\n 4.	Calculate the Euclidean distance between two points in the tree.\n");
-		printf("\n 5.	Find out the relative direction between two points in the tree.\n");
-		printf("\n 6.	Count the number of nodes in the tree.\n");
-		printf("\n 7.	Count the number of leaf nodes in the tree.\n");
-		printf("\n 0.	EXIT \n");
+        printf("\n 1. Insert a point into the point quad tree.\n");
+		printf("\n 2. Search for a point in the tree.\n");
+		printf("\n 3. Display the contents of the point quad tree.\n");
+		printf("\n 4. Calculate the Euclidean distance between two points in the tree.\n");
+		printf("\n 5. Find out the relative direction between two points in the tree.\n");
+		printf("\n 6. Count the number of nodes in the tree.\n");
+		printf("\n 7. Count the number of leaf nodes in the tree.\n");
+		printf("\n 0. EXIT \n");
         printf("\n------------------------------\n");
         printf("\nPlease enter your choice : ");
         scanf("%d",&choice);
