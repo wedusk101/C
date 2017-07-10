@@ -26,23 +26,23 @@ struct treeNode
 typedef struct treeNode *NODEPTR;
 
 void initTree(NODEPTR*); 
-int searchPQT(NODEPTR, NODEPTR*, float, float);
+int searchPQT(NODEPTR, NODEPTR*, NODEPTR*, float, float, int*);
 //nearest neighbor search
 //distance radius search
-void relDirection(NODEPTR, NODEPTR*, float, float, float, float);
-void insertNodePQT(NODEPTR*, NODEPTR*, char*, float, float);
+void relDirection(NODEPTR, NODEPTR*, NODEPTR*, float, float, float, float, int*);
+void insertNodePQT(NODEPTR*, NODEPTR*, NODEPTR*, char*, float, float, int*);
 void displayTree(NODEPTR);
-float calcDistance(NODEPTR, NODEPTR*, float, float, float, float);
+float calcDistance(float, float, float, float);
 int countNodePQT(NODEPTR);
 int countLeafPQT(NODEPTR);
 
 int main()
 {
-	NODEPTR center, index;
+	NODEPTR center, index, parentIndex;
 	center = NULL;
 	initTree(&center);
-	index = NULL;
-	int choice = 0;
+	index = parentIndex = NULL;
+	int choice = 0, child = 0; // child ----> 1 = NE, 2 = NW, 3 = SW, 4 = SE
 	float key_x = 0, key_y = 0, key_x2, key_y2;
 	char inputName[10];
 	printf("This program implements a point quad tree with the following basic operations.\n");
@@ -68,16 +68,19 @@ int main()
 						setbuf(stdin, NULL);	// removes pending newline from the buffer from the last input
 						fgets(inputName, 10, stdin);
 						strtok(inputName, "\n");	// removes pending newline from the buffer after the string input
-						insertNodePQT(&center, &index, inputName, key_x, key_y);
+						index = parentIndex = NULL;
+						child = 0;
+						insertNodePQT(&center, &index, &parentIndex, inputName, key_x, key_y, &child);
 						break;
 			
 			case 2:		printf("Please enter the point to search for.\n");
 						scanf("%f",&key_x);
 						scanf("%f",&key_y);
-						if(searchPQT(center, &index, key_x, key_y) == TRUE)
+						if(searchPQT(center, &index, &parentIndex, key_x, key_y, &child) == TRUE)
 						{
 							printf("Point found!\n");
-							printf("The point is %s(%4.2f,%4.2f).", index->coo.name, index->coo.x, index->coo.y);
+							printf("The point is %s(%4.2f,%4.2f).\n", index->coo.name, index->coo.x, index->coo.y);
+							printf("Its parent node is %s(%4.2f,%4.2f).\n", parentIndex->coo.name, parentIndex->coo.x, parentIndex->coo.y);
 						}
 						else
 							printf("Point not found.\n");
@@ -100,8 +103,10 @@ int main()
 						printf("Please enter the second point.\n");
 						scanf("%f",&key_x2);
 						scanf("%f",&key_y2);
-						if(searchPQT(center, &index, key_x, key_y) == TRUE	&& searchPQT(center, &index, key_x2, key_y2) == TRUE)
-							printf("The distance between the two points is %4.2f units.", calcDistance(center, &index, key_x, key_y, key_x2, key_y2));
+						index = parentIndex = NULL;
+						child = 0;
+						if(searchPQT(center, &index, &parentIndex, key_x, key_y, &child) == TRUE	&& searchPQT(center, &index, &parentIndex, key_x2, key_y2, &child) == TRUE)
+							printf("The distance between the two points is %4.2f units.", calcDistance(key_x, key_y, key_x2, key_y2));
 						else
 							printf("One or both points is/are not in the tree. Operation aborted.\n");							
 						break;
@@ -112,7 +117,7 @@ int main()
 						printf("Please enter the coordinates of the destination point.\n");
 						scanf("%f",&key_x2);
 						scanf("%f",&key_y2);
-						relDirection(center, &index, key_x, key_y, key_x2, key_y2);
+						relDirection(center, &index, &parentIndex, key_x, key_y, key_x2, key_y2, &child);
 						break;
 						
 			case 6:		printf("The number of nodes in the tree is %d.\n", countNodePQT(center));
@@ -129,7 +134,7 @@ int main()
 	}while(choice != 0);
 } // end
 
-void insertNodePQT(NODEPTR *proot, NODEPTR* index, char* pname, float valx, float valy) // recursively inserts a point into the tree
+void insertNodePQT(NODEPTR *proot, NODEPTR* index, NODEPTR* parentIndex, char* pname, float valx, float valy, int* child) // recursively inserts a point into the tree
 {
 	NODEPTR tmp;
 	tmp = malloc(sizeof(struct treeNode));
@@ -137,7 +142,7 @@ void insertNodePQT(NODEPTR *proot, NODEPTR* index, char* pname, float valx, floa
 	tmp->coo.y = valy;
 	strncpy(tmp->coo.name, pname, 10);
 	tmp->nw = tmp->ne = tmp->se = tmp->sw = NULL;
-	if(searchPQT(*proot, index, valx, valy) != TRUE)
+	if(searchPQT(*proot, index, parentIndex, valx, valy, child) != TRUE)
 	{
 		if(*proot == NULL)
 		{
@@ -151,12 +156,12 @@ void insertNodePQT(NODEPTR *proot, NODEPTR* index, char* pname, float valx, floa
 			{
 				if((*proot)->nw == NULL)
 				{
-					insertNodePQT(&(*proot)->nw, index, &(*pname), valx, valy);
+					insertNodePQT(&(*proot)->nw, index, parentIndex, &(*pname), valx, valy, child);
 					return;
 				}
 				if((*proot)->ne == NULL)
 				{
-					insertNodePQT(&(*proot)->ne, index, &(*pname), valx, valy);
+					insertNodePQT(&(*proot)->ne, index, parentIndex, &(*pname), valx, valy, child);
 					return;
 				}
 				printf("Error occured! Point could not be inserted. Try inserting some other point first."); // this condition needs to be handled somehow
@@ -166,12 +171,12 @@ void insertNodePQT(NODEPTR *proot, NODEPTR* index, char* pname, float valx, floa
 			{
 				if((*proot)->sw != NULL)
 				{
-					insertNodePQT(&(*proot)->sw, index, &(*pname), valx, valy);
+					insertNodePQT(&(*proot)->sw, index, parentIndex, &(*pname), valx, valy, child);
 					return;
 				}
 				if((*proot)->se != NULL)
 				{
-					insertNodePQT(&(*proot)->se, index, &(*pname), valx, valy);
+					insertNodePQT(&(*proot)->se, index, parentIndex, &(*pname), valx, valy, child);
 					return;
 				}
 				printf("Error occured! Point could not be inserted. Try inserting some other point first."); // this condition needs to be handled somehow
@@ -184,12 +189,12 @@ void insertNodePQT(NODEPTR *proot, NODEPTR* index, char* pname, float valx, floa
 			{
 				if((*proot)->ne != NULL)
 				{
-					insertNodePQT(&(*proot)->ne, index, &(*pname), valx, valy);
+					insertNodePQT(&(*proot)->ne, index, parentIndex, &(*pname), valx, valy, child);
 					return;
 				}
 				if((*proot)->se != NULL)
 				{
-					insertNodePQT(&(*proot)->ne, index, &(*pname), valx, valy);
+					insertNodePQT(&(*proot)->ne, index, parentIndex, &(*pname), valx, valy, child);
 					return;
 				}
 				printf("Error occured! Point could not be inserted. Try inserting some other point first.");
@@ -199,12 +204,12 @@ void insertNodePQT(NODEPTR *proot, NODEPTR* index, char* pname, float valx, floa
 			{
 				if((*proot)->nw != NULL)
 				{
-					insertNodePQT(&(*proot)->nw, index, &(*pname), valx, valy);
+					insertNodePQT(&(*proot)->nw, index, parentIndex, &(*pname), valx, valy, child);
 					return;
 				}
 				if((*proot)->sw != NULL)
 				{
-					insertNodePQT(&(*proot)->sw, index, &(*pname), valx, valy);
+					insertNodePQT(&(*proot)->sw, index, parentIndex, &(*pname), valx, valy, child);
 					return;
 				}
 				printf("Error occured! Point could not be inserted. Try inserting some other point first.");
@@ -214,16 +219,16 @@ void insertNodePQT(NODEPTR *proot, NODEPTR* index, char* pname, float valx, floa
 		else if(valx > (*proot)->coo.x)
 		{
 			if(valy > (*proot)->coo.y)
-				insertNodePQT(&(*proot)->ne, index, &(*pname), valx, valy);
+				insertNodePQT(&(*proot)->ne, index, parentIndex, &(*pname), valx, valy, child);
 			else if(valy < (*proot)->coo.y)
-				insertNodePQT(&(*proot)->se, index, &(*pname), valx, valy);			
+				insertNodePQT(&(*proot)->se, index, parentIndex, &(*pname), valx, valy, child);			
 		}
 		else if(valx < (*proot)->coo.x)
 		{
 			if(valy > (*proot)->coo.y)
-				insertNodePQT(&(*proot)->nw, index, &(*pname), valx, valy);
+				insertNodePQT(&(*proot)->nw, index, parentIndex, &(*pname), valx, valy, child);
 			else if(valy < (*proot)->coo.y)
-				insertNodePQT(&(*proot)->sw, index, &(*pname), valx, valy);
+				insertNodePQT(&(*proot)->sw, index, parentIndex, &(*pname), valx, valy, child);
 		}
 	}
 	else
@@ -254,8 +259,10 @@ void displayTree(NODEPTR root) // recursively displays the contents of the tree
 	}
 }
 
-int searchPQT(NODEPTR root, NODEPTR* index, float valx, float valy) // recursively searches the tree for a point
+int searchPQT(NODEPTR root, NODEPTR* index, NODEPTR* parentIndex, float valx, float valy, int* child) // recursively searches the tree for a point
 {
+	NODEPTR tmp;
+	tmp = root; // backs up the pointer to the root into a temporary pointer
 	if(root == NULL)
 		return FALSE;
 	if((root->coo.x) == valx && (root->coo.y) == valy)
@@ -266,27 +273,97 @@ int searchPQT(NODEPTR root, NODEPTR* index, float valx, float valy) // recursive
 	if(valx > (root->coo.x))
 	{
 		if(valy > (root->coo.y))
-			searchPQT(root->ne, index, valx, valy);
+		{
+			if(root->ne == NULL)
+				return FALSE;
+			else
+				root = root->ne;
+			if((root->coo.x) == valx && (root->coo.y) == valy)
+			{
+				*index = root;
+				root = tmp;
+				*parentIndex = root;
+				*child = 1; // NE quadrant
+				return TRUE;
+			}
+			
+		}
+		if(valy < (root->coo.y))
+		{
+			if(root->se == NULL)
+				return FALSE;
+			else
+				root = root->se;
+			if((root->coo.x) == valx && (root->coo.y) == valy)
+			{
+				*index = root;
+				root = tmp;
+				*parentIndex = root;
+				*child = 4; // SE quadrant
+				return TRUE;
+			}
+			
+		}
+	}
+	if(valx < (root->coo.x))
+	{
+		if(valy > (root->coo.y))
+		{
+			if(root->nw == NULL)
+				return FALSE;
+			else
+				root = root->nw;
+			if((root->coo.x) == valx && (root->coo.y) == valy)
+			{
+				*index = root;
+				root = tmp;
+				*parentIndex = root;
+				*child = 2; // NW quadrant
+				return TRUE;
+			}
+			
+		}
+		if(valy < (root->coo.y))
+		{
+			if(root->sw == NULL)
+				return FALSE;
+			else
+				root = root->sw;
+			if((root->coo.x) == valx && (root->coo.y) == valy)
+			{
+				*index = root;
+				root = tmp;
+				*parentIndex = root;
+				*child = 3; // SW quadrant
+				return TRUE;
+			}
+			
+		}
+	}
+	if(valx > (root->coo.x))
+	{
+		if(valy > (root->coo.y))
+			searchPQT(root->ne, index, parentIndex, valx, valy, child);
 		else if(valy < (root->coo.y))
-			searchPQT(root->se, index, valx, valy);
+			searchPQT(root->se, index, parentIndex, valx, valy, child);
 	}
 	else if(valx < (root->coo.x))
 	{
 		if(valy > (root->coo.y))
-			searchPQT(root->nw, index, valx, valy);
+			searchPQT(root->nw, index, parentIndex, valx, valy, child);
 		else if(valy < (root->coo.y))
-			searchPQT(root->sw, index, valx, valy);
+			searchPQT(root->sw, index, parentIndex, valx, valy, child);
 	}
 }
 
-float calcDistance(NODEPTR root, NODEPTR* index, float valx1, float valy1, float valx2, float valy2)
+float calcDistance(float valx1, float valy1, float valx2, float valy2)
 {
 	return sqrt(pow(valx1 - valx2, 2) + pow(valy1 - valy2, 2));
 }
 
-void relDirection(NODEPTR root, NODEPTR* index, float valx1, float valy1, float valx2, float valy2)
+void relDirection(NODEPTR root, NODEPTR* index, NODEPTR* parentIndex, float valx1, float valy1, float valx2, float valy2, int* child)
 {
-	if(searchPQT(root, index, valx1, valy1) == TRUE	&& searchPQT(root, index, valx2, valy2) == TRUE)
+	if(searchPQT(root, index, parentIndex, valx1, valy1, child) == TRUE	&& searchPQT(root, index, parentIndex, valx2, valy2, child) == TRUE)
 	{
 		if(valx2 > valx1)
 		{
