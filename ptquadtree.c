@@ -488,7 +488,6 @@ int countLeafPQT(NODEPTR root) // recursively counts the leaf nodes in the tree
 
 void naiveNN(NODEPTR root, NODEPTR* index, float* nearestDist, float valx, float valy) // recursively finds the nearest neighbor for a given point
 {
-	printf("test\n");
 	float dist = 0;
 	if(root != NULL)
 	{
