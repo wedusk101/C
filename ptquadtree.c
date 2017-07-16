@@ -129,7 +129,7 @@ int main()
 						scanf("%f",&key_y);
 						index = parentIndex = NULL;
 						child = 0;
-						minDist = 1000000;
+						minDist = 1000000; // start with a large radius of search using a big number
 						if(searchPQT(center, &index, &parentIndex, key_x, key_y, &child) == FALSE)
 						{
 							printf("Point not found.\n");
@@ -297,8 +297,8 @@ int searchPQT(NODEPTR root, NODEPTR* index, NODEPTR* parentIndex, float valx, fl
 				return FALSE;
 			else
 			{	
-				tmp = root;
-				root = root->ne;
+				tmp = root; // backs up the pointer to the root of the tree
+				root = root->ne; // traverses to the NE branch of the tree
 			}
 			if((root->coo.x) == valx && (root->coo.y) == valy) // checks if the search succeeds
 			{
@@ -375,7 +375,7 @@ int searchPQT(NODEPTR root, NODEPTR* index, NODEPTR* parentIndex, float valx, fl
 	{
 		if(valy > (root->coo.y))
 		{
-			*parentIndex = root;
+			*parentIndex = root; // returns a pointer to the parent of the node
 			searchPQT(root->ne, index, parentIndex, valx, valy, child);
 		}
 		else if(valy < (root->coo.y))
