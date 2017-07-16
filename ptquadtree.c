@@ -129,7 +129,7 @@ int main()
 						scanf("%f",&key_y);
 						index = parentIndex = NULL;
 						child = 0;
-						minDist = calcDistance(key_x, key_y, center->coo.x, center->coo.y);
+						minDist = 1000000;
 						if(searchPQT(center, &index, &parentIndex, key_x, key_y, &child) == FALSE)
 						{
 							printf("Point not found.\n");
@@ -491,15 +491,18 @@ void naiveNN(NODEPTR root, NODEPTR* index, float* nearestDist, float valx, float
 	float dist = 0;
 	if(root != NULL)
 	{
-		dist = calcDistance(valx, valy, root->coo.x, root->coo.y);
-		if(dist < (*nearestDist) && (root->coo.x != valx && root->coo.y != valy))
+		if(root->coo.x != valx && root->coo.y != valy)
 		{
-			*nearestDist = dist;
-			*index = root;
+			dist = calcDistance(valx, valy, root->coo.x, root->coo.y);
+			if(dist < (*nearestDist))
+			{		
+				*nearestDist = dist;
+				*index = root;
+			}
 		}
 		naiveNN(root->nw, index, nearestDist, valx, valy);
 		naiveNN(root->ne, index, nearestDist, valx, valy);
 		naiveNN(root->se, index, nearestDist, valx, valy);
-		naiveNN(root->sw, index, nearestDist, valx, valy);
+		naiveNN(root->sw, index, nearestDist, valx, valy);		
 	}
 }
