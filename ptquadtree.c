@@ -490,7 +490,7 @@ void naiveNN(NODEPTR root, NODEPTR* index, float* nearestDist, float valx, float
 {
 	printf("test\n");
 	float dist = 0;
-	while(root != NULL)
+	if(root != NULL)
 	{
 		dist = calcDistance(valx, valy, root->coo.x, root->coo.y);
 		if(dist < (*nearestDist) && (root->coo.x != valx && root->coo.y != valy))
