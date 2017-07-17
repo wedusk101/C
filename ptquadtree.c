@@ -28,16 +28,17 @@ typedef struct treeNode *NODEPTR;
 
 void initTree(NODEPTR*); 																	// initiliazes the tree
 int searchPQT(NODEPTR, NODEPTR*, NODEPTR*, float, float, int*);								// searches for a point in the quadtree and returns a pointer to it and its parent
-//distance radius search																	// searches for points in a given radius from a given point
 void relDirection(NODEPTR, NODEPTR*, NODEPTR*, float, float, float, float, int*); 			// returns the relative direction between a source and a destination
 void insertNodePQT(NODEPTR*, NODEPTR*, NODEPTR*, char*, float, float, int*);				// inserts a point into the quad tree
 void displayTree(NODEPTR);																	// displays all the points in the tree
 float calcDistance(float, float, float, float);												// calculates the Euclidean distance between two points
 int countNodePQT(NODEPTR);																	// returns the total number of nodes in a tree
 int countLeafPQT(NODEPTR);																	// returns the total number of leaf nodes in a tree
-// delete a point																			// deletes a point from the tree
-// modify a point																			// updates the coordinates of a particular point while preserving the quadtree structure
 void naiveNN(NODEPTR, NODEPTR*, float*, float, float);										// naive implementation of nearest neighbor search for a given point
+//NODEPTR copyPQT(NODEPTR);																	// creates a copy of a tree which can be during the deletion of a point
+// delete a point																			// deletes a point from the tree by reinserting its children recursively
+//distance radius search																	// searches for points in a given radius from a given point
+// modify a point																			/* Updates the coordinates of a particular point while preserving the quadtree structure.This can be done by deleting a chosen point and reinserting the new point.*/
 
 int main()
 {
