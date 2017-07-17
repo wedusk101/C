@@ -214,7 +214,7 @@ void insertNodePQT(NODEPTR *proot, NODEPTR* index, NODEPTR* parentIndex, char* p
 				printf("Error occured! Point could not be inserted. Try inserting some other point first.");
 				return; 				
 			}
-			else if(valx > (*proot)->coo.x)
+			else if(valx < (*proot)->coo.x)
 			{
 				if((*proot)->nw != NULL)
 				{
