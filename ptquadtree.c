@@ -36,6 +36,7 @@ float calcDistance(float, float, float, float);												// calculates the Euc
 int countNodePQT(NODEPTR);																	// returns the total number of nodes in a tree
 int countLeafPQT(NODEPTR);																	// returns the total number of leaf nodes in a tree
 // delete a point																			// deletes a point from the tree
+// modify a point																			// updates the coordinates of a particular point while preserving the quadtree structure
 void naiveNN(NODEPTR, NODEPTR*, float*, float, float);										// naive implementation of nearest neighbor search for a given point
 
 int main()
@@ -81,7 +82,13 @@ int main()
 						scanf("%f",&key_y);
 						index = parentIndex = NULL;
 						child = 0;
-						if(searchPQT(center, &index, &parentIndex, key_x, key_y, &child) == TRUE)
+						if(key_x == 0 && key_y == 0)
+						{
+							printf("Point found!\n");
+							printf("The point is the origin O(0,0).\n");
+							break;
+						}
+						else if(searchPQT(center, &index, &parentIndex, key_x, key_y, &child) == TRUE)
 						{
 							printf("Point found!\n");
 							printf("The point is %s(%4.2f,%4.2f).\n", index->coo.name, index->coo.x, index->coo.y);
@@ -278,13 +285,7 @@ int searchPQT(NODEPTR root, NODEPTR* index, NODEPTR* parentIndex, float valx, fl
 	NODEPTR tmp;	// used as a backup pointer
 	if(root == NULL)
 		return FALSE;
-	if((root->coo.x) == valx && (root->coo.y) == valy)
-	{
-		*index = root;
-		*parentIndex = root;
-		return TRUE;
-	}
-	if((root->coo.x) == valx && (root->coo.y) == valy)
+	if((root->coo.x) == valx && (root->coo.y) == valy)	// condition for successful search
 	{
 		*index = root;	// returns a pointer to the found element
 		return TRUE;
@@ -491,7 +492,7 @@ void naiveNN(NODEPTR root, NODEPTR* index, float* nearestDist, float valx, float
 	float dist = 0;
 	if(root != NULL)
 	{
-		if(root->coo.x != valx && root->coo.y != valy)
+		if(root->coo.x != valx && root->coo.y != valy) // excludes the user given point from the calculations for nearest neighbor
 		{
 			dist = calcDistance(valx, valy, root->coo.x, root->coo.y);
 			if(dist < (*nearestDist))
