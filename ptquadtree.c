@@ -495,7 +495,7 @@ void naiveNN(NODEPTR root, NODEPTR* index, float* nearestDist, float valx, float
 	{
 		if(root->coo.x != valx && root->coo.y != valy) // excludes the user given point from the calculations for nearest neighbor
 		{
-			dist = calcDistance(valx, valy, root->coo.x, root->coo.y);
+			dist = calcDistance(valx, valy, root->coo.x, root->coo.y);	// this function doesn't work yet for points on the same axis
 			if(dist < (*nearestDist))
 			{		
 				*nearestDist = dist;
