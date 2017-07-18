@@ -1,4 +1,4 @@
-/*The following code is work in progess and implements a point quad tree with a few of its basic operations.*/
+/*The following code is work in progess and implements a point quadtree with a few of its basic operations.*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,16 +36,16 @@ int countNodePQT(NODEPTR);																	// returns the total number of nodes 
 int countLeafPQT(NODEPTR);																	// returns the total number of leaf nodes in a tree
 void naiveNN(NODEPTR, NODEPTR*, float*, float, float);										// naive implementation of nearest neighbor search for a given point
 void radiusSearchPQT(NODEPTR, int*, float, float, float);									// searches for points in a given radius from a given point
-//NODEPTR copyPQT(NODEPTR);																	// creates a copy of a tree which can be during the deletion of a point
+NODEPTR copyPQT(NODEPTR);																	// creates a copy of a tree which can be used during the deletion of a point
+void delPQT(NODEPTR);																		// deletes a point quadtree
 // delete a point																			// deletes a point from the tree by reinserting its children recursively												
 // modify a point																			/* Updates the coordinates of a particular point while preserving the quadtree structure.This can be done by deleting a chosen point and reinserting the new point.*/
 
 int main()
 {
-	NODEPTR center, index, parentIndex;
-	center = NULL;
+	NODEPTR center, index, parentIndex, treeCopy;
+	index = parentIndex = center = treeCopy = NULL;
 	initTree(&center);
-	index = parentIndex = NULL;
 	int choice = 0, child = 0, flag = 0; // child ----> 1 = NE, 2 = NW, 3 = SW, 4 = SE
 	float key_x = 0, key_y = 0, key_x2, key_y2, minDist = 0, radius = 0;
 	char inputName[10];
@@ -545,5 +545,23 @@ void radiusSearchPQT(NODEPTR root, int* flag, float radius, float valx, float va
 		radiusSearchPQT(root->ne, flag, radius, valx, valy);
 		radiusSearchPQT(root->se, flag, radius, valx, valy);
 		radiusSearchPQT(root->sw, flag, radius, valx, valy);		
+	}
+}
+
+NODEPTR copyPQT(NODEPTR root)
+{
+	if(root == NULL)
+		return NULL;
+	else
+	{
+		NODEPTR trCpy = malloc(sizeof(NODEPTR));
+		trCpy->coo.x = root->coo.x;
+		trCpy->coo.y = root->coo.y;
+		strncpy(trCpy->coo.name, root->coo.name, 10);
+		trCpy->nw = copyPQT(root->nw);
+		trCpy->ne = copyPQT(root->ne);
+		trCpy->se = copyPQT(root->se);
+		trCpy->sw = copyPQT(root->sw);
+		return trCpy;
 	}
 }
