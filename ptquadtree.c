@@ -537,7 +537,7 @@ void radiusSearchPQT(NODEPTR root, int* flag, float radius, float valx, float va
 		{
 			if(calcDistance(root->coo.x, root->coo.y, valx, valy) <= radius)
 			{
-				*flag = 1;
+				*flag = 1; // has at least one point in the specified radius
 				printf("%s(%4.2f,%4.2f) ", root->coo.name, root->coo.x, root->coo.y);
 			}
 		}
