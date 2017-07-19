@@ -36,15 +36,15 @@ int countNodePQT(NODEPTR);																	// returns the total number of nodes 
 int countLeafPQT(NODEPTR);																	// returns the total number of leaf nodes in a tree
 void naiveNN(NODEPTR, NODEPTR*, float*, float, float);										// naive implementation of nearest neighbor search for a given point
 void radiusSearchPQT(NODEPTR, int*, float, float, float);									// searches for points in a given radius from a given point
-//NODEPTR copyPQT(NODEPTR);																	// creates a copy of a tree which can be used during the deletion of a point
-//void delPQT(NODEPTR);																		// deletes a point quadtree
-// delete a point																			// deletes a point from the tree by reinserting its children recursively												
+NODEPTR copyPQT(NODEPTR);																	// creates a copy of a tree which can be used during the deletion of a point
+void delPQT(NODEPTR*);																		// deletes a point quadtree
+//void delNodePQT(NODEPTR*, NODEPTR*, NODEPTR*, char*, float, float, int*);					// deletes a point from the point quadtree																			// deletes a point from the tree by reinserting its children recursively												
 // modify a point																			/* Updates the coordinates of a particular point while preserving the quadtree structure.This can be done by deleting a chosen point and reinserting the new point.*/
 
 int main()
 {
-	NODEPTR center, index, parentIndex;
-	index = parentIndex = center =  NULL;
+	NODEPTR center, index, parentIndex, treeCopy;
+	index = parentIndex = center = treeCopy = NULL;
 	initTree(&center);
 	int choice = 0, child = 0, flag = 0; // child ----> 1 = NE, 2 = NW, 3 = SW, 4 = SE
 	float key_x = 0, key_y = 0, key_x2, key_y2, minDist = 0, radius = 0;
@@ -53,16 +53,17 @@ int main()
 	do
 	{
 		printf("\n----------- MENU -------------\n");
-        printf("\n 1. Insert a point into the point quad tree.\n");
-		printf("\n 2. Search for a point in the tree.\n");
-		printf("\n 3. Display the contents of the point quad tree.\n");
-		printf("\n 4. Calculate the Euclidean distance between two points in the tree.\n");
-		printf("\n 5. Find out the relative direction between two points in the tree.\n");
-		printf("\n 6. Count the number of nodes in the tree.\n");
-		printf("\n 7. Count the number of leaf nodes in the tree.\n");
-		printf("\n 8. Find the nearest neighbor of a given point.\n");
-		printf("\n 9. Find the neighbors of a point in a given radius.\n");
-		printf("\n 0. EXIT \n");
+        printf("\n 1.  Insert a point into the point quad tree.\n");
+		printf("\n 2.  Search for a point in the tree.\n");
+		printf("\n 3.  Display the contents of the point quad tree.\n");
+		printf("\n 4.  Calculate the Euclidean distance between two points in the tree.\n");
+		printf("\n 5.  Find out the relative direction between two points in the tree.\n");
+		printf("\n 6.  Count the number of nodes in the tree.\n");
+		printf("\n 7.  Count the number of leaf nodes in the tree.\n");
+		printf("\n 8.  Find the nearest neighbor of a given point.\n");
+		printf("\n 9.  Find the neighbors of a point in a given radius.\n");
+		printf("\n 10. Delete the quadtree.\n");
+		printf("\n 0.  EXIT \n");
         printf("\n------------------------------\n");
         printf("\nPlease enter your choice : ");
         scanf("%d",&choice);
@@ -100,7 +101,12 @@ int main()
 							printf("Point not found.\n");
 						break;
 					
-			case 3:		printf("The points in the plane are:\n");
+			case 3:		if(center == NULL)
+						{
+							printf("Tree is empty!");
+							break;
+						}
+						printf("The points in the plane are:\n");
 						displayTree(center);
 						break;
 						
@@ -166,6 +172,10 @@ int main()
 						radiusSearchPQT(center, &flag, radius, key_x, key_y);
 						if(flag == 0)
 							printf("There are no points in the given radius of search.\n");
+						break;
+						
+			case 10:	delPQT(&center);
+						printf("Tree deleted succesfully.\n");
 						break;
 						
 			case 0:		printf("Thank you.\n");
@@ -545,5 +555,39 @@ void radiusSearchPQT(NODEPTR root, int* flag, float radius, float valx, float va
 		radiusSearchPQT(root->ne, flag, radius, valx, valy);
 		radiusSearchPQT(root->se, flag, radius, valx, valy);
 		radiusSearchPQT(root->sw, flag, radius, valx, valy);		
+	}
+}
+
+NODEPTR copyPQT(NODEPTR root)
+{
+	if(root == NULL)
+		return NULL;
+	else
+	{
+		NODEPTR trCpy = malloc(sizeof(struct treeNode));
+		trCpy->coo.x = root->coo.x;
+		trCpy->coo.y = root->coo.y;
+		strncpy(trCpy->coo.name, root->coo.name, 10);
+		trCpy->nw = copyPQT(root->nw);
+		trCpy->ne = copyPQT(root->ne);
+		trCpy->se = copyPQT(root->se);
+		trCpy->sw = copyPQT(root->sw);
+		return trCpy;
+	}
+}
+
+void delPQT(NODEPTR* root)
+{
+	if((*root)->nw == NULL || (*root)->ne == NULL || (*root)->se == NULL || (*root)->sw == NULL)
+	{
+		free(*root);
+		*root = NULL;
+	}
+	else
+	{
+		delPQT(&(*root)->nw);
+		delPQT(&(*root)->ne);
+		delPQT(&(*root)->se);
+		delPQT(&(*root)->sw);
 	}
 }
