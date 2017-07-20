@@ -36,9 +36,10 @@ int countNodePQT(NODEPTR);																	// returns the total number of nodes 
 int countLeafPQT(NODEPTR);																	// returns the total number of leaf nodes in a tree
 void naiveNN(NODEPTR, NODEPTR*, float*, float, float);										// naive implementation of nearest neighbor search for a given point
 void radiusSearchPQT(NODEPTR, int*, float, float, float);									// searches for points in a given radius from a given point
-NODEPTR copyPQT(NODEPTR);																	// creates a copy of a tree 
+NODEPTR copyPQT(NODEPTR);																	// creates a copy of a tree which can be used during the deletion of a point
 void delPQT(NODEPTR*);																		// deletes a point quadtree
-
+void delNodePQT(NODEPTR*, NODEPTR*, NODEPTR*, int);											// deletes a point from the point quadtree																			// deletes a point from the tree by reinserting its children recursively												
+// modify a point																			/* Updates the coordinates of a particular point while preserving the quadtree structure.This can be done by deleting a chosen point and reinserting the new point.*/
 
 int main()
 {
@@ -61,7 +62,8 @@ int main()
 		printf("\n 7.  Count the number of leaf nodes in the tree.\n");
 		printf("\n 8.  Find the nearest neighbor of a given point.\n");
 		printf("\n 9.  Find the neighbors of a point in a given radius.\n");
-		printf("\n 10. Delete the quadtree.\n");
+		printf("\n 10. Delete a point from the quadtree.\n");
+		printf("\n 11. Delete the quadtree.\n");
 		printf("\n 0.  EXIT \n");
         printf("\n------------------------------\n");
         printf("\nPlease enter your choice : ");
@@ -173,7 +175,21 @@ int main()
 							printf("There are no points in the given radius of search.\n");
 						break;
 						
-			case 10:	delPQT(&center);
+			case 10:	printf("Please enter the coordinates of the point.\n");
+						scanf("%f",&key_x);
+						scanf("%f",&key_y);
+						index = parentIndex = NULL;
+						child = 0;
+						if(searchPQT(center, &index, &parentIndex, key_x, key_y, &child) == FALSE)
+						{
+							printf("Point not found.\n");
+							break;
+						}
+						delNodePQT(&center, &index, &parentIndex, child);
+						printf("Node deleted successfully.\n");
+						break;
+						
+			case 11:	delPQT(&center);
 						printf("Tree deleted succesfully.\n");
 						break;
 						
@@ -589,4 +605,43 @@ void delPQT(NODEPTR* proot) // recursively deletes a tree
 		delPQT(&(*proot)->se);
 		delPQT(&(*proot)->sw);
 	}
+}
+
+void delNodePQT(NODEPTR* proot, NODEPTR* index, NODEPTR* parentIndex, int child) // deletes a node of the tree ---- broken as of now
+{
+	NODEPTR treeCopy, tmp;
+	treeCopy = tmp = copyPQT(*index); // creates a copy of the subtree rooted at the node to be deleted and a backup pointer to the copy of the tree
+	delPQT(index); // deletes subtree rooted at the node to be deleted
+	if(child == 1)
+		(*parentIndex)->ne = NULL;
+	if(child == 2)
+		(*parentIndex)->nw = NULL;
+	if(child == 3)
+		(*parentIndex)->sw = NULL;
+	if(child == 4)
+		(*parentIndex)->se = NULL;
+	while(treeCopy != NULL )
+	{
+		treeCopy = treeCopy->nw;
+		insertNodePQT(&(*proot)->nw, index, parentIndex, (*proot)->coo.name, (*proot)->coo.x, (*proot)->coo.y, &child);
+	}
+	treeCopy = tmp; // restores backup node
+	while(treeCopy != NULL )
+	{
+		treeCopy = treeCopy->ne;
+		insertNodePQT(&(*proot)->ne, index, parentIndex, (*proot)->coo.name, (*proot)->coo.x, (*proot)->coo.y, &child);
+	}
+	treeCopy = tmp;
+	while(treeCopy != NULL )
+	{
+		treeCopy = treeCopy->se;
+		insertNodePQT(&(*proot)->se, index, parentIndex, (*proot)->coo.name, (*proot)->coo.x, (*proot)->coo.y, &child);
+	}
+	treeCopy = tmp;
+	while(treeCopy != NULL )
+	{
+		treeCopy = treeCopy->sw;
+		insertNodePQT(&(*proot)->sw, index, parentIndex, (*proot)->coo.name, (*proot)->coo.x, (*proot)->coo.y, &child);
+	}
+	delPQT(&treeCopy); // deletes the backup tree
 }
