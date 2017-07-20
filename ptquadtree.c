@@ -119,7 +119,7 @@ int main()
 						scanf("%f",&key_y2);
 						index = parentIndex = NULL;
 						child = 0;
-						if(searchPQT(center, &index, &parentIndex, key_x, key_y, &child) == TRUE	&& searchPQT(center, &index, &parentIndex, key_x2, key_y2, &child) == TRUE)
+						if(searchPQT(center, &index, &parentIndex, key_x, key_y, &child) == TRUE  &&  searchPQT(center, &index, &parentIndex, key_x2, key_y2, &child) == TRUE)
 							printf("The distance between the two points is %4.2f units.", calcDistance(key_x, key_y, key_x2, key_y2));
 						else
 							printf("One or both points is/are not in the tree. Operation aborted.\n");							
