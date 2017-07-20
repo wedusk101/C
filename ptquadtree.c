@@ -36,7 +36,7 @@ int countNodePQT(NODEPTR);																	// returns the total number of nodes 
 int countLeafPQT(NODEPTR);																	// returns the total number of leaf nodes in a tree
 void naiveNN(NODEPTR, NODEPTR*, float*, float, float);										// naive implementation of nearest neighbor search for a given point
 void radiusSearchPQT(NODEPTR, int*, float, float, float);									// searches for points in a given radius from a given point
-NODEPTR copyPQT(NODEPTR);																	// creates a copy of a tree which can be used during the deletion of a point
+NODEPTR copyPQT(NODEPTR);																	// creates a copy of a tree 
 void delPQT(NODEPTR*);																		// deletes a point quadtree
 
 
