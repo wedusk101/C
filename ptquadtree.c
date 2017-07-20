@@ -38,8 +38,8 @@ void naiveNN(NODEPTR, NODEPTR*, float*, float, float);										// naive impleme
 void radiusSearchPQT(NODEPTR, int*, float, float, float);									// searches for points in a given radius from a given point
 NODEPTR copyPQT(NODEPTR);																	// creates a copy of a tree which can be used during the deletion of a point
 void delPQT(NODEPTR*);																		// deletes a point quadtree
-void delNodePQT(NODEPTR*, NODEPTR*, NODEPTR*, int);											// deletes a point from the point quadtree																			// deletes a point from the tree by reinserting its children recursively												
-// modify a point																			/* Updates the coordinates of a particular point while preserving the quadtree structure.This can be done by deleting a chosen point and reinserting the new point.*/
+void delNodePQT(NODEPTR*, NODEPTR*, NODEPTR*, int);											// deletes a point from the tree by reinserting its children recursively												
+// modify a point																			// Updates the coordinates of a particular point while preserving the quadtree structure.This can be done by deleting a chosen point and reinserting the new point.
 
 int main()
 {
