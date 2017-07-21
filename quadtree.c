@@ -191,6 +191,7 @@ int main()
 						
 			case 11:	delPQT(&center);
 						printf("Tree deleted succesfully.\n");
+						initTree(&center);	// the origin O(0,0) is present by default in this implementation
 						break;
 						
 			case 0:		printf("Thank you.\n");
