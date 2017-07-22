@@ -247,7 +247,7 @@ void insertNodePQT(NODEPTR *proot, NODEPTR* index, NODEPTR* parentIndex, char* p
 					insertNodePQT(&(*proot)->se, index, parentIndex, &(*pname), valx, valy, child);
 					return;
 				}
-				printf("Error occured! Point could not be inserted. Try inserting some other point first."); // this condition needs to be handled somehow
+				printf("Error occured! Point could not be inserted. Try inserting some other point first."); 
 				return;
 			}
 		}
@@ -327,7 +327,7 @@ void displayTree(NODEPTR root) // recursively displays the contents of the tree
 	}
 }
 
-int searchPQT(NODEPTR root, NODEPTR* index, NODEPTR* parentIndex, float valx, float valy, int* child) // recursively searches the tree for a point
+int searchPQT(NODEPTR root, NODEPTR* index, NODEPTR* parentIndex, float valx, float valy, int* child) // recursively searches the tree for a point ---- currently doesn't work for multiple points lying on an axis
 {
 	NODEPTR tmp;	// used as a backup pointer
 	if(root == NULL)
