@@ -1,4 +1,10 @@
-/*The following code is work in progess and implements a point quadtree with a few of its basic operations.*/
+/*The following code is work in progess and implements a point quadtree with a few of its basic operations. Since this is prototype code, I'm certain
+there are significant changes that could be made which enhance the efficieny of the program. Insertion of multiple points on an axis and especially the
+deletion of a point is quite complex and needs attention. I eventually plan on porting this to HLSL/C++ so that a GUI can be built around it. Also, 
+radiusSearchPQT() and updatePoint() can be used for collision detection and affine transformation of points. The point data could also hold illumination
+information in 3D as in an octree. The problems of insertion of points on an axis and their deletion can be solved implicitly by using k-D trees. Spatial
+data structures such as these can thus be used in a variety of situations like machine learning(kNN - classification and regression), physics calculations
+in games(AABB - Axis Aligned Bounding Box) and computer graphics(point cloud storage of irradiance volumes using spherical harmonics representations).*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -39,7 +45,7 @@ void radiusSearchPQT(NODEPTR, int*, float, float, float);									// searches fo
 NODEPTR copyPQT(NODEPTR);																	// creates a copy of a tree which can be used during the deletion of a point
 void delPQT(NODEPTR*);																		// deletes a point quadtree
 void delNodePQT(NODEPTR*, NODEPTR*, NODEPTR*, int);											// deletes a point from the tree by reinserting its children recursively												
-// modify a point																			// Updates the coordinates of a particular point while preserving the quadtree structure.This can be done by deleting a chosen point and reinserting the new point.
+// void updatePoint() 																		// Updates the coordinates of a particular point while preserving the quadtree structure.This can be done by deleting a chosen point and reinserting the new point.
 
 int main()
 {
@@ -247,7 +253,7 @@ void insertNodePQT(NODEPTR *proot, NODEPTR* index, NODEPTR* parentIndex, char* p
 					insertNodePQT(&(*proot)->se, index, parentIndex, &(*pname), valx, valy, child);
 					return;
 				}
-				printf("Error occured! Point could not be inserted. Try inserting some other point first."); 
+				printf("Error occured! Point could not be inserted. Try inserting some other point first."); // this condition needs to be handled somehow
 				return;
 			}
 		}
@@ -327,7 +333,7 @@ void displayTree(NODEPTR root) // recursively displays the contents of the tree
 	}
 }
 
-int searchPQT(NODEPTR root, NODEPTR* index, NODEPTR* parentIndex, float valx, float valy, int* child) // recursively searches the tree for a point ---- currently doesn't work for multiple points lying on an axis
+int searchPQT(NODEPTR root, NODEPTR* index, NODEPTR* parentIndex, float valx, float valy, int* child) // recursively searches the tree for a point
 {
 	NODEPTR tmp;	// used as a backup pointer
 	if(root == NULL)
