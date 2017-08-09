@@ -30,7 +30,6 @@ int naiveMatch(char* pattern, char* text)
 	texlen = strlen(text);
 	for(j = 0; j <= patlen && i <= texlen; j++, i++)
 	{
-		printf("loop\n");
 		if(count == patlen)
 			return i - patlen;
 		if(text[i] == pattern[j])
