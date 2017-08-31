@@ -22,7 +22,7 @@ void maxList(int *list, int low, int high) // recursively returns the greatest a
 {
 	int mid;
 	mid = low + (high - low)/2;
-	if(high - low == 1)
+	if(low == high)
 	{
 		if(list[low] > max)
 			max = list[low];
@@ -31,7 +31,7 @@ void maxList(int *list, int low, int high) // recursively returns the greatest a
 		return;
 	}
 	else
-	
+	{
 		maxList(list, low, mid);
 		maxList(list, mid + 1, high);
 	}
