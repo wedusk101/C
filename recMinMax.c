@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <limits.h>
 
+#define SIZE 4
+
 void maxList(int*, int, int);
 int max = INT_MIN;
 int min = INT_MAX;
-
-#define SIZE 4
 
 int main()
 {
