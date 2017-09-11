@@ -46,6 +46,7 @@ NODEPTR copyPQT(NODEPTR);																	// creates a copy of a tree which can 
 void delPQT(NODEPTR*);																		// deletes a point quadtree
 void delNodePQT(NODEPTR*, NODEPTR*, NODEPTR*, int);											// deletes a point from the tree by reinserting its children recursively												
 // void updatePoint() 																		// Updates the coordinates of a particular point while preserving the quadtree structure.This can be done by deleting a chosen point and reinserting the new point.
+// void undoLast()                                                                          // Lets the user undo the last operation performed on the tree using a copy of the PQT
 
 int main()
 {
