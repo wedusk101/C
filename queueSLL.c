@@ -51,7 +51,8 @@ int main()
 			default:
 				printf("Invalid choice!\n\n");
 		}		
-	}while(ch != 3);	
+	}while(ch != 3);
+	return 0;
 }
 
 void enqueue(NODEPTR *head, NODEPTR *tail, int x)

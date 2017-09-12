@@ -49,7 +49,8 @@ int main()
 			default:
 				printf("Invalid choice!\n\n");
 		}		
-	}while(ch != 4);	
+	}while(ch != 4);
+	return 0;	
 }
 
 void push(NODEPTR *list, int x)
