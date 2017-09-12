@@ -129,6 +129,7 @@ int main()
 			default:	printf("\nInvalid choice. Try again.\n");
 		}
 	}while(choice != 0);
+	return 0;
 } // end
 
 void initTree(NODEPTR* proot)

@@ -195,6 +195,7 @@ void insertEndList(NODEPTR *plist, NODEPTR *lastNode)
         scanf(" %c", &ch);
         *lastNode = newNode;
     }while(ch == 'y' || ch == 'Y');
+	return 0;
 }
 
 int countNode(NODEPTR plist)

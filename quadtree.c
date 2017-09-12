@@ -207,6 +207,7 @@ int main()
 			default:	printf("\nInvalid choice. Try again.\n");
 		}
 	}while(choice != 0);
+	return 0;
 } // end
 
 void insertNodePQT(NODEPTR *proot, NODEPTR* index, NODEPTR* parentIndex, char* pname, float valx, float valy, int* child) // recursively inserts a point into the tree
