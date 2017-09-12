@@ -1,4 +1,4 @@
-//stack.h -- Header file for a single ended queue
+//stack.h -- Header file stack implementation
 
 #ifndef STACK_H_
 #define STACK_H_

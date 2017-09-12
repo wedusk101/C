@@ -1,4 +1,4 @@
-//queue.h -- Header file for a single ended queue
+//queue.h -- Header file for single ended queue implementation
 
 #ifndef QUEUE_H_
 #define QUEUE_H_
