@@ -1,4 +1,4 @@
-//stack.h -- Header file stack implementation
+//stack.h -- Header file for stack implementation
 
 #ifndef STACK_H_
 #define STACK_H_
