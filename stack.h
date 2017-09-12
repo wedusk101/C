@@ -1,6 +1,6 @@
 //stack.h -- Header file for a single ended queue
 
-#ifndef QUEUE__H__
+#ifndef QUEUE_H_
 #define QUEUE_H_
 
 #include <stdio.h>
