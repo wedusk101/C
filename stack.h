@@ -1,7 +1,7 @@
 //stack.h -- Header file for a single ended queue
 
-#ifndef QUEUE_H_
-#define QUEUE_H_
+#ifndef STACK_H_
+#define STACK_H_
 
 #include <stdio.h>
 #include <stdlib.h>
