@@ -1,4 +1,4 @@
-/*The following program implements a stack with basic push, pop and peek operations using sinle linked list.*/
+/*The following program implements a stack with basic push, pop and peek operations using a single linked list.*/
 #include <stdio.h>
 #include <stdlib.h>
 
