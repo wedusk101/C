@@ -1,6 +1,7 @@
 /*The following program implements a stack with basic push, pop and peek operations using a single linked list.*/
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 struct node
 {
@@ -11,8 +12,8 @@ struct node
 typedef struct node* NODEPTR;
 
 void push(NODEPTR*, int);
-void pop(NODEPTR*);
-void peek(NODEPTR);
+int pop(NODEPTR*);
+int peek(NODEPTR);
 
 int main()
 {
@@ -35,11 +36,23 @@ int main()
 				break;
 				
 			case 2:
-				pop(&stack);
+				x = pop(&stack);
+				if(x == INT_MIN)
+				{
+					printf("Empty stack! Operation aborted.\n\n");
+					break;
+				}
+				printf("The popped element is %d.\n", x);
 				break;
 				
 			case 3:
-				peek(stack);
+				x = peek(stack);
+				if(x == INT_MIN)
+				{
+					printf("Empty stack! Operation aborted.\n\n");
+					break;
+				}
+				printf("The top element is %d.\n", x);
 				break;
 				
 			case 4:
@@ -75,30 +88,24 @@ void push(NODEPTR *list, int x)
 	printf("Element pushed successfully.\n\n");
 }
 
-void pop(NODEPTR* list)
+int pop(NODEPTR* list)
 {
 	NODEPTR delNode;
 	int val = 0;
 	if(*list == NULL)
-	{
-		printf("Empty stack! Operation aborted.\n\n");
-		return;
-	}
+		return INT_MIN;
 	val = (*list)->info;
 	delNode = *list;
 	*list = (*list)->next;
-	printf("The popped element is %d.\n\n", val);
-	free(delNode);	
+	free(delNode);
+	return val;	
 }
 
-void peek(NODEPTR list)
+int peek(NODEPTR list)
 {
 	int val = 0;
 	if(list == NULL)
-	{
-		printf("Empty stack! Operation aborted.\n\n");
-		return;
-	}
+		return INT_MIN;
 	val = list->info;
-	printf("The top element is %d.\n\n", val);	
+	return val;
 }
