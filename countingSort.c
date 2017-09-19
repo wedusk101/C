@@ -1,7 +1,6 @@
 /*The following code implements the counting sort algorithm for a given list of positive integers.*/
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #define SIZE 8
 
