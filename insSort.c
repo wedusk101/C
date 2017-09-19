@@ -13,9 +13,7 @@ int main()
 	int list[size];
 	printf("Please enter the elements.\n");
 	for(i = 0; i < size; i++)
-	{
 		scanf("%d", &list[i]);
-	}
 	printf("The list you have entered is ");
 	display(list, size);
 	printf(".\n");
