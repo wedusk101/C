@@ -45,7 +45,7 @@ int isPrime(int n) // checks if a number is prime or not
 	if(n <= 1 || n == 4)
 		return FALSE;
 	else
-		for(i = 2; i < n / 2; i++)
+		for(i = 2; i < n / 2; i++) // the square root of n is even more efficient here especially as n gets very large
 		{
 			if(n % i == 0)
 				return FALSE;
