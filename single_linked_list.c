@@ -181,15 +181,15 @@ void insertEndList(NODEPTR *plist, NODEPTR *lastNode)
 		printf("Please enter the value.\n");
         scanf("%d", &x);
         newNode = malloc(sizeof(struct node));
-        newNode -> info = x;
-        newNode -> next = NULL;
+        newNode->info = x;
+        newNode->next = NULL;
 		if(*plist == NULL)
 		{
 			*plist = newNode;
 			*lastNode = newNode;
 		}
         else
-			(*lastNode) -> next = newNode;
+			(*lastNode)->next = newNode;
 		printf("Value inserted successfully.\n");
         printf("Do you wish to continue? (Y/N)\n");
         scanf(" %c", &ch);
