@@ -13,7 +13,7 @@ void enqueue(NODEPTR *head, NODEPTR *tail, int x)
 	newNode = malloc(sizeof(struct node));
 	if(newNode == NULL)
 	{
-		printf("Error occured during insertion! Operation aborted.\n");
+		printf("Error occurred during insertion! Operation aborted.\n");
 		return;
 	}
 	newNode->info = x;
