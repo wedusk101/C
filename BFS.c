@@ -81,6 +81,7 @@ int findNode(GPTR* list, int size, char frontier)
 	int i = 0;
 	for(i = 0; i < size; i++)
 	{
+		printf("Test\n\n");
 		if(list[i]->nodeID == frontier)
 			return i;
 	}
@@ -91,7 +92,7 @@ void bfs(GPTR* list, int size, int frontier)
 {
 	NODEPTR head, tail;
 	int i = 0;
-	for(i = frontier; i != INT_MIN;)
+	for(i = frontier; !isEmpty(head);)
 	{
 		while(list[i] != NULL && list[i]->visited == 0)
 		{
