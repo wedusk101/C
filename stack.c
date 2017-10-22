@@ -1,11 +1,22 @@
 //queue.c -- Stack implementation
 #include "stack.h"
 
+#define TRUE 1
+#define FALSE 0
+
 struct node
 {
 	int info;
 	struct node *next;	
 };
+
+int isEmpty(NODEPTR list)
+{
+	if(list == NULL)
+		return TRUE;
+	else 
+		return FALSE;
+}
 
 void push(NODEPTR *list, int x)
 {

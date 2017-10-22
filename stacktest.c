@@ -23,22 +23,22 @@ int main()
 				break;
 				
 			case 2:
-				x = pop(&stack);
-				if(x == INT_MIN)
+				if(isEmpty(stack))
 				{
 					printf("Empty stack! Operation aborted.\n\n");
 					break;
 				}
+				x = pop(&stack);
 				printf("The popped element is %d.\n", x);
 				break;
 				
 			case 3:
-				x = peek(stack);
-				if(x == INT_MIN)
+				if(isEmpty(stack))
 				{
 					printf("Empty stack! Operation aborted.\n\n");
 					break;
 				}
+				x = peek(stack);
 				printf("The top element is %d.\n", x);
 				break;
 				

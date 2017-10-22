@@ -1,11 +1,22 @@
 //queue.c -- Single ended queue implementation
 #include "queue.h"
 
+#define TRUE 1
+#define FALSE 0
+
 struct node
 {
 	int info;
 	struct node *next;	
 };
+
+int isEmpty(NODEPTR head)
+{
+	if(head == NULL)
+		return TRUE;
+	else
+		return FALSE;
+}
 
 void enqueue(NODEPTR *head, NODEPTR *tail, int x)
 {

@@ -23,12 +23,12 @@ int main()
 				break;
 				
 			case 2:
-				x = dequeue(&head);
-				if(x == INT_MIN)
+				if(isEmpty(head))
 				{
 					printf("Empty queue! Operation aborted.\n\n");
 					break;
 				}
+				x = dequeue(&head);
 				printf("The deleted element is %d.\n", x);
 				break;
 				
