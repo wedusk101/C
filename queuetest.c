@@ -17,7 +17,7 @@ int main()
 		switch(ch)
 		{
 			case 1:
-				printf("Please enter the element to push.\n\n");
+				printf("Please enter the element to insert.\n\n");
 				scanf("%d", &x);
 				enqueue(&head, &tail, x);
 				break;
