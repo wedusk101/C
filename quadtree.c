@@ -176,11 +176,13 @@ int main()
 							printf("Point not found.\n");
 							break;
 						}						
+						if(flag == 0)
+						{
+							printf("There are no points in the given radius of search.\n");
+							break;
+						}							
 						printf("Search results in the given radius: \n");
 						radiusSearchPQT(center, &flag, radius, key_x, key_y);
-						if(flag == 0)
-							printf("There are no points in the given radius of search.\n");
-						break;
 						
 			case 10:	printf("Please enter the coordinates of the point.\n");
 						scanf("%f",&key_x);
