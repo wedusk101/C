@@ -33,8 +33,8 @@ int main()
 	displayList(adj, order);
 	printf("Please enter the node ID of the frontier of the search.\n\n");
 	scanf(" %c", &root);
-	rootIndex = findNode(adj, order, root);
 	printf("Searching for node...\n\n");
+	rootIndex = findNode(adj, order, root);	
 	if(rootIndex == -1)
 		printf("Node with given node ID not found in the graph. Operation aborted!\n\n");
 	else
@@ -81,9 +81,14 @@ int findNode(GPTR* list, int size, char frontier)
 	int i = 0;
 	for(i = 0; i < size; i++)
 	{
-		printf("Test\n\n");
+		
+		if(list[i] == NULL)
+			break;
 		if(list[i]->nodeID == frontier)
+		{
+			printf("Success\n");
 			return i;
+		}
 	}
 	return -1;
 }
