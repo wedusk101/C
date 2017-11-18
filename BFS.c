@@ -65,6 +65,8 @@ GPTR createNode()
 void displayList(GPTR* list, int size)
 {
 	int i = 0;
+	GPTR bak;
+	bak = *list;
 	for(i = 0; i < size; i++)
 	{
 		while(list[i] != NULL)
@@ -74,22 +76,22 @@ void displayList(GPTR* list, int size)
 		}
 		printf("\n");
 	}
+	*list = bak;
 }
 
 int findNode(GPTR* list, int size, char frontier)
 {
 	int i = 0;
+	GPTR bak;
+	bak = *list;
 	for(i = 0; i < size; i++)
 	{
-		
 		if(list[i] == NULL)
 			break;
 		if(list[i]->nodeID == frontier)
-		{
-			printf("Success\n");
 			return i;
-		}
 	}
+	*list = bak;
 	return -1;
 }
 
