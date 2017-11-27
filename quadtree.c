@@ -10,6 +10,7 @@ in games(AABB - Axis Aligned Bounding Box) and computer graphics(point cloud sto
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include <limits.h>
 
 #define TRUE 1
 #define FALSE 0
@@ -152,7 +153,7 @@ int main()
 						scanf("%f",&key_y);
 						index = parentIndex = NULL;
 						child = 0;
-						minDist = 1000000; // start with a large radius of search using a big number
+						minDist = INT_MAX; // start with a large radius of search using a big number
 						if(searchPQT(center, &index, &parentIndex, key_x, key_y, &child) == FALSE)
 						{
 							printf("Point not found.\n");
