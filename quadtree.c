@@ -177,7 +177,7 @@ int main()
 							printf("Point not found.\n");
 							break;
 						}						
-						if(flag == 0)
+						if(flag == 0) // check for bug
 						{
 							printf("There are no points in the given radius of search.\n");
 							break;
