@@ -1,3 +1,4 @@
+/*The following code implements the breadth-first search(BFS) graph traversal technique using an adjacency list data structure.*/
 #include <stdio.h>
 #include <stdlib.h>
 #include "queue.h"
@@ -63,7 +64,7 @@ GPTR createNode()
 	printf("Would you like to link more nodes to the current node? (Y/N)\n\n");
 	scanf(" %c", &choice);
 	if(choice == 'Y' || choice == 'y')
-		newNode->next = createNode();
+		newNode->next = createNode(); 
 	return newNode;
 }
 
@@ -71,21 +72,20 @@ void displayList(GPTR* list, int size)
 {
 	int i = 0;
 	GPTR bak;
-	bak = *list;
 	for(i = 0; i < size; i++)
 	{	
-		bak = list[i];
+		bak = list[i]; // backs up the pointer to the list
 		while(list[i] != NULL)
 		{
 			printf("%c ", list[i]->nodeID);
 			list[i] = list[i]->next;
 		}
 		printf("\n");
-		list[i] = bak;
+		list[i] = bak; // restores the backed up pointer
 	}
 }
 
-int findNode(GPTR* list, int size, char frontier)
+int findNode(GPTR* list, int size, char frontier) // finds the index of a node in the adjacency list
 {
 	int i = 0;
 	GPTR bak;
@@ -104,29 +104,26 @@ void bfs(GPTR* list, int size, int frontier)
 	NODEPTR head, tail;
 	head = tail = NULL;
 	GPTR bak;
-	int i = frontier;
-	printf("Frontier : %d\n", i);
-	enqueue(&head, &tail, i);
+	int i = frontier, out = 0;
+	enqueue(&head, &tail, list[i]->nodeID);
+	list[i]->discovered = 1; // marks the vertex as discovered to avoid duplicates
 	while(!isEmpty(head))
 	{
-		printf("CHECK\n");
-		bak = list[i];
+		out = dequeue(&head); // result of the traversal
+		i = findNode(list, size, out); // finds out the index of the visited node in the adjacency list
+		if(list[i]->visited != 1) // ignores vertices already visited
+			printf("%c ", out);
+		list[i]->visited = 1; // marks the vertex as visited
+		bak = list[i]; 
 		while(list[i] != NULL)
 		{
 			if(list[i]->visited != 1 && list[i]->discovered != 1)
 			{
-				enqueue(&head, &tail, i);
-				list[i]->discovered = 1;
+				enqueue(&head, &tail, list[i]->nodeID);
+				list[i]->discovered = 1; // marks adjacent vertices as discovered
 			}
 			list[i] = list[i]->next;
 		}
-		list[i] = bak;
-		i = dequeue(&head);
-		printf("125 i = %d\n", i);
-		list[i]->visited = 1;
-		printf("%c ", list[i]->nodeID);
-		list[i] = list[i]->next;
-		i = findNode(list, size, list[i]->nodeID);
-		printf("New Frontier : %d\n", i);
+		list[i] = bak; 
 	}	
 }
