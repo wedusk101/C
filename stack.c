@@ -36,7 +36,7 @@ int push(NODEPTR *list, int x)
 	return TRUE;
 }
 
-int pop(NODEPTR* list)
+int pop(NODEPTR *list)
 {
 	NODEPTR delNode;
 	int val = 0;

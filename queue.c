@@ -37,7 +37,7 @@ int enqueue(NODEPTR *head, NODEPTR *tail, int x)
 	return TRUE;
 }
 
-int dequeue(NODEPTR* head)
+int dequeue(NODEPTR *head)
 {
 	NODEPTR delNode;
 	int val = 0;
