@@ -9,7 +9,7 @@
 
 typedef struct node* NODEPTR;
 
-void push(NODEPTR*, int);
+int push(NODEPTR*, int);
 int pop(NODEPTR*);
 int peek(NODEPTR);
 int isEmpty(NODEPTR);

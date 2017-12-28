@@ -2,10 +2,13 @@
 #include <stdlib.h>
 #include "stack.h"
 
+#define TRUE 1
+#define FALSE 0
+
 int main()
 {
 	NODEPTR stack = NULL;
-	int x = 0, ch = 0;
+	int x = 0, ch = 0, result = 0;
 	do
 	{
 		printf("Please enter your choice.\n\n");
@@ -19,7 +22,11 @@ int main()
 			case 1:
 				printf("Please enter the element to push.\n\n");
 				scanf("%d", &x);
-				push(&stack, x);
+				result = push(&stack, x);
+				if(result == TRUE)
+					printf("Element pushed successfully.\n\n");
+				else
+					printf("Stack overflow! Operation aborted.\n");
 				break;
 				
 			case 2:

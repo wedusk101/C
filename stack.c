@@ -18,26 +18,22 @@ int isEmpty(NODEPTR list)
 		return FALSE;
 }
 
-void push(NODEPTR *list, int x)
+int push(NODEPTR *list, int x)
 {
 	NODEPTR newNode;
 	newNode = malloc(sizeof(struct node));
 	if(newNode == NULL)
-	{
-		printf("Stack overflow! Operation aborted.\n");
-		return;
-	}
+		return FALSE;
 	newNode->info = x;
 	if(*list == NULL)
 	{
 		newNode->next = NULL;
 		*list = newNode;
-		printf("Element pushed successfully.\n\n");
-		return;
+		return TRUE;
 	}
 	newNode->next = *list;
 	*list = newNode;
-	printf("Element pushed successfully.\n\n");
+	return TRUE;
 }
 
 int pop(NODEPTR* list)

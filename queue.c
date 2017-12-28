@@ -18,27 +18,23 @@ int isEmpty(NODEPTR head)
 		return FALSE;
 }
 
-void enqueue(NODEPTR *head, NODEPTR *tail, int x)
+int enqueue(NODEPTR *head, NODEPTR *tail, int x)
 {
 	NODEPTR newNode;
 	newNode = malloc(sizeof(struct node));
 	if(newNode == NULL)
-	{
-		printf("Error occurred during insertion! Operation aborted.\n");
-		return;
-	}
+		return FALSE;
 	newNode->info = x;
 	newNode->next = NULL;
 	if(*head == NULL)
 	{
 		*tail = newNode;
 		*head = *tail;
-		printf("Element inserted successfully.\n\n");
-		return;
+		return TRUE;
 	}
 	(*tail)->next = newNode;
 	*tail = newNode;
-	printf("Element inserted successfully.\n\n");
+	return TRUE;
 }
 
 int dequeue(NODEPTR* head)

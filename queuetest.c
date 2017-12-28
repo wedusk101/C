@@ -2,11 +2,14 @@
 #include <stdlib.h>
 #include "queue.h"
 
+#define TRUE 1
+#define FALSE 0
+
 int main()
 {
 	NODEPTR head, tail;
 	head = tail = NULL;
-	int x = 0, ch = 0;
+	int x = 0, ch = 0, result = 0;
 	do
 	{
 		printf("Please enter your choice.\n\n");
@@ -19,7 +22,11 @@ int main()
 			case 1:
 				printf("Please enter the element to insert.\n\n");
 				scanf("%d", &x);
-				enqueue(&head, &tail, x);
+				result = enqueue(&head, &tail, x);
+				if(result == TRUE)
+					printf("Element inserted successfully.\n\n");
+				else
+					printf("Error occurred during insertion! Operation aborted.\n");
 				break;
 				
 			case 2:
