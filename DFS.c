@@ -105,7 +105,8 @@ void dfs(GPTR* list, int size, int frontier)
 	GPTR bak;
 	int i = frontier, out = 0;
 	push(&stack, list[i]->nodeID);
-	list[i]->discovered = 1; // marks the vertex as discovered to avoid duplicates
+	printf("%c ", list[i]->nodeID);
+	list[i]->visited = 1; // marks the vertex as discovered to avoid duplicates
 	while(!isEmpty(stack))
 	{
 		bak = list[i]; 
