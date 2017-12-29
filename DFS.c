@@ -105,10 +105,15 @@ void dfs(GPTR* list, int size, int frontier)
 	GPTR bak;
 	int i = frontier, out = 0;
 	push(&stack, list[i]->nodeID);
-	printf("%c ", list[i]->nodeID);
-	list[i]->visited = 1; // marks the vertex as discovered to avoid duplicates
 	while(!isEmpty(stack))
 	{
+		out = pop(&stack); // result of the traversal
+		i = findNode(list, size, out); // finds out the index of the visited node in the adjacency list
+		if(list[i]->visited != 1)
+		{
+			printf("%c ", out);			
+			list[i]->visited = 1; // marks the vertex as discovered to avoid duplicates
+		}
 		bak = list[i]; 
 		while(list[i] != NULL)
 		{
@@ -120,10 +125,5 @@ void dfs(GPTR* list, int size, int frontier)
 			list[i] = list[i]->next;
 		}
 		list[i] = bak;
-		out = pop(&stack); // result of the traversal
-		i = findNode(list, size, out); // finds out the index of the visited node in the adjacency list
-		if(list[i]->visited != 1) // ignores vertices already visited
-			printf("%c ", out);
-		list[i]->visited = 1; // marks the vertex as visited		
 	}	
 }
