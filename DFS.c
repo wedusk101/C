@@ -1,7 +1,7 @@
-/*The following code implements the breadth-first search(BFS) graph traversal technique using an adjacency list data structure.*/
+/*The following code implements the depth-first search(DFS) graph traversal technique using an adjacency list data structure.*/
 #include <stdio.h>
 #include <stdlib.h>
-#include "queue.h"
+#include "stack.h"
 
 #define TRUE 1
 #define FALSE 0
@@ -16,7 +16,7 @@ struct graphNode
 
 typedef struct graphNode* GPTR;
 
-void bfs(GPTR*, int, int);
+void dfs(GPTR*, int, int);
 GPTR createNode();
 void displayList(GPTR*, int);
 int findNode(GPTR*, int, char);
@@ -44,8 +44,8 @@ int main()
 		printf("Node with given node ID not found in the graph. Operation aborted!\n\n");
 	else
 	{
-		printf("Node found! The breadth-first traversal is as follows:\n\n");
-		bfs(adj, order, rootIndex);
+		printf("Node found! The depth-first traversal is as follows:\n\n");
+		dfs(adj, order, rootIndex);
 		printf("\n");
 	}
 	return 0;	
@@ -99,31 +99,30 @@ int findNode(GPTR* list, int size, char frontier) // finds the index of a node i
 	return -1;
 }
 
-void bfs(GPTR* list, int size, int frontier)
+void dfs(GPTR* list, int size, int frontier)
 {
-	NODEPTR head, tail;
-	head = tail = NULL;
+	NODEPTR stack = NULL;
 	GPTR bak;
 	int i = frontier, out = 0;
-	enqueue(&head, &tail, list[i]->nodeID);
+	push(&stack, list[i]->nodeID);
 	list[i]->discovered = 1; // marks the vertex as discovered to avoid duplicates
-	while(!isEmpty(head))
+	while(!isEmpty(stack))
 	{
-		out = dequeue(&head); // result of the traversal
-		i = findNode(list, size, out); // finds out the index of the visited node in the adjacency list
-		if(list[i]->visited != 1) // ignores vertices already visited
-			printf("%c ", out);
-		list[i]->visited = 1; // marks the vertex as visited
 		bak = list[i]; 
 		while(list[i] != NULL)
 		{
 			if(list[i]->visited != 1 && list[i]->discovered != 1)
 			{
-				enqueue(&head, &tail, list[i]->nodeID);
+				push(&stack, list[i]->nodeID);
 				list[i]->discovered = 1; // marks adjacent vertices as discovered
 			}
 			list[i] = list[i]->next;
 		}
-		list[i] = bak; 
+		list[i] = bak;
+		out = pop(&stack); // result of the traversal
+		i = findNode(list, size, out); // finds out the index of the visited node in the adjacency list
+		if(list[i]->visited != 1) // ignores vertices already visited
+			printf("%c ", out);
+		list[i]->visited = 1; // marks the vertex as visited		
 	}	
 }
