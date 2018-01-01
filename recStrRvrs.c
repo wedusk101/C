@@ -2,14 +2,16 @@
 #include <stdio.h>
 #include <string.h>
 
+#define SIZE 30
+
 void recStrRvrs(char*, int);
 
 int main()
 {
 	int len = 0;
-	char input[30];
+	char input[SIZE];
 	printf("Please enter a string.\n");
-	fgets(input, 30, stdin);
+	fgets(input, SIZE, stdin);
 	len = strlen(input) - 1;
 	printf("The reversed string is:\n");
 	recStrRvrs(input, len);
