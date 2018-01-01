@@ -18,6 +18,8 @@ typedef struct edge EDGE;
 
 void kruskalMST(EDGE*, int, int, int*);
 int cycleCheck(EDGE*, int, int, int);
+int returnSrc(EDGE*, int, int, int*);
+int returnDst(EDGE*, int, int, int*);
 
 int main()
 {
@@ -45,7 +47,7 @@ int main()
 
 void kruskalMST(EDGE *list, int len, int numNode, int *cost)
 {
-	int i = 0, j = 0, count = 0;
+	int i = 0, j = 0, numEdge = 0;
 	EDGE tmp;
 	for(i = 0; i < len; i++) // sorts the structures in ascending order according to the weights
 	{
@@ -64,7 +66,7 @@ void kruskalMST(EDGE *list, int len, int numNode, int *cost)
 		printf("%d - %d ---> %d\n", list[i].src, list[i].dst, list[i].weight);
 	printf("\n\n");*/
 	list[0].srcFlag = 1;
-	for(i = 0; count != numNode - 1; i++) // check asymptotic complexity
+	for(i = 0; numEdge != numNode - 1; i++) // check asymptotic complexity
 	{
 		if(list[i].srcFlag == 1 && list[i].dstFlag == 0)
 		{
@@ -77,7 +79,7 @@ void kruskalMST(EDGE *list, int len, int numNode, int *cost)
 				if(list[i].dst == list[j].dst)
 					list[j].dstFlag = 1;
 			}
-			count++;
+			numEdge++;
 			*cost += list[i].weight;
 		}
 		if(list[i].srcFlag == 0 && list[i].dstFlag == 1)
@@ -91,7 +93,7 @@ void kruskalMST(EDGE *list, int len, int numNode, int *cost)
 				if(list[i].src == list[j].dst)
 					list[j].dstFlag = 1;
 			}
-			count++;
+			numEdge++;
 			*cost += list[i].weight;
 		}
 		if(list[i].srcFlag == 0 && list[i].dstFlag == 0)
@@ -110,7 +112,7 @@ void kruskalMST(EDGE *list, int len, int numNode, int *cost)
 				if(list[i].dst == list[j].dst)
 					list[j].dstFlag = 1;
 			}
-			count++;
+			numEdge++;
 			*cost += list[i].weight;
 		}
 		if(list[i].srcFlag == 1 && list[i].dstFlag == 1 && list[i].visited == 0) // checks connectedness and detects cycles
@@ -118,7 +120,7 @@ void kruskalMST(EDGE *list, int len, int numNode, int *cost)
 			if(cycleCheck(list, len, list[i].src, list[i].dst) == FALSE)
 			{
 				list[i].visited = 1;
-				count++;
+				numEdge++;
 				*cost += list[i].weight;
 			}
 		}
@@ -129,11 +131,40 @@ void kruskalMST(EDGE *list, int len, int numNode, int *cost)
 			printf("%d - %d ---> %d\n", list[i].src, list[i].dst, list[i].weight);
 }
 
+int returnNextSrc(EDGE *list, int num, int dst, int *index) // returns the next source vertex and its index given a destination vertex
+{
+	int i = 0;
+	for(i = *index; i < num; i++)
+	{
+		if(list[i].dst == dst)
+		{
+			*index = i;
+			return list[i].src;
+		}
+	}
+	return -1;
+}
+
+int returnNextDst(EDGE *list, int num, int src, int *index) // returns the next destination vertex and its index given a source vertex
+{
+	int i = 0;
+	for(i = *index; i < num; i++)
+	{
+		if(list[i].src == src)
+		{
+			*index = i;
+			return list[i].dst;
+		}
+	}
+	return -1;
+}
+
 int cycleCheck(EDGE *list, int num, int src, int dst) // checks if connecting the source and the destination vertices will create a cycle
 {
 	int i = 0, j = 0;
-	for(i = 0; i < num; i++)
+	for(i = 0; i < num; i++)  // maybe use a dictionary function of some sort like key - value pair
 	{
-		if(list[i].src == src )
+		if(list[i].src == src)
 	}
+	return FALSE;
 }
