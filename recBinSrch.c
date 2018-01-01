@@ -27,8 +27,8 @@ int main(void)
 
 int binarySearch(int *arr, int lower, int upper, int key) // returns -1 if the search fails
 {
-	int mid = (lower + upper)/2;
-	while(low != upper)
+	int mid = (lower + upper)/2; // overflow bug
+	while(lower != upper)
 	{
 		if(arr[mid] == key)
 			return mid;
