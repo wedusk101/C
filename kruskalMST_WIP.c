@@ -131,12 +131,12 @@ void kruskalMST(EDGE *list, int len, int numNode, int *cost)
 			printf("%d - %d ---> %d\n", list[i].src, list[i].dst, list[i].weight);
 }
 
-int returnNextSrc(EDGE *list, int num, int dst, int *index) // returns the next source vertex and its index given a destination vertex
+int returnNextSrc(EDGE *list, int num, int keyDst, int *index) // returns the next source vertex and its index given a destination vertex
 {
 	int i = 0;
 	for(i = *index; i < num; i++)
 	{
-		if(list[i].dst == dst)
+		if(list[i].dst == keyDst)
 		{
 			*index = i;
 			return list[i].src;
@@ -145,12 +145,12 @@ int returnNextSrc(EDGE *list, int num, int dst, int *index) // returns the next 
 	return -1;
 }
 
-int returnNextDst(EDGE *list, int num, int src, int *index) // returns the next destination vertex and its index given a source vertex
+int returnNextDst(EDGE *list, int num, int keySrc, int *index) // returns the next destination vertex and its index given a source vertex
 {
 	int i = 0;
 	for(i = *index; i < num; i++)
 	{
-		if(list[i].src == src)
+		if(list[i].src == keySrc)
 		{
 			*index = i;
 			return list[i].dst;
@@ -161,10 +161,14 @@ int returnNextDst(EDGE *list, int num, int src, int *index) // returns the next 
 
 int cycleCheck(EDGE *list, int num, int src, int dst) // checks if connecting the source and the destination vertices will create a cycle
 {
-	int i = 0, j = 0;
+	int i = 0, pos = 0;
 	for(i = 0; i < num; i++)  // maybe use a dictionary function of some sort like key - value pair
 	{
-		if(list[i].src == src)
+		if(list[i].src == src && list[i].dst == dst)
+			continue;
+		//if(list[i].src = src && list[i].dst == returnNextDst(list, num, )
+			
+			
 	}
 	return FALSE;
 }
