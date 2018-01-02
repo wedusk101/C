@@ -1,3 +1,5 @@
+/*The following program implements Floyd-Warshall algorithm for generating the set of all-pairs shortest paths
+for a given graph.*/
 #include <stdio.h>
 #include <stdlib.h>
 
