@@ -1,13 +1,15 @@
-/*The following code generates Mersenne Prime numbers. The user inputs the number 
-of Mersenne Primes to display.A Mersenne prime is of the form M = (2^N) - 1 where
-M is a prime number and N is a positive integer and is prime. Please note that due to the 
-very nature of Mersenne Primes, which are exceedingly rare, this program is very
-slow for anything beyond very small input sizes.The program will also fail once it
-exceeds the precision of the long integer format. Handling large numbers like
-Mersenne Primes require special methods not implemented here. The code can be made
-significantly more efficient using a few techniques. For example, the prime generator
-used here can be replaced by something like the Sieve of Eratosthenes or the Sieve of Atkin.
-Finally, multithreading the program can result in much better performance.*/
+/*The following code generates Mersenne Prime numbers using trial division method. 
+The user inputs the number of Mersenne Primes to display.A Mersenne prime is of 
+the form M = (2^N) - 1 where M is a prime number and N is a positive integer and 
+is prime. Please note that due to the very nature of Mersenne Primes, which are 
+exceedingly rare, this program is very slow for anything beyond very small input 
+sizes.The program will also fail once it exceeds the precision of the long integer
+format. Handling large numbers like Mersenne Primes require special methods not 
+implemented here. The code can be made significantly more efficient using a few 
+techniques. For example, the prime generator used here can be replaced by something
+like the Sieve of Eratosthenes. Finally, multithreading the program can result in 
+much better performance. A different approach altogether, like the Lucas–Lehmer 
+primality test, is obviously a different scenario altogether.*/
 
 #include<stdio.h>
 #include<math.h>
