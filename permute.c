@@ -4,8 +4,7 @@ this program is exceedingly slow for all but the smallest of input sizes.*/
 
 #include <stdio.h>
 #include <limits.h>
-
-#define SIZE 4
+#include <time.h>
 
 void permute(int*, int, int);
 void swap(int*, int*);
@@ -13,12 +12,21 @@ void displayList(int*, int);
 
 int main()
 {
-	int i = 0, list[SIZE];
+	int i = 0, len = 0;
+	clock_t start, stop;
+	float diff = 0.0;
+	printf("How many digits would you like to input?\n");
+	scanf("%d", &len);
+	int list[len];
 	printf("Please enter the digits.\n");
-	for(i = 0; i < SIZE; i++)
+	for(i = 0; i < len; i++)
 		scanf("%d", &list[i]);
 	printf("The permutations are as follows:\n");
-	permute(list, 0, SIZE - 1);
+	start = clock();
+	permute(list, 0, len - 1);
+	stop = clock();
+	diff = ((float)stop - (float)start)/CLOCKS_PER_SEC;
+	printf("Time taken to compute the permutations was %f seconds.\n", diff);
 	return 0;
 }
 
