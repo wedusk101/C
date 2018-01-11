@@ -21,7 +21,7 @@ int main()
 	scanf("%d", &term);
 	unsigned long int memo[term + 1];
 	for(i = 0; i < term + 1; i++)
-		memo[i] = -1;
+		memo[i] = 0;
 	start = clock();
 	printf("Required term is %lu.\n", fibonacci(term, memo));
 	stop = clock();
@@ -32,7 +32,7 @@ int main()
 
 unsigned long int fibonacci(int n, unsigned long int *bak)
 {
-	if(bak[n] != -1)
+	if(bak[n] != 0)
 		return bak[n];
 	if(n == 1 || n == 2)
 		return 1;
