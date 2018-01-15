@@ -1,16 +1,17 @@
+/*The following program implements the Quicksort algorithm using the Lomuto partitioning scheme.*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-#define SIZE 8
+#define SIZE 10
 
 void quickSort(int*, int, int);
 int findPivot(int*, int, int);
 
 int main()
 {
-	FILE *fp;
 	srand(time(NULL));
+	FILE *fp;
 	int i = 0, list[SIZE], j = 0, key = 0, count = 0, index = 0;
 	fp = fopen("Average.txt", "w");
 	if(fp == NULL)
@@ -56,34 +57,21 @@ void quickSort(int *list, int low, int high)
 
 int findPivot(int *list, int low, int high)
 {
-	int right = 0, left = 0, pivot = 0, tmp = 0, len = high - low + 1;
-	pivot = rand() % len; // high - low + 1 = SIZE of the array ---- used for randomly generating the pivot
+	int counter = low, partition = low - 1, pivot = high, tmp = 0;
 	printf("The chosen pivot is index %d.\n", pivot);
-	left = low;
-	right = high;
-	while(left + right < len)
+	while(counter <= high - 1)
 	{
-		if(list[left] > list[pivot] && list[right] < list[pivot])
+		if(list[counter] <= list[pivot])
 		{
-			if(left < right)
-			{
-				tmp = list[left];
-				list[left] = list[right];
-				list[right] = tmp;
-			}
-			if(left > right && left == pivot)
-				return pivot;
-			if(left == right)
-			{
-				tmp = list[pivot];
-				list[left] = list[pivot];
-				list[pivot] = tmp;
-				pivot = left;
-				return pivot;
-			}				
+			partition++;
+			tmp = list[partition];
+			list[partition] = list[counter];
+			list[counter] = tmp;
 		}
-		left++;
-		right--;
+		counter++;
 	}
-	return pivot;
+	tmp = list[partition + 1]; // the counter has reached the penultimate element of the array
+	list[partition + 1] = list[counter];
+	list[counter] = tmp;
+	return partition + 1;
 }	
