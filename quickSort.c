@@ -13,7 +13,7 @@ int main()
 	srand(time(NULL));
 	FILE *fp;
 	int i = 0, list[SIZE], j = 0, key = 0, count = 0, index = 0;
-	fp = fopen("Average.txt", "w");
+	fp = fopen("Input.txt", "w");
 	if(fp == NULL)
 	{
 		perror("Error opening file.\n");
