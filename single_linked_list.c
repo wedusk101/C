@@ -506,7 +506,7 @@ void revList(NODEPTR *plist)
 	*plist = fast;
 }
 
-NODEPTR copyList(NODEPTR plist)
+NODEPTR copyList(NODEPTR plist) // is buggy at times
 {
 	NODEPTR bak, cp;
 	cp = malloc(sizeof(struct node));
