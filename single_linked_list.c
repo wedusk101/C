@@ -181,9 +181,9 @@ int main()
 				break;
 				
 			case 18:
-				printf("Lists reinitialized successfully.\n");
 				delList(&list); 
 				delList(&secondlist);
+				printf("Lists reinitialized successfully.\n");
 				break;
 				
 			case 0:
