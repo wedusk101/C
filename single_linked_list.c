@@ -57,6 +57,7 @@ int main()
 		printf("15. Insert a node after a specific position.\n");
 		printf("16. Reverse the list.\n");
 		printf("17. Create a copy of a linked list.\n");
+		printf("18. Reinitialize the pointers to all the lists.\n");
 		printf("0.  EXIT.\n\n");
         printf("--------------------------------------------------\n");
         scanf("%d", &choice);
@@ -177,6 +178,12 @@ int main()
 				delList(&secondlist); // makes sure that we start with a fresh list as backup
 				secondlist = copyList(list);
 				displayList(secondlist);
+				break;
+				
+			case 18:
+				printf("Lists reinitialized successfully.\n");
+				delList(&list); 
+				delList(&secondlist);
 				break;
 				
 			case 0:
@@ -506,21 +513,13 @@ void revList(NODEPTR *plist)
 	*plist = fast;
 }
 
-NODEPTR copyList(NODEPTR plist) // is buggy at times
+NODEPTR copyList(NODEPTR plist) // recursively creates a copy of the list
 {
-	NODEPTR bak, cp;
-	cp = malloc(sizeof(struct node));
-	bak = cp;
-	while(plist->next != NULL)
-	{
-		cp->info = plist->info;
-		cp->next = plist->next;
-		cp = cp->next;
-		plist = plist->next;
-		cp = malloc(sizeof(struct node));
-	}
-	cp = malloc(sizeof(struct node));
-	cp->info = plist->info;
-	cp->next = NULL;
-	return bak;
+	NODEPTR newNode;
+	newNode = malloc(sizeof(struct node));
+	newNode->info = plist->info; 
+	newNode->next = NULL;
+	if(plist->next != NULL)
+		newNode->next = copyList(plist->next); 
+	return newNode;
 }
