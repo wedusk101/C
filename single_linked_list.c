@@ -27,6 +27,7 @@ int countNode(NODEPTR); // counts the number of nodes in the linked list
 void displayList(NODEPTR); // displays the elements present in each node
 void concatList(NODEPTR*, NODEPTR*, NODEPTR*); // appends two linked lists
 int searchx(NODEPTR, int); // searches the nodes of the linked list for a particular value
+void revList(NODEPTR*); // reverses the linked list and displays it
 
 int main()
 {
@@ -52,6 +53,7 @@ int main()
 		printf("13. Delete a node after a specific value.\n");
 		printf("14. Delete a node after a specific position.\n");
 		printf("15. Insert a node after a specific position.\n");
+		printf("16. Reverse the list.\n");
 		printf("0.  EXIT.\n\n");
         printf("--------------------------------------------------\n");
         scanf("%d", &choice);
@@ -151,6 +153,11 @@ int main()
 				insertAfter(&list, pos, val, &lastNode);
 				break;
 				
+			case 16:
+				revList(&list);
+				displayList(list);
+				break;
+				
 			case 0:
 				break;
             
@@ -195,7 +202,6 @@ void insertEndList(NODEPTR *plist, NODEPTR *lastNode)
         scanf(" %c", &ch);
         *lastNode = newNode;
     }while(ch == 'y' || ch == 'Y');
-	return 0;
 }
 
 int countNode(NODEPTR plist)
@@ -441,4 +447,23 @@ void deleteNodex(NODEPTR *plist, int val, NODEPTR *lastNode) // not valid for du
 		return;
 	}
 	deleteNodePos(plist, valpos, lastNode);
+}
+
+void revList(NODEPTR *plist)
+{
+	NODEPTR tp, fast, slow;
+	fast = slow = *plist;
+	tp = fast->next;
+	fast = fast->next;
+	slow->next = NULL;
+	while(fast->next != NULL)
+	{
+		fast = fast->next;
+		tp->next = slow;
+		slow = tp;
+		tp = fast;
+	}
+	fast->next = tp;
+	tp->next = slow;
+	*plist = fast;
 }
