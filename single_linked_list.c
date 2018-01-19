@@ -28,6 +28,8 @@ void displayList(NODEPTR); // displays the elements present in each node
 void concatList(NODEPTR*, NODEPTR*, NODEPTR*); // appends two linked lists
 int searchx(NODEPTR, int); // searches the nodes of the linked list for a particular value
 void revList(NODEPTR*); // reverses the linked list and displays it
+NODEPTR copyList(NODEPTR); // creates a copy of a linked list and displays both the original and the copied list
+void delList(NODEPTR*); // deletes a linked list
 
 int main()
 {
@@ -54,6 +56,7 @@ int main()
 		printf("14. Delete a node after a specific position.\n");
 		printf("15. Insert a node after a specific position.\n");
 		printf("16. Reverse the list.\n");
+		printf("17. Create a copy of a linked list.\n");
 		printf("0.  EXIT.\n\n");
         printf("--------------------------------------------------\n");
         scanf("%d", &choice);
@@ -92,6 +95,8 @@ int main()
                 break;
             
 			case 7:
+				delList(&list); // start with fresh pointers
+				delList(&secondlist);
 				concatList(&list, &secondlist, &lastNode);
                 break;
            
@@ -154,11 +159,29 @@ int main()
 				break;
 				
 			case 16:
+				if(list == NULL)
+				{
+					printf("List is empty. First create a list. Operation aborted!\n");
+					break;
+				}
 				revList(&list);
 				displayList(list);
 				break;
 				
+			case 17:
+				if(list == NULL)
+				{
+					printf("List is empty. First create a list. Operation aborted!\n");
+					break;
+				}
+				delList(&secondlist); // makes sure that we start with a fresh list as backup
+				secondlist = copyList(list);
+				displayList(secondlist);
+				break;
+				
 			case 0:
+				delList(&list); // clean up
+				delList(&secondlist);
 				break;
             
 			default:
@@ -449,6 +472,21 @@ void deleteNodex(NODEPTR *plist, int val, NODEPTR *lastNode) // not valid for du
 	deleteNodePos(plist, valpos, lastNode);
 }
 
+void delList(NODEPTR *plist)
+{
+	NODEPTR delNode;
+	if(*plist == NULL)
+		return;
+	while((*plist)->next != NULL)
+	{
+		delNode = *plist;
+		*plist = (*plist)->next;
+		free(delNode);
+	}
+	free(*plist);
+	*plist = NULL;
+}
+
 void revList(NODEPTR *plist)
 {
 	NODEPTR tp, fast, slow;
@@ -466,4 +504,23 @@ void revList(NODEPTR *plist)
 	fast->next = tp;
 	tp->next = slow;
 	*plist = fast;
+}
+
+NODEPTR copyList(NODEPTR plist)
+{
+	NODEPTR bak, cp;
+	cp = malloc(sizeof(struct node));
+	bak = cp;
+	while(plist->next != NULL)
+	{
+		cp->info = plist->info;
+		cp->next = plist->next;
+		cp = cp->next;
+		plist = plist->next;
+		cp = malloc(sizeof(struct node));
+	}
+	cp = malloc(sizeof(struct node));
+	cp->info = plist->info;
+	cp->next = NULL;
+	return bak;
 }
