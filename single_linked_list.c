@@ -27,7 +27,7 @@ int countNode(NODEPTR); // counts the number of nodes in the linked list
 void displayList(NODEPTR); // displays the elements present in each node
 void concatList(NODEPTR*, NODEPTR*, NODEPTR*); // appends two linked lists
 int searchx(NODEPTR, int); // searches the nodes of the linked list for a particular value
-void revList(NODEPTR*); // reverses the linked list and displays it
+void revList(NODEPTR*, NODEPTR*); // reverses the linked list and displays it
 NODEPTR copyList(NODEPTR); // creates a copy of a linked list and displays both the original and the copied list
 void delList(NODEPTR*); // deletes a linked list
 
@@ -165,7 +165,7 @@ int main()
 					printf("List is empty. First create a list. Operation aborted!\n");
 					break;
 				}
-				revList(&list);
+				revList(&list, &lastNode);
 				displayList(list);
 				break;
 				
@@ -494,13 +494,14 @@ void delList(NODEPTR *plist)
 	*plist = NULL;
 }
 
-void revList(NODEPTR *plist)
+void revList(NODEPTR *plist, NODEPTR *lastNode)
 {
 	NODEPTR tp, fast, slow;
 	fast = slow = *plist;
 	tp = fast->next;
 	fast = fast->next;
 	slow->next = NULL;
+	*lastNode = slow;	// updates the pointer to the last node
 	while(fast->next != NULL)
 	{
 		fast = fast->next;
