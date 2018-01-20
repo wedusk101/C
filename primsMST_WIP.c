@@ -62,7 +62,7 @@ void primMST(EDGE *list, int len, int numNode, int *node, int *cost)
 	for(i = 0; i < len; i++) 
 		printf("%d - %d ---> %d\n", list[i].src, list[i].dst, list[i].weight);
 	printf("\n\n");
-	//node[list[0].src] = 1;
+	node[list[0].src] = 1;
 	for(i = 0; numEdge != numNode - 1; i++) // check asymptotic complexity
 	{
 		if(i > len || i > numNode)	// prevents the index from going out of bounds
@@ -82,7 +82,7 @@ void primMST(EDGE *list, int len, int numNode, int *node, int *cost)
 			numEdge++;
 			*cost += list[i].weight;
 		}
-		if(node[list[i].dst] == 1 && node[list[i].src] == 0 && list[i].visited == 0)
+		if(node[list[i].src] == 0 && node[list[i].dst] == 1 && list[i].visited == 0)
 		{
 			list[i].visited = 1;
 			node[list[i].src] = 1;
