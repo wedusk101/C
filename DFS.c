@@ -112,7 +112,7 @@ void dfs(GPTR* list, int size, int frontier)
 		if(list[i]->visited != 1)
 		{
 			printf("%c ", out);			
-			list[i]->visited = 1; // marks the vertex as discovered to avoid duplicates
+			list[i]->visited = 1; // marks the vertex as visited to avoid duplicates
 		}
 		bak = list[i]; 
 		while(list[i] != NULL)
