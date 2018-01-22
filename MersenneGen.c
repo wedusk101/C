@@ -41,10 +41,10 @@ int main()
 int isPrime(long int n) // checks if a number is prime or not
 {
 	unsigned long int i = 0;
-	if(n <= 1 || n == 4)
+	if(n <= 1)
 		return FALSE;
 	else
-		for(i = 2; i < sqrt(n); i++)
+		for(i = 2; i <= sqrt(n); i++)
 		{
 			if(n % i == 0)
 				return FALSE;

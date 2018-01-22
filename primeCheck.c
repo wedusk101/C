@@ -20,10 +20,10 @@ int main()
 int isPrime(int n)
 {
 	int i = 0;
-	if(n <= 1 || n == 4)
+	if(n <= 1)
 		return FALSE;
 	else
-		for(i = 2; i < n / 2; i++)
+		for(i = 2; i <= sqrt(n); i++)
 		{
 			if(n % i == 0)
 				return FALSE;
