@@ -68,33 +68,35 @@ void primMST(EDGE *list, int len, int numNode, int *node, int *cost)
 	{
 		if(i > len || i > numNode)	// prevents the index from going out of bounds
 			i = 0;
-		if((node[list[i].src] == 0 && node[list[i].dst] == 0) || (node[list[i].src] == 1 && node[list[i].dst] == 1 && list[i].visited == 0) || list[i].src == list[i].dst)
+		/*if((node[list[i].src] == 0 && node[list[i].dst] == 0) || (node[list[i].src] == 1 && node[list[i].dst] == 1 && list[i].visited == 0) || list[i].src == list[i].dst)
 		{
 			printf("Line 73 - Skipped %d - %d ---> %d\n", list[i].src, list[i].dst, list[i].weight);
 			continue; // excludes disconnected edges and self loops and prevents cycles
-		}
-		if(node[list[i].src] == 1 && node[list[i].dst] == 0 && list[i].visited == 0)
+		}*/
+		if(node[list[i].src] == 1 && node[list[i].dst] == 0  && list[i].visited == 0)
 		{
+			printf("Line 78 - Entered with - %d - %d ---> %d\n", list[i].src, list[i].dst, list[i].weight);
 			for(j = 0; j < len; j++)
 			{
-				if(list[j].src == list[i].dst && !((node[list[j].src] == 0 && node[list[j].dst] == 0)  || (node[list[j].src] == 1 && node[list[j].dst] == 1 && list[j].visited == 0) || list[j].src == list[j].dst) && list[j].visited == 0 && list[j].weight <= list[i].weight)
+				if(list[j].src == list[i].dst && !((node[list[j].src] == 0 && node[list[j].dst] == 0) || (node[list[j].src] == 1 && node[list[j].dst] == 1 && list[j].visited == 0) || list[j].src == list[j].dst) && list[j].visited == 0 && list[j].weight <= list[i].weight)
 				{
 					list[j].visited = 1;
 					node[list[j].src] = 1;
 					node[list[j].dst] = 1;
 					numEdge++;
 					*cost += list[j].weight;
-					printf("Line 87 - %d - %d ---> %d\n", list[j].src, list[j].dst, list[j].weight);
+					printf("Line 88 - %d - %d ---> %d\n", list[j].src, list[j].dst, list[j].weight);
 				}
-				if(list[j].dst == list[i].dst && !((node[list[j].src] == 0 && node[list[j].dst] == 0)  || (node[list[j].src] == 1 && node[list[j].dst] == 1 && list[j].visited == 0) || list[j].src == list[j].dst) && list[j].visited == 0 && list[j].weight <= list[i].weight)
+				if(list[j].dst == list[i].dst && !((node[list[j].src] == 0 && node[list[j].dst] == 0) || (node[list[j].src] == 1 && node[list[j].dst] == 1 && list[j].visited == 0) || list[j].src == list[j].dst) && list[j].visited == 0 && list[j].weight <= list[i].weight)
 				{
 					list[j].visited = 1;
 					node[list[j].src] = 1;
 					node[list[j].dst] = 1;
 					numEdge++;
 					*cost += list[j].weight;
-					printf("Line 96 - %d - %d ---> %d\n", list[j].src, list[j].dst, list[j].weight);
-				}					
+					printf("Line 97 - %d - %d ---> %d\n", list[j].src, list[j].dst, list[j].weight);
+				}
+				printf("Line 99 - Skipped %d - %d ---> %d\n", list[j].src, list[j].dst, list[j].weight);
 			}
 			if(!(node[list[i].src] == 1 && node[list[i].dst] == 1) && list[i].visited == 0)
 			{
@@ -103,11 +105,12 @@ void primMST(EDGE *list, int len, int numNode, int *node, int *cost)
 				node[list[i].dst] = 1;
 				numEdge++;
 				*cost += list[i].weight;
-				printf("Line 106 - %d - %d ---> %d\n", list[i].src, list[i].dst, list[i].weight);
+				printf("Line 108 - %d - %d ---> %d\n", list[i].src, list[i].dst, list[i].weight);
 			}
 		}
-		if(node[list[i].src] == 0 && node[list[i].dst] == 1 && list[i].visited == 0)
+		if(node[list[i].src] == 0 && node[list[i].dst] == 1  && list[i].visited == 0)
 		{
+			printf("Line 113 - Entered with - %d - %d ---> %d\n", list[i].src, list[i].dst, list[i].weight);
 			for(j = 0; j < len; j++)
 			{
 				if(list[j].src == list[i].src && !((node[list[j].src] == 0 && node[list[j].dst] == 0) || (node[list[j].src] == 1 && node[list[j].dst] == 1 && list[j].visited == 0) || list[j].src == list[j].dst) && list[j].visited == 0 && list[j].weight <= list[i].weight)
@@ -117,7 +120,7 @@ void primMST(EDGE *list, int len, int numNode, int *node, int *cost)
 					node[list[j].dst] = 1;
 					numEdge++;
 					*cost += list[j].weight;
-					printf("Line 120 - %d - %d ---> %d\n", list[j].src, list[j].dst, list[j].weight);
+					printf("Line 123 - %d - %d ---> %d\n", list[j].src, list[j].dst, list[j].weight);
 				}
 				if(list[j].dst == list[i].src && !((node[list[j].src] == 0 && node[list[j].dst] == 0) || (node[list[j].src] == 1 && node[list[j].dst] == 1 && list[j].visited == 0) || list[j].src == list[j].dst) && list[j].visited == 0 && list[j].weight <= list[i].weight)
 				{
@@ -126,9 +129,9 @@ void primMST(EDGE *list, int len, int numNode, int *node, int *cost)
 					node[list[j].dst] = 1;
 					numEdge++;
 					*cost += list[j].weight;
-					printf("Line 129 - %d - %d ---> %d\n", list[j].src, list[j].dst, list[j].weight);
+					printf("Line 132 - %d - %d ---> %d\n", list[j].src, list[j].dst, list[j].weight);
 				}
-				printf("Line 131 - Skipped %d - %d ---> %d\n", list[j].src, list[j].dst, list[j].weight);
+				printf("Line 134 - Skipped %d - %d ---> %d\n", list[j].src, list[j].dst, list[j].weight);
 			}
 			if(!(node[list[i].src] == 1 && node[list[i].dst] == 1) && list[i].visited == 0)
 			{
@@ -137,9 +140,15 @@ void primMST(EDGE *list, int len, int numNode, int *node, int *cost)
 				node[list[i].dst] = 1;
 				numEdge++;
 				*cost += list[i].weight;
-				printf("Line 140 - %d - %d ---> %d\n", list[i].src, list[i].dst, list[i].weight);
+				printf("Line 143 - %d - %d ---> %d\n", list[i].src, list[i].dst, list[i].weight);
 			}
 		}
+		//printf("Line 144 - Skipped all\n");
+		/*if((node[list[i].src] == 0 && node[list[i].dst] == 0) || (node[list[i].src] == 1 && node[list[i].dst] == 1 && list[i].visited == 0) || list[i].src == list[i].dst)
+		{
+			printf("Line 73 - Skipped %d - %d ---> %d\n", list[i].src, list[i].dst, list[i].weight);
+			continue; // excludes disconnected edges and self loops and prevents cycles
+		}*/
 	}
 	printf("The MST is:\n\n");
 	for(i = 0; i < len; i++)
