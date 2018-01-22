@@ -40,6 +40,7 @@ int main()
 		node[i] = 0; // initalize visited vertex set
 	primMST(MST, size, nodeCount, node, &minCost);
 	printf("\nThe total weight of the resultant MST is %d.\n", minCost);
+	free(node);
 	return 0;
 }
 
