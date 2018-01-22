@@ -1,4 +1,4 @@
-/*The following code implements a binary search tree with a few of its basic operations.*/
+/*The following code implements a Binary Search Tree (BST) with a few of its basic operations.*/
 
 #include <stdio.h>
 #include <stdlib.h>
