@@ -63,8 +63,6 @@ void primMST(EDGE *list, int len, int numNode, int *node, int *cost)
 	node[list[0].src] = 1;
 	for(i = 0; numEdge != numNode - 1; i++) // Number of edges in a tree is always one less than the number of vertices
 	{
-		if(i > len)	// prevents the index from going out of bounds
-			i = 0;
 		if(node[list[i].src] == 1 && node[list[i].dst] == 0  && list[i].visited == 0)
 		{
 			for(j = 0; j < len; j++) // excludes self-loops when source and destination vertices are the same
