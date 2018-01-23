@@ -13,38 +13,39 @@ primality test, is obviously a different scenario altogether.*/
 
 #include<stdio.h>
 #include<math.h>
+#include<limits.h>
 
 #define TRUE 1
 #define FALSE 0
 
-int isPrime(long int);
-int isMersenne(long int);
+int isPrime(long long);
+int isMersenne(long long);
 
 int main()
 {
-	unsigned long int num = 0, i = 2, count = 0;
+	long long num = 0, i = 3, count = 0;
 	printf("How many Mersenne Primes would you like to generate?\n");
-	scanf("%lu", &num);
+	scanf("%lld", &num);
 	printf("The list is:\n");
 	while(count != num) 
 	{
 		if(isPrime(i) && isMersenne(i))
 		{
-			printf("%lu\n", i);
+			printf("%lld\n", i);
 			count++;
 		}
-		i++;
+		i += 2;
 	}
 	return 0;
 } // end
 
-int isPrime(long int n) // checks if a number is prime or not
+int isPrime(long long n) // checks if a number is prime or not
 {
-	unsigned long int i = 0;
+	long long i = 0;
 	if(n <= 1)
 		return FALSE;
 	else
-		for(i = 2; i <= sqrt(n); i++)
+		for(i = 2; i * i <= n; i++)
 		{
 			if(n % i == 0)
 				return FALSE;
@@ -52,12 +53,12 @@ int isPrime(long int n) // checks if a number is prime or not
 	return TRUE;
 }
 
-int isMersenne(long int m) // generates Mersenne Primes
+int isMersenne(long long m) // generates Mersenne Primes
 {
-	unsigned long int var = 0, exp = 1;
-    while(exp <= log2(m + 1)) // M = (2^exp) - 1 => exp = log2(M + 1)
+	long long var = 0, exp = 1;
+    while(var <= (m + 1)) // M = (2^exp) - 1 => 2<<exp = (M + 1)
     {
-        var = (unsigned long int)pow(2,exp);
+        var = 2<<exp;
         if(var == (m + 1)) // follows from the definition of a Mersenne prime
 			return TRUE;
         exp++;
