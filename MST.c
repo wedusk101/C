@@ -67,7 +67,7 @@ void primMST(EDGE *list, int len, int numNode, int *node, int *cost)
 			i = 0;
 		if(node[list[i].src] == 1 && node[list[i].dst] == 0  && list[i].visited == 0)
 		{
-			for(j = 0; j < len; j++)
+			for(j = 0; j < len; j++) // excludes self-loops when source and destination vertices are the same
 			{
 				if(list[j].src == list[i].dst && !((node[list[j].src] == 0 && node[list[j].dst] == 0) || (node[list[j].src] == 1 && node[list[j].dst] == 1 && list[j].visited == 0) || list[j].src == list[j].dst) && list[j].visited == 0 && list[j].weight <= list[i].weight)
 				{
@@ -86,7 +86,7 @@ void primMST(EDGE *list, int len, int numNode, int *node, int *cost)
 					*cost += list[j].weight;
 				}
 			}
-			if(!(node[list[i].src] == 1 && node[list[i].dst] == 1) && list[i].visited == 0) // ignores parallel edges and prevents cycles
+			if(!(node[list[i].src] == 1 && node[list[i].dst] == 1) && list[i].visited == 0) // excludes parallel edges and prevents cycles
 			{
 				list[i].visited = 1;
 				node[list[i].src] = 1;
@@ -97,7 +97,7 @@ void primMST(EDGE *list, int len, int numNode, int *node, int *cost)
 		}
 		if(node[list[i].src] == 0 && node[list[i].dst] == 1  && list[i].visited == 0)
 		{
-			for(j = 0; j < len; j++)
+			for(j = 0; j < len; j++) // excludes self-loops when source and destination vertices are the same
 			{
 				if(list[j].src == list[i].src && !((node[list[j].src] == 0 && node[list[j].dst] == 0) || (node[list[j].src] == 1 && node[list[j].dst] == 1 && list[j].visited == 0) || list[j].src == list[j].dst) && list[j].visited == 0 && list[j].weight <= list[i].weight)
 				{
@@ -116,7 +116,7 @@ void primMST(EDGE *list, int len, int numNode, int *node, int *cost)
 					*cost += list[j].weight;
 				}
 			}
-			if(!(node[list[i].src] == 1 && node[list[i].dst] == 1) && list[i].visited == 0) // ignores parallel edges and prevents cycles
+			if(!(node[list[i].src] == 1 && node[list[i].dst] == 1) && list[i].visited == 0) // excludes parallel edges and prevents cycles
 			{
 				list[i].visited = 1;
 				node[list[i].src] = 1;
