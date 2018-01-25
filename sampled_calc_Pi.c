@@ -1,5 +1,5 @@
-/*The following code calculates the approximate value of Pi using a sampling method. It is very similar to the Monte Carlo method for 
-calculating Pi but doesn't use stochastic sampling.Please note that the computation time increases drastically with the sample size.*/ 
+/*The following code calculates the approximate value of Pi using a sequential sampling method. It is very similar to the Monte Carlo method
+for calculating Pi but doesn't use stochastic sampling.Please note that the computation time increases drastically with the sample size.*/ 
 #include <stdio.h>
 #include <time.h>
 
