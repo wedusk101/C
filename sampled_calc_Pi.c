@@ -20,7 +20,7 @@ int main()
 				count++;
 		}
 	}
-	pi = (4 * count)/(long double)(samples * samples);
+	pi = (4 * count)/(long double)max;
 	stop = clock();
 	printf("Sample size is %lld.\n", samples);
 	printf("Approximate value of Pi is %Lf.\n", pi);
