@@ -8,7 +8,7 @@ int main()
 	long long i = 0, j = 0, count = 0, samples = 0, max = 0; // the value of samples controls the precision of the approximation
 	long double pi = 0.0;
 	clock_t start, stop;
-	printf("Please enter the sample size (MAX 100,000).\n");
+	printf("Please enter the sample size. Higher values take significantly longer to compute.\n");
 	scanf("%lld", &samples);
 	max = samples * samples; // square of the radius
 	start = clock();
