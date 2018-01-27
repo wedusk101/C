@@ -10,7 +10,7 @@ int main()
 	clock_t start, stop;
 	printf("Please enter the sample size. Higher values take significantly longer to compute.\n");
 	scanf("%lld", &samples);
-	max = samples * samples; // square of the radius
+	max = samples * samples; // square of the radius = total number of samples
 	start = clock();
 	for(i = 0; i < samples; i++) // y - axis
 	{
