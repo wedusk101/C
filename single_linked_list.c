@@ -193,7 +193,6 @@ int main()
             
 			default:
 				printf("Invalid choice.\n");
-                break;
         }
     }while(choice != 0);
 	printf("Thank you.\n");
