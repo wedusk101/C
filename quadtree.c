@@ -200,7 +200,7 @@ int main()
 						break;
 						
 			case 11:	delPQT(&center);
-						printf("Tree deleted succesfully.\n");
+						printf("Tree deleted successfully.\n");
 						initTree(&center);	// the origin O(0,0) is present by default in this implementation
 						break;
 						
@@ -226,7 +226,7 @@ void insertNodePQT(NODEPTR *proot, NODEPTR* index, NODEPTR* parentIndex, char* p
 		if(*proot == NULL)
 		{
 			*proot = tmp;
-			printf("Point inserted succesfully.\n");
+			printf("Point inserted successfully.\n");
 			return;
 		}
 		if(valx == (*proot)->coo.x) // handles multiple points on an axis with the same x coordinate
@@ -243,7 +243,7 @@ void insertNodePQT(NODEPTR *proot, NODEPTR* index, NODEPTR* parentIndex, char* p
 					insertNodePQT(&(*proot)->ne, index, parentIndex, &(*pname), valx, valy, child);
 					return;
 				}
-				printf("Error occured! Point could not be inserted. Try inserting some other point first."); // this condition needs to be handled somehow
+				printf("Error occurred! Point could not be inserted. Try inserting some other point first."); // this condition needs to be handled somehow
 				return;			
 			}
 			else if(valy < (*proot)->coo.y)
@@ -314,7 +314,7 @@ void insertNodePQT(NODEPTR *proot, NODEPTR* index, NODEPTR* parentIndex, char* p
 		printf("Operation failed! Point already exists.\n");
 }
 
-void initTree(NODEPTR* proot) // initiliazes the tree with (0,0) as the origin
+void initTree(NODEPTR* proot) // initializes the tree with (0,0) as the origin
 {
 	*proot = malloc(sizeof(struct treeNode));
 	(*proot)->coo.x = 0;
