@@ -14,5 +14,5 @@ int main()
 
 int recNumRvrs(int num)
 {
-	return num > 10 ? (int)((num % 10) * pow(10, (int)log10(num)) + recNumRvrs(num / 10)) : num;
+	return num > 10 ? (num % 10) * pow(10, (int)log10(num)) + recNumRvrs(num / 10) : num;
 }
