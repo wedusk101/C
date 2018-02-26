@@ -1,31 +1,18 @@
 #include <stdio.h>
 #include <math.h>
 
-int recNumRvrs(int, int);
-void countDigits(int, int*);
+int recNumRvrs(int);
 
 int main()
 {
-	int input = 0, digits = 0;
+	int input = 0;
 	printf("Please enter a positive integer.\n");
 	scanf("%d", &input);
-	countDigits(input, &digits);
-	printf("The reverse of %d is %d.\n", input, recNumRvrs(input, digits));
+	printf("The reverse of %d is %d.\n", input, recNumRvrs(input));
 	return 0;
 }
 
-void countDigits(int num, int *count)
+int recNumRvrs(int num)
 {
-	for(;num != 0; num /= 10)
-		(*count)++;
-}
-
-int recNumRvrs(int num, int digits)
-{
-	int d = num % 10;
-	num = num / 10;
-	if(digits > 1)
-		return (int)(d * pow(10, digits - 1) + recNumRvrs(num, digits - 1));
-	else
-		return d; 
+	return num > 10 ? (int)((num % 10) * pow(10, (int)log10(num)) + recNumRvrs(num / 10)) : num;
 }
