@@ -1,6 +1,6 @@
-/* The following code converts a positive decimal number upto 1023 to its binary equivalent form. I'm certain there are better ways to do
+/* The following code converts a positive decimal number up to 1023 to its binary equivalent form. I'm certain there are better ways to do
 this than my method.First the number of digits in the binary number are counted. The most common problem for this conversion
-is the truncation of the left most zeros. The order of coversion dictates the way in which the digits of the binary form are 
+is the truncation of the left most zeros. The order of conversion dictates the way in which the digits of the binary form are 
 displayed. As such the left most zeros are lost unless care is taken to address the problem.I decided not to use arrays or bitwise
 operators in this case.The reversed number checked for the number of zeros lost due to truncation.Then the 
 number is multiplied by the power of ten corresponding to the number of lost zeros.Finally this number is reversed
