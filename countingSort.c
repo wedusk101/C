@@ -25,6 +25,7 @@ int main()
 			printf("%d ", result[i]);
 	}
 	printf("\n");
+	free(result);
 }
 
 int* countingSort(int* list, int max)
