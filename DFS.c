@@ -68,7 +68,7 @@ GPTR createNode()
 	return newNode;
 }
 
-void displayList(GPTR* list, int size)
+void displayList(GPTR *list, int size)
 {
 	int i = 0;
 	GPTR bak;
@@ -99,7 +99,7 @@ int findNode(GPTR* list, int size, char frontier) // finds the index of a node i
 	return -1;
 }
 
-void dfs(GPTR* list, int size, int frontier)
+void dfs(GPTR *list, int size, int frontier)
 {
 	NODEPTR stack = NULL;
 	GPTR bak;

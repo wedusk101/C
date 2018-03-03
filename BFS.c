@@ -68,7 +68,7 @@ GPTR createNode()
 	return newNode;
 }
 
-void displayList(GPTR* list, int size)
+void displayList(GPTR *list, int size)
 {
 	int i = 0;
 	GPTR bak;
@@ -85,7 +85,7 @@ void displayList(GPTR* list, int size)
 	}
 }
 
-int findNode(GPTR* list, int size, char frontier) // finds the index of a node in the adjacency list
+int findNode(GPTR *list, int size, char frontier) // finds the index of a node in the adjacency list
 {
 	int i = 0;
 	GPTR bak;
