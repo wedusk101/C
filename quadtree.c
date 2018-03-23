@@ -258,7 +258,7 @@ void insertNodePQT(NODEPTR *proot, NODEPTR* index, NODEPTR* parentIndex, char* p
 					insertNodePQT(&(*proot)->se, index, parentIndex, &(*pname), valx, valy, child);
 					return;
 				}
-				printf("Error occured! Point could not be inserted. Try inserting some other point first."); // this condition needs to be handled somehow
+				printf("Error occurred! Point could not be inserted. Try inserting some other point first."); // this condition needs to be handled somehow
 				return;
 			}
 		}
@@ -276,7 +276,7 @@ void insertNodePQT(NODEPTR *proot, NODEPTR* index, NODEPTR* parentIndex, char* p
 					insertNodePQT(&(*proot)->ne, index, parentIndex, &(*pname), valx, valy, child);
 					return;
 				}
-				printf("Error occured! Point could not be inserted. Try inserting some other point first.");
+				printf("Error occurred! Point could not be inserted. Try inserting some other point first.");
 				return; 				
 			}
 			else if(valx < (*proot)->coo.x)
@@ -291,7 +291,7 @@ void insertNodePQT(NODEPTR *proot, NODEPTR* index, NODEPTR* parentIndex, char* p
 					insertNodePQT(&(*proot)->sw, index, parentIndex, &(*pname), valx, valy, child);
 					return;
 				}
-				printf("Error occured! Point could not be inserted. Try inserting some other point first.");
+				printf("Error occurred! Point could not be inserted. Try inserting some other point first.");
 				return;
 			}
 		}
