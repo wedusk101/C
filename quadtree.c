@@ -33,7 +33,7 @@ struct treeNode
 
 typedef struct treeNode *NODEPTR;
 
-void initTree(NODEPTR*); 																	// initiliazes the tree
+void initTree(NODEPTR*); 																	// initializes the tree
 int searchPQT(NODEPTR, NODEPTR*, NODEPTR*, float, float, int*);								// searches for a point in the quadtree and returns a pointer to it and its parent
 void relDirection(NODEPTR, NODEPTR*, NODEPTR*, float, float, float, float, int*); 			// returns the relative direction between a source and a destination
 void insertNodePQT(NODEPTR*, NODEPTR*, NODEPTR*, char*, float, float, int*);				// inserts a point into the quad tree
