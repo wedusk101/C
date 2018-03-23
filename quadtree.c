@@ -1,4 +1,4 @@
-/*The following code is work in progess and implements a point quadtree with a few of its basic operations. Since this is prototype code, I'm certain
+/*The following code is work in progress and implements a point quadtree with a few of its basic operations. Since this is prototype code, I'm certain
 there are significant changes that could be made which enhance the efficieny of the program. Insertion of multiple points on an axis and especially the
 deletion of a point is quite complex and needs attention. I eventually plan on porting this to HLSL/C++ so that a GUI can be built around it. Also, 
 radiusSearchPQT() and updatePoint() can be used for collision detection and affine transformation of points. The point data could also hold illumination
