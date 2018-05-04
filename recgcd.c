@@ -19,5 +19,3 @@ int gcd(int first, int second)
 	else
 		gcd(second, first % second); 
 }
-
-	
