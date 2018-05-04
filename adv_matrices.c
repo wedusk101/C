@@ -136,12 +136,9 @@ int isIdentity(int **arr, int order) // this function is dependent on isDiagonal
 	{
 		for(j = 0; j < order; j++)
 		{
-			if( i == j)
-			{
-				if(arr[i][j] == 1) // counts the number of ones in the principal diagonal
-					count++;
-			}
-        }
+			if(i == j && arr[i][j] == 1)
+				count++; // counts the number of ones in the principal diagonal
+		}
     }
 	if(isDiagonal(arr, order) && count == order) // checks if the matrix is diagonal 
 		return TRUE;
@@ -175,12 +172,9 @@ int isTriDiagonal(int **arr, int order)
     {
 		for(j = 0; j < order; j++)
         {
-			if(abs(i - j) > 1)
-			{
-				if(arr[i][j] == 0) // counts the total number of zeros above and below the tridiagonals
-					count++;
-            }
-        }
+			if(abs(i - j) > 1 && arr[i][j] == 0)
+				count++; // counts the total number of zeros above and below the tridiagonals
+		}
     }
 	for(i = 0; i < order; i++)
     {
