@@ -6,13 +6,14 @@ diagonal or tridiagonal. Should be updated for more efficient algorithms. */
 #include<math.h>
 
 int** createMatrix(int, int);          // prototype to allocate space for matrix
-void inputMatrix(int **,int, int);    // prototype to populate matrix 
+void inputMatrix(int **, int, int);    // prototype to populate matrix 
 void displayMatrix(int **, int, int); // prototype to display elements of the matrix 
-int isUpperTriangular(int **,int); // prototype to check whether the matrix is upper triangular
-int isLowerTriangular(int **,int); // prototype to check whether the matrix is lower triangular
-int isIdentity(int **,int);     // prototype to check whether the matrix is identity 
-int isDiagonal(int **,int);     // prototype to check whether the matrix is diagonal 
-int isTridiagonal(int **,int);  // prototype to check whether the matrix is tridiagonal 
+int isUpperTriangular(int **, int); // prototype to check whether the matrix is upper triangular
+int isLowerTriangular(int **, int); // prototype to check whether the matrix is lower triangular
+int isIdentity(int**, int);     // prototype to check whether the matrix is identity 
+int isDiagonal(int**, int);     // prototype to check whether the matrix is diagonal 
+int isTridiagonal(int**, int);  // prototype to check whether the matrix is tridiagonal 
+void delMatrix(int**, int); // deallocates memory
 
 #define TRUE 1
 #define FALSE 0
@@ -54,17 +55,17 @@ int main()
     else
     	printf("The matrix is not a Tridiagonal matrix.\n");
 	printf("\n\n");
-	free(mat); // memory is deallocated 
+	delMatrix(mat, size); // memory is deallocated 
 	return 0;
 } // end of main
 
-int** createMatrix(int x, int y) // dynamically allocates memory for the matrix
+int** createMatrix(int row, int col) // dynamically allocates memory for the matrix
 {
     int **p, i = 0;
-    p = (int**)malloc(x * sizeof(int*));
-    for(i = 0; i < x; i++)
+    p = (int**)malloc(row * sizeof(int*));
+    for(i = 0; i < row; i++)
     {
-		*(p + i) = (int*)malloc(y * sizeof(int)); // allocates memory for each element          
+		*(p + i) = (int*)malloc(col * sizeof(int)); // allocates memory for each element          
     }    
     return p;
 }
@@ -188,4 +189,12 @@ int isTriDiagonal(int **arr, int order)
 		return TRUE;
 	else 
 		return FALSE;
+}
+
+void delMatrix(int **arr, int order)
+{
+	int i = 0;
+	for(i = 0; i < order; i++)
+		free(arr[i]);
+	free(arr);
 }

@@ -7,11 +7,12 @@ representation is used to generate the transpose for the sparse matrix.*/
 #include<stdlib.h>
 
 int** createMatrix(int,int);        // prototype to allocate memory for a matrix 
-void inputMatrix(int **,int,int);   // prototype to populate matrix 
-void displayMatrix(int **,int,int); // prototype to display elements of the matrix 
-int count(int **,int,int);          // prototype to count non-zero elements of a matrix 
-int** sparse(int **, int,int);      // prototype to store a matrix in compressed form  
-int** transposeSp(int **);          // prototype to transpose a sparse matrix 
+void inputMatrix(int**,int,int);   // prototype to populate matrix 
+void displayMatrix(int**,int,int); // prototype to display elements of the matrix 
+int count(int**,int,int);          // prototype to count non-zero elements of a matrix 
+int** sparse(int**,int,int);      // prototype to store a matrix in compressed form  
+int** transposeSp(int**);          // prototype to transpose a sparse matrix 
+void delMatrix(int**, int);			// deallocates memory
 
 int main(void)
 {
@@ -28,15 +29,16 @@ int main(void)
 	compr = sparse(mat, row, col);
 	nzc = count(mat, row, col); // holds the number of non zero elements
 	printf("Number of non-zero elements is %d.\n", nzc);
-	free(mat); // memory for the original matrix is deallocated
+	delMatrix(mat, row); // memory for the original matrix is deallocated
 	printf("\nCompressed representation in COO format:\n\n");
 	displayMatrix(compr, nzc + 1, 3); // displays the compressed matrix
 	trans = transposeSp(compr);
 	printf("\nTranspose in COO format: \n\n");
 	displayMatrix(trans, nzc + 1, 3);	// displays the transpose
+	delMatrix(compr, nzc + 1); // memory for the compressed sparse matrix is deallocated
+	delMatrix(trans, nzc + 1); // memory for the transposed sparse matrix is deallocated
 	return 0;
 }
-
 
 int** createMatrix(int x, int y)
 {
@@ -136,4 +138,12 @@ int** transposeSp(int **arr) // uses the compressed matrix to create the transpo
 		}
 	}
     return trns;
+}
+
+void delMatrix(int **arr, int row)
+{
+	int i = 0;
+	for(i = 0; i < row; i++)
+		free(arr[i]);
+	free(arr);
 }
