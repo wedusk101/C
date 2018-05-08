@@ -12,5 +12,6 @@ typedef struct node* NODEPTR;
 int enqueue(NODEPTR*, NODEPTR*, int);
 int dequeue(NODEPTR*);
 int isEmpty(NODEPTR);
+void delQueue(NODEPTR*);
 
 #endif

@@ -50,6 +50,7 @@ int main()
 				break;
 				
 			case 4:
+				delStack(&stack);
 				printf("Bye!\n");
 				break;
 				

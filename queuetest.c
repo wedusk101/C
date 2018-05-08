@@ -40,6 +40,7 @@ int main()
 				break;
 				
 			case 3:
+				delQueue(&head);
 				printf("Bye!\n");
 				break;
 				

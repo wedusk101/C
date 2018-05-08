@@ -57,3 +57,14 @@ int peek(NODEPTR list)
 	val = list->info;
 	return val;
 }
+
+void delStack(NODEPTR *list)
+{
+	NODEPTR delNode;
+	while(*list != NULL)
+	{
+		delNode = *list;
+		*list = (*list)->next;
+		free(delNode);
+	}	
+}

@@ -13,5 +13,6 @@ int push(NODEPTR*, int);
 int pop(NODEPTR*);
 int peek(NODEPTR);
 int isEmpty(NODEPTR);
+void delStack(NODEPTR*);
 
 #endif

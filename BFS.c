@@ -20,6 +20,7 @@ void bfs(GPTR*, int, int);
 GPTR createNode();
 void displayList(GPTR*, int);
 int findNode(GPTR*, int, char);
+// void delGraph(GPTR*, int) // releases allocated heap memory
 
 int main()
 {
@@ -99,7 +100,7 @@ int findNode(GPTR *list, int size, char frontier) // finds the index of a node i
 	return -1;
 }
 
-void bfs(GPTR* list, int size, int frontier)
+void bfs(GPTR *list, int size, int frontier)
 {
 	NODEPTR head, tail;
 	head = tail = NULL;
@@ -127,3 +128,8 @@ void bfs(GPTR* list, int size, int frontier)
 		list[i] = bak; 
 	}	
 }
+
+/*void delGraph(GPTR *list, int order)
+{
+	
+}*/

@@ -49,3 +49,14 @@ int dequeue(NODEPTR *head)
 	free(delNode);
 	return val;	
 }
+
+void delQueue(NODEPTR *head)
+{
+	NODEPTR delNode;
+	while(*head != NULL)
+	{
+		delNode = *head;
+		*head = (*head)->next;
+		free(delNode);
+	}
+}
