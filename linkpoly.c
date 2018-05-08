@@ -14,6 +14,7 @@ typedef struct node* NODEPTR;
 void initList(NODEPTR*);
 void insertEndList(NODEPTR*, NODEPTR*); 
 void displayPolynomial(NODEPTR);
+void delList(NODEPTR*); // free allocated memory
 
 int main()
 {
@@ -25,6 +26,7 @@ int main()
 	insertEndList(&list, &lastNode);
 	printf("The polynomial is ");
 	displayPolynomial(list);
+	delList(&list);
 	printf(" .\n");
 }
 
@@ -95,5 +97,16 @@ void displayPolynomial(NODEPTR plist)
 			printf("%dx + ", plist->coeff);
 		}
 		plist = plist->next;
+	}
+}
+
+void delList(NODEPTR *plist)
+{
+	NODEPTR delNode;
+	while(*plist != NULL)
+	{
+		delNode = *plist;
+		*plist = (*plist)->next;
+		free(delNode);
 	}
 }

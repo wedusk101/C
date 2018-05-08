@@ -4,6 +4,7 @@
 int** createMatrix(int, int); // allocates memory dynamically for the matrix
 void inputMatrix(int**, int, int); // takes user input
 void displayMatrix(int**, int, int); // displays the matrix
+void delMatrix(int**, int); // deallocates memory
 
 int main()
 {
@@ -15,9 +16,9 @@ int main()
 	mat = createMatrix(row, col); // saves the returned pointer
 	printf("Please enter the elements of the matrix.\n");
 	inputMatrix(mat, row, col); 
-	printf("The maxtrix you have entered is : \n");
+	printf("The matrix you have entered is : \n");
 	displayMatrix(mat, row, col);
-	free(mat);
+	delMatrix(mat, row);
 }
 
 int** createMatrix(int r, int c) 
@@ -54,6 +55,13 @@ void displayMatrix(int** mt, int r, int c)
 			printf("%d ", *(*(mt + i) + j)); // prints the matrix
 		}
 		printf("\n");
-	}
-	
+	}	
+}
+
+void delMatrix(int **arr, int row)
+{
+	int i = 0;
+	for(i = 0; i < row; i++)
+		free(arr[i]);
+	free(arr);
 }
