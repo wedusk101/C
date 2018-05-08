@@ -37,7 +37,7 @@ int main()
 		MST[i].visited = 0;	// initialize the set of edges in the MST	
 	}
 	for(i = 0; i < nodeCount; i++)
-		node[i] = 0; // initalize visited vertex set
+		node[i] = 0; // initialize visited vertex set
 	primMST(MST, size, nodeCount, node, &minCost);
 	printf("\nThe total weight of the resultant MST is %d.\n", minCost);
 	free(node);
