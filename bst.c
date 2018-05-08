@@ -28,6 +28,7 @@ int searchBST(NODEPTR, NODEPTR*, NODEPTR*, int, int*); 				// searches the tree 
 void initTree(NODEPTR*); 											// initializes the tree
 int max(int, int);                  							    // returns the greater of two values
 void delRoot(NODEPTR*);												// deletes the root of the tree
+// void delBST(NODEPTR*);                                           // deletes a BST
 
 int main()
 {
