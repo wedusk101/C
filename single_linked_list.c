@@ -1,5 +1,4 @@
 /*The following code implements a single linked list along with a few of its basic functions.*/
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -18,7 +17,7 @@ void insertNodePos(NODEPTR*, int, int, NODEPTR*); // inserts a node into a posit
 void insertFirst(NODEPTR*, int, NODEPTR*); // inserts a node at the beginning of the linked list
 void deleteNodePos(NODEPTR*, int, NODEPTR*); // deletes the node present at a position of the user's choice
 void insertAfter(NODEPTR*, int, int, NODEPTR*); // inserts a node after a particular position
-void deleteFirst(NODEPTR*, NODEPTR*); // deletes the node at the beginningof the list
+void deleteFirst(NODEPTR*, NODEPTR*); // deletes the node at the beginning of the list
 void deleteAfter(NODEPTR*, int, NODEPTR*); // deletes the element after a particular position
 void deleteNodex(NODEPTR*, int, NODEPTR*); // deletes a specific node
 void deleteAfterx(NODEPTR*, int, NODEPTR*); // deletes the node present after a specific value
@@ -37,6 +36,7 @@ int main()
     int choice = 0, pos = 0, val = 0, element = 0;
     initList(&list); // lists are initialized
 	initList(&secondlist);
+	initList(&lastNode);
     do
 	{
 		printf("\n------Welcome! What would you like to do?--------\n\n");
@@ -196,9 +196,7 @@ int main()
         }
     }while(choice != 0);
 	printf("Thank you.\n");
-	free(list);
-	free(secondlist);
-    return 0;                    
+	return 0;                    
 }
 
 void initList(NODEPTR *plist)
