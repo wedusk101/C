@@ -121,7 +121,7 @@ int main()
 							break;
 						}
 						delRoot(&root);
-						printf("Root deleted successfuly.\n");
+						printf("Root deleted successfully.\n");
 						break;
 			
 			case 0:		printf("Thank you.\n");
