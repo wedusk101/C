@@ -51,11 +51,10 @@ int pop(NODEPTR *list)
 
 int peek(NODEPTR list)
 {
-	int val = 0;
 	if(list == NULL)
 		return INT_MIN;
-	val = list->info;
-	return val;
+	else
+		return list->info;
 }
 
 void delStack(NODEPTR *list)
