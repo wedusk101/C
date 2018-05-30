@@ -77,7 +77,7 @@ void enque(struct queue *pq, int x) // inserts elements into the rear of the que
 		printf("Serve or reinitialize.");
 		return;
 	}
-	printf("Element has been appended successfuly.\n");
+	printf("Element has been appended successfully.\n");
 }
 
 void deque(struct queue *pq) // deletes elements from the front of the queue
