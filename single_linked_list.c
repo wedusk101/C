@@ -337,7 +337,7 @@ void concatList(NODEPTR *firstlist, NODEPTR *secondlist, NODEPTR *lastNode)
 	displayList(*firstlist);
 }
 
-int searchx(NODEPTR plist, int key) // only valid for the first occurence of a value
+int searchx(NODEPTR plist, int key) // only valid for the first occurrence of a value
 {
 	int pos = 0;
 	for(pos = 1; plist->next != NULL; pos++, plist = plist->next)
@@ -368,7 +368,7 @@ void insertAfterx(NODEPTR *plist, int key, int element, NODEPTR *lastNode) // no
 	if((*plist)->info == key)
 	{
 		*plist = tmp;
-		printf("Element found at Pos: %d\n", pos);
+		printf("Element found at Position: %d\n", pos);
 		insertNodePos(plist, pos + 1, element, lastNode);
 		return;
 	}
