@@ -204,7 +204,8 @@ int main()
 						initTree(&center);	// the origin O(0,0) is present by default in this implementation
 						break;
 						
-			case 0:		printf("Thank you.\n");
+			case 0:		// delPQT(&center) // cleanup ---- check for memory leak
+						printf("Thank you.\n");
 						break;
 					
 			default:	printf("\nInvalid choice. Try again.\n");
@@ -603,7 +604,7 @@ NODEPTR copyPQT(NODEPTR root)	// recursively makes a copy of a tree
 	}
 }
 
-void delPQT(NODEPTR* proot) // recursively deletes a tree
+void delPQT(NODEPTR* proot) // recursively deletes a tree ---- check for memory leak
 {
 	if((*proot)->nw == NULL || (*proot)->ne == NULL || (*proot)->se == NULL || (*proot)->sw == NULL) // check if the node is a leaf node
 	{
