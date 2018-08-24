@@ -12,7 +12,7 @@ int isUpperTriangular(int **, int); // prototype to check whether the matrix is 
 int isLowerTriangular(int **, int); // prototype to check whether the matrix is lower triangular
 int isIdentity(int**, int);     // prototype to check whether the matrix is identity 
 int isDiagonal(int**, int);     // prototype to check whether the matrix is diagonal 
-int isTridiagonal(int**, int);  // prototype to check whether the matrix is tridiagonal 
+int isTriDiagonal(int**, int);  // prototype to check whether the matrix is tridiagonal 
 void delMatrix(int**, int); // deallocates memory
 
 #define TRUE 1
@@ -156,14 +156,13 @@ int isDiagonal(int **arr, int order)
 		{
 			if(i != j)
 			{
-				if (arr[i][j] == 0)
-					return TRUE;
-				else
+				if (arr[i][j] != 0)
 					return FALSE;
 			}
     
         }
 	}
+	return TRUE;
 }
 
 int isTriDiagonal(int **arr, int order) 
