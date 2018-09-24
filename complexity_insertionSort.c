@@ -99,7 +99,7 @@ int main()
 	return 0;
 } // end
 
-int binSearch(int *arr, int len, int key, int* count) // returns -1 if the search fails
+int binSearch(int *arr, int len, int key, int *count) // returns -1 if the search fails
 {
 	int lower = 0, upper = len - 1, mid = 0;
 	mid = (lower + upper)/2; // this is a bug
