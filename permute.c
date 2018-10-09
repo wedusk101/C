@@ -1,5 +1,4 @@
-/*The following code recursively generates all permutations(including duplicates) of the digits input by the user.
-The macro "SIZE", limits the number of inputs given by the user. Due to the nature of the problem of generating permutations,
+/*The following code recursively generates all permutations(including duplicates) of the digits input by the user. Due to the nature of the problem of generating permutations,
 this program is exceedingly slow for all but the smallest of input sizes.*/
 
 #include <stdio.h>
