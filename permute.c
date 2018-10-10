@@ -47,8 +47,7 @@ void permute(int *list, int low, int high) // recursively computes the permutati
 
 void swap(int *a, int *b) // swaps two items 
 {
-	int tmp = 0;
-	tmp = *a;
+	int tmp = *a;
 	*a = *b;
 	*b = tmp;
 }
