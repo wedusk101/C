@@ -153,7 +153,7 @@ void insertNodeBST(NODEPTR* proot, int val) // recursively inserts an element in
 	if(*proot == NULL)
 	{
 		*proot = createTree(val);
-		printf("Element inserted succesfully.\n");
+		printf("Element inserted successfully.\n");
 		return;
 	}
 	if(val < (*proot)->data)
@@ -359,7 +359,7 @@ void delRoot(NODEPTR* proot) // deletes the root node of the tree
 	{
 		free(*proot);
 		*proot = NULL;
-		printf("Element deleted succesfully.\n");
+		printf("Element deleted successfully.\n");
 		return;
 	}
 	if((*proot)->left != NULL && (*proot)->right == NULL) // root has only left child
@@ -368,7 +368,7 @@ void delRoot(NODEPTR* proot) // deletes the root node of the tree
 		*proot = (*proot)->left;
 		free(toDel);
 		toDel = NULL;
-		printf("Element deleted succesfully.\n");
+		printf("Element deleted successfully.\n");
 		return;
 	}
 	if(((*proot)->right != NULL && (*proot)->left == NULL) || ((*proot)->right != NULL && (*proot)->left != NULL)) // root has only right child or both children
@@ -380,7 +380,7 @@ void delRoot(NODEPTR* proot) // deletes the root node of the tree
 		{
 			(*proot)->left = toDel->left;
 			free(toDel);
-			printf("Element deleted succesfully.\n");
+			printf("Element deleted successfully.\n");
 			return;
 		}
 		while((*proot)->left != NULL) // the right child has left child or both children
@@ -397,7 +397,7 @@ void delRoot(NODEPTR* proot) // deletes the root node of the tree
 		free(*proot);
 		*proot = toDel;
 		toDel = NULL;
-		printf("Element deleted succesfully.\n");
+		printf("Element deleted successfully.\n");
 		return;
 	}
 }
