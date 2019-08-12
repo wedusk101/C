@@ -20,15 +20,16 @@ void bfs(GPTR*, int, int);
 GPTR createNode();
 void displayList(GPTR*, int);
 int findNode(GPTR*, int, char);
-// void delGraph(GPTR*, int) // releases allocated heap memory
+void delGraph(GPTR*, int); // releases allocated heap memory
+void resetGraphNodes(GPTR*, int);
 
 int main()
 {
-	int order = 0, i = 0, j = 0, rootIndex = 0;
+	int order = 0, i = 0, j = 0, rootIndex = 0, choice = TRUE;
 	char root; // frontier of the search
 	printf("Please enter the number of vertices in the graph.\n\n");
 	scanf("%d", &order);
-	GPTR adj[order];
+	GPTR *adj = malloc(sizeof(GPTR) * order);
 	printf("Please enter the information for the adjacency list representation of the graph.\n\n");
 	for(i = 0; i < order; i++)
 	{
@@ -37,18 +38,26 @@ int main()
 	}
 	printf("The created adjacency list is as follows:\n\n");
 	displayList(adj, order);
-	printf("Please enter the node ID of the frontier of the search.\n\n");
-	scanf(" %c", &root);
-	printf("Searching for node...\n\n");
-	rootIndex = findNode(adj, order, root);	
-	if(rootIndex == -1)
-		printf("Node with given node ID not found in the graph. Operation aborted!\n\n");
-	else
+	while(choice == TRUE)
 	{
-		printf("Node found! The breadth-first traversal is as follows:\n\n");
-		bfs(adj, order, rootIndex);
-		printf("\n");
+		printf("Please enter the node ID of the frontier of the search.\n\n");
+		scanf(" %c", &root);
+		printf("Searching for node...\n\n");
+		rootIndex = findNode(adj, order, root);	
+		if(rootIndex == -1)
+			printf("Node with given node ID not found in the graph. Operation aborted!\n\n");
+		else
+		{
+			printf("Node found! The breadth-first traversal is as follows:\n\n");
+			bfs(adj, order, rootIndex);
+			printf("\n");
+			resetGraphNodes(adj, order);
+		}
+		printf("Continue? (1 = Yes / 0 = No) \n");
+		scanf("%d", &choice);
 	}
+	delGraph(adj, order);
+	printf("Thank you.\n");
 	return 0;	
 }
 
@@ -65,7 +74,10 @@ GPTR createNode()
 	printf("Would you like to link more nodes to the current node? (Y/N)\n\n");
 	scanf(" %c", &choice);
 	if(choice == 'Y' || choice == 'y')
+	{
+		printf("Please enter the node ID of the connected adjacent node.\n");
 		newNode->next = createNode(); 
+	}
 	return newNode;
 }
 
@@ -100,6 +112,36 @@ int findNode(GPTR *list, int size, char frontier) // finds the index of a node i
 	return -1;
 }
 
+void resetGraphNodes(GPTR *list, int size)
+{
+	GPTR bak;
+	for(int i = 0; i < size; i++)
+	{
+		bak = list[i]; // backs up the pointer to the list
+		while(list[i] != NULL)
+		{
+			list[i]->visited = list[i]->discovered = 0;
+			list[i] = list[i]->next;
+		}
+		list[i] = bak;
+	}		
+}
+
+void delGraph(GPTR *list, int order)
+{
+	GPTR delNode = NULL;
+	for(int i = 0; i < order; i++)
+	{
+		while(list[i] != NULL)
+		{
+			delNode = list[i];
+			list[i] = list[i]->next;
+			free(delNode);
+		}
+	}	
+	free(list);
+}
+
 void bfs(GPTR *list, int size, int frontier)
 {
 	NODEPTR head, tail;
@@ -127,9 +169,5 @@ void bfs(GPTR *list, int size, int frontier)
 		}
 		list[i] = bak; 
 	}	
+	delQueue(&head);
 }
-
-/*void delGraph(GPTR *list, int order)
-{
-	
-}*/
