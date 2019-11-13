@@ -1,5 +1,5 @@
-#include <stdio.h>
 // This piece of code implements a basic memory allocator utilizing the arena design pattern
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -26,21 +26,28 @@ int main()
 	memset(arena, 0, POOL_SIZE);
 	int *numList = allocate(arena, sizeof(int) * SIZE);
 	
-	for(size_t i = 0; i < SIZE; i++)
-		numList[i] = 2 * i;
+	if(numList != NULL)
+	{
+		for(size_t i = 0; i < SIZE; i++)
+			numList[i] = 2 * i;
 	
-	for(size_t i = 0; i < SIZE; i++)
-		printf("%d ", numList[i]);
-	printf("\n\n");
+		for(size_t i = 0; i < SIZE; i++)
+			printf("%d ", numList[i]);
+		printf("\n\n");
+	}
 	
 	float *floatList = allocate(arena, sizeof(float) * SIZE);
 	
-	for(size_t i = 0; i < SIZE; i++)
-		floatList[i] = 0.2f * i;
+	if(floatList != NULL)
+	{
+		for(size_t i = 0; i < SIZE; i++)
+			floatList[i] = 0.2f * i;
 	
-	for(size_t i = 0; i < SIZE; i++)
-		printf("%f ", floatList[i]);
-	printf("\n");
+		for(size_t i = 0; i < SIZE; i++)
+			printf("%f ", floatList[i]);
+		printf("\n");
+	}
+	printf("Enter 'q' to quit...\n");
 	for(char input = ' '; input != 'q';)
 		scanf("%c", &input);
 	
