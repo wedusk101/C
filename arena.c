@@ -4,7 +4,15 @@
 #include <string.h>
 
 #define SIZE 10
-#define POOL_SIZE 1024 * 1024 * 256
+#define POOL_SIZE 1024 * 1024 * 1024
+
+struct Node
+{
+	int value;
+	struct Node *next;
+};
+
+typedef struct Node NODE;	
 
 static size_t offset = 0;
 
@@ -45,8 +53,25 @@ int main()
 	
 		for(size_t i = 0; i < SIZE; i++)
 			printf("%f ", floatList[i]);
+		printf("\n\n");
+	}
+	
+	NODE *nptr = allocate(arena, sizeof(NODE) * SIZE); // allocate a list of NODE objects
+	
+	if(nptr != NULL)
+	{
+		for(size_t i = 0; i < SIZE; i++)
+		{
+			nptr[i].value = 3 * i;
+			nptr[i].next = NULL;
+		}
+	
+		for(size_t i = 0; i < SIZE; i++)
+			printf("%d ", nptr[i].value);
 		printf("\n");
 	}
+	
+	
 	printf("Enter 'q' to quit...\n");
 	for(char input = ' '; input != 'q';)
 		scanf("%c", &input);
