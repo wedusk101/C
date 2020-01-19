@@ -6,6 +6,10 @@
 #define TRUE 1
 #define FALSE 0
 
+// #define DEBUG 1 // uncomment for memory debug mode
+
+int allocCount = 0;
+
 struct treeNode
 {
 	int data;
@@ -32,7 +36,7 @@ void delRoot(NODEPTR*);												// deletes the root of the tree
 void displayBST(NODEPTR);											// displays the BST
 void displayNodesAtDepth(NODEPTR, int, int);						// displays all nodes at a given depth
 void getLevelOrderBST(NODEPTR);										// displays the level order traversal of the BST
-// void delBST(NODEPTR*);                                           // deletes a BST
+void delBST(NODEPTR*);                                           	// deletes a BST
 
 int main()
 {
@@ -98,6 +102,8 @@ int main()
 							break;
 						}
 						displayInorderBST(root);
+						if (DEBUG)
+							printf("\nTotal number of memory allocations: %d\n", allocCount);
 						break;
 						
 			case 8:		if(root == NULL)
@@ -106,6 +112,8 @@ int main()
 							break;
 						}
 						displayPreorderBST(root);
+						if (DEBUG)
+							printf("\nTotal number of memory allocations: %d\n", allocCount);
 						break;
 						
 			case 9:		if(root == NULL)
@@ -114,6 +122,8 @@ int main()
 							break;
 						}
 						displayPostorderBST(root);
+						if (DEBUG)
+							printf("\nTotal number of memory allocations: %d\n", allocCount);
 						break;
 						
 			case 10:	printf("Please enter the element you want to search for.\n");
@@ -146,6 +156,8 @@ int main()
 						break;
 						
 			case 13:	getLevelOrderBST(root);
+						if (DEBUG)
+							printf("\nTotal number of memory allocations: %d\n", allocCount);
 						break;
 						
 			// case 14:	displayBST(root);
@@ -157,6 +169,9 @@ int main()
 			default:	printf("\nInvalid choice. Try again.\n");
 		}
 	}while(choice != 0);
+	delBST(&root); // cleanup
+	if (DEBUG)
+		printf("\nTotal number of memory allocations: %d\n", allocCount);
 	return 0;
 } // end
 
@@ -169,6 +184,7 @@ NODEPTR createTree(int val) // creates a tree with the user input value as the r
 {
 	NODEPTR tmp;
 	tmp = malloc(sizeof(struct treeNode));
+	allocCount++;
 	tmp->data = val;
 	tmp->left = tmp->right = NULL;
 	return tmp;
@@ -415,6 +431,7 @@ void delRoot(NODEPTR* proot) // deletes the root node of the tree
 	if((*proot)->left == NULL && (*proot)->right == NULL) // root has no child
 	{
 		free(*proot);
+		allocCount--;
 		*proot = NULL;
 		printf("Element deleted successfully.\n");
 		return;
@@ -424,6 +441,7 @@ void delRoot(NODEPTR* proot) // deletes the root node of the tree
 		toDel = *proot;
 		*proot = (*proot)->left;
 		free(toDel);
+		allocCount--;
 		toDel = NULL;
 		printf("Element deleted successfully.\n");
 		return;
@@ -437,6 +455,7 @@ void delRoot(NODEPTR* proot) // deletes the root node of the tree
 		{
 			(*proot)->left = toDel->left;
 			free(toDel);
+			allocCount--;
 			printf("Element deleted successfully.\n");
 			return;
 		}
@@ -452,9 +471,28 @@ void delRoot(NODEPTR* proot) // deletes the root node of the tree
 		else
 			parent->left = NULL; 	// sets the left child of the parent to NULL
 		free(*proot);
+		allocCount--;
 		*proot = toDel;
 		toDel = NULL;
 		printf("Element deleted successfully.\n");
 		return;
 	}
 }
+
+void delBST(NODEPTR *proot)
+{
+	if (*proot == NULL)
+		return;
+	if((*proot)->left == NULL && (*proot)->right == NULL)
+	{
+		free(*proot);
+		allocCount--;
+		*proot = NULL;
+		return;
+	}
+	else
+	{
+		delBST(&(*proot)->right);
+		delBST(&(*proot)->left);
+	}
+}	
