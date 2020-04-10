@@ -215,6 +215,11 @@ void insertEndList(NODEPTR *plist, NODEPTR *lastNode)
 		printf("Please enter the value.\n");
         scanf("%d", &x);
         newNode = malloc(sizeof(struct node));
+		if(newNode == NULL)
+		{
+			perror("Error allocating memory.\n");
+			exit(EXIT_FAILURE);
+		}
         newNode->info = x;
         newNode->next = NULL;
 		if(*plist == NULL)
@@ -263,6 +268,11 @@ void insertNodePos(NODEPTR *plist, int pos, int val, NODEPTR *lastNode)
 	NODEPTR newNode, tmp;
 	int count = 0;
 	newNode = malloc(sizeof(struct node));
+	if(newNode == NULL)
+	{
+		perror("Error allocating memory.\n");
+		exit(EXIT_FAILURE);
+	}
 	if(pos == countNode(*plist) + 1)
 	{
 		tmp = *plist;
@@ -304,6 +314,11 @@ void insertFirst(NODEPTR *plist, int val, NODEPTR *lastNode)
 {
 	NODEPTR newNode, tmp;
 	newNode = malloc(sizeof(struct node));
+	if(newNode == NULL)
+	{
+		perror("Error allocating memory.\n");
+		exit(EXIT_FAILURE);
+	}
 	tmp = *plist;
 	newNode->info = val;
 	if((*plist) == NULL)
@@ -360,6 +375,11 @@ void insertAfterx(NODEPTR *plist, int key, int element, NODEPTR *lastNode) // no
 	NODEPTR tmp = *plist, newNode;
 	int pos = 1;
 	newNode = malloc(sizeof(struct node));
+	if(newNode == NULL)
+	{
+		perror("Error allocating memory.\n");
+		exit(EXIT_FAILURE);
+	}
 	while((*plist)->next != NULL && (*plist)->info != key)
 	{
 		*plist = (*plist)->next;
@@ -515,6 +535,11 @@ NODEPTR copyList(NODEPTR plist) // recursively creates a copy of the list
 {
 	NODEPTR newNode;
 	newNode = malloc(sizeof(struct node));
+	if(newNode == NULL)
+	{
+		perror("Error allocating memory.\n");
+		exit(EXIT_FAILURE);
+	}
 	newNode->info = plist->info; 
 	newNode->next = NULL;
 	if(plist->next != NULL)

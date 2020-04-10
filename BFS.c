@@ -29,7 +29,12 @@ int main()
 	char root; // frontier of the search
 	printf("Please enter the number of vertices in the graph.\n\n");
 	scanf("%d", &order);
-	GPTR *adj = malloc(sizeof(GPTR) * order);
+	GPTR* adj = malloc(sizeof(GPTR) * order);
+	if(adj == NULL)
+	{
+		perror("Error allocating memory.\n");
+		exit(EXIT_FAILURE);
+	}
 	printf("Please enter the information for the adjacency list representation of the graph.\n\n");
 	for(i = 0; i < order; i++)
 	{
@@ -66,6 +71,11 @@ GPTR createNode()
 	GPTR newNode;
 	char id, choice;
 	newNode = malloc(sizeof(struct graphNode));
+	if(newNode == NULL)
+	{
+		perror("Error allocating memory.\n");
+		exit(EXIT_FAILURE);
+	}
 	newNode->visited = 0; // initialize the vertices
 	newNode->discovered = 0;
 	scanf(" %c", &id);

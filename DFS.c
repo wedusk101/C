@@ -57,6 +57,11 @@ GPTR createNode()
 	GPTR newNode;
 	char id, choice;
 	newNode = malloc(sizeof(struct graphNode));
+	if(newNode == NULL)
+	{
+		perror("Error allocating memory.\n");
+		exit(EXIT_FAILURE);
+	}
 	newNode->visited = 0; // initialize the vertices
 	newNode->discovered = 0;
 	scanf(" %c", &id);

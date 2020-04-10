@@ -63,9 +63,19 @@ int** createMatrix(int row, int col) // dynamically allocates memory for the mat
 {
     int **p, i = 0;
     p = (int**)malloc(row * sizeof(int*));
+	if(p == NULL)
+	{
+		perror("Error allocating memory.\n");
+		exit(EXIT_FAILURE);
+	}
     for(i = 0; i < row; i++)
     {
-		*(p + i) = (int*)malloc(col * sizeof(int)); // allocates memory for each element          
+		*(p + i) = (int*)malloc(col * sizeof(int)); // allocates memory for each element   
+		if(*(p + i) == NULL)
+		{
+			perror("Error allocating memory.\n");
+			exit(EXIT_FAILURE);
+		}
     }    
     return p;
 }

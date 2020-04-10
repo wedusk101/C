@@ -26,6 +26,11 @@ int main()
 	scanf("%d", &nodeCount);
 	EDGE MST[size];
 	node = malloc(nodeCount * sizeof(int));
+	if(node == NULL)
+	{
+		perror("Error allocating memory.\n");
+		exit(EXIT_FAILURE);
+	}
 	printf("Please enter the details of the graph in the following order:\n");
 	printf("Source Node Number -> Destination Node Number -> Edge weight between the two nodes.\n");
 	printf("Please note that nodes are numbered 0 through (n - 1) consecutively, where n is the number of nodes.\n");

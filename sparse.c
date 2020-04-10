@@ -44,9 +44,19 @@ int** createMatrix(int x, int y)
 {
 	int **p, i = 0;
     p = (int**)malloc(x * sizeof(int*));
+	if(p == NULL)
+	{
+		perror("Error allocating memory.\n");
+		exit(EXIT_FAILURE);
+	}
     for(i = 0; i < x; i++)
     {
-		p[i] = (int*)malloc(y * sizeof(int));          
+		p[i] = (int*)malloc(y * sizeof(int));        
+		if(p[i] == NULL)
+		{
+			perror("Error allocating memory.\n");
+			exit(EXIT_FAILURE);
+		}
     }    
     return p;
 }

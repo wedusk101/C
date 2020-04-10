@@ -69,10 +69,7 @@ int main()
 		{	case 1: 	printf("\nPlease enter the first element of the tree.\n");
 						scanf("%d",&x);
 						root = createTree(x);
-						if(root != NULL)
-							printf("Element inserted. Tree created successfully.\n");
-						else
-							printf("Error occurred! Tree creation failed.");
+						printf("Element inserted. Tree created successfully.\n");
 						break;
 			
 			case 2: 	printf("Please enter the element to insert.\n");
@@ -163,7 +160,8 @@ int main()
 			// case 14:	displayBST(root);
 						// break;
 			
-			case 0:		printf("Thank you.\n");
+			case 0:		delBST(&root);
+						printf("Thank you.\n");
 						break;
 					
 			default:	printf("\nInvalid choice. Try again.\n");
@@ -184,6 +182,11 @@ NODEPTR createTree(int val) // creates a tree with the user input value as the r
 {
 	NODEPTR tmp;
 	tmp = malloc(sizeof(struct treeNode));
+	if(tmp == NULL)
+	{
+		perror("Error allocating memory.\n");
+		exit(EXIT_FAILURE);
+	}
 	allocCount++;
 	tmp->data = val;
 	tmp->left = tmp->right = NULL;
