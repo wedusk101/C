@@ -4,7 +4,8 @@
 #include <string.h>
 
 #define SIZE 10
-#define POOL_SIZE 1024 * 1024 * 1024
+
+size_t POOL_SIZE = 1024 * 1024 * 1024;
 
 struct Node
 {
@@ -29,7 +30,7 @@ void* allocate(char *arena, size_t req_size)
 }
 
 int main()
-{
+{	
 	char *arena = malloc(POOL_SIZE);	
 	memset(arena, 0, POOL_SIZE);
 	int *numList = allocate(arena, sizeof(int) * SIZE);
