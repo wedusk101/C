@@ -5,7 +5,11 @@
 
 #define SIZE 10
 
-size_t POOL_SIZE = 1024 * 1024 * 1024;
+const size_t SIZE_1G = 1073741824;
+const size_t SIZE_2G = 2147483648;
+const size_t SIZE_4G = 4294967296;
+
+size_t POOL_SIZE = 4294967296; // copy the value from the relevant constant here
 
 struct Node
 {
