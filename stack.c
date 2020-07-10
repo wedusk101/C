@@ -25,10 +25,8 @@ int push(NODEPTR *list, int x)
 	if(newNode == NULL)
 	{
 		perror("Error allocating memory.\n");
-		exit(EXIT_FAILURE);
-	}
-	if(newNode == NULL)
 		return FALSE;
+	}
 	newNode->info = x;
 	if(*list == NULL)
 	{

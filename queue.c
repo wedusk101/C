@@ -25,10 +25,8 @@ int enqueue(NODEPTR *head, NODEPTR *tail, int x)
 	if(newNode == NULL)
 	{
 		perror("Error allocating memory.\n");
-		exit(EXIT_FAILURE);
-	}
-	if(newNode == NULL)
 		return FALSE;
+	}
 	newNode->info = x;
 	newNode->next = NULL;
 	if(*head == NULL)
