@@ -1,4 +1,4 @@
-//queue.c -- Stack implementation
+//stack.c -- Stack implementation
 #include "stack.h"
 
 #define TRUE 1
