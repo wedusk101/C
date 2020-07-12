@@ -4,6 +4,7 @@ for a given graph.*/
 #include <stdlib.h>
 
 void floyd(int**, int);
+void delMat(int**, int);
 
 int main()
 {
@@ -32,8 +33,16 @@ int main()
 			printf("%d  ", mat[i][j]);
 		printf("\n");
 	}
-	free(mat);
+	delMat(mat);
 	return 0;		
+}
+
+void delMat(int **arr, int order)
+{
+	int i = 0;
+	for(i = 0; i < order; i++)
+		free(arr[i]);
+	free(arr);
 }
 
 void floyd(int **dist, int num)
