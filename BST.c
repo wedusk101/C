@@ -36,7 +36,7 @@ void delRoot(NODEPTR*);												// deletes the root of the tree
 void displayBST(NODEPTR);											// displays the BST
 void mirrorBST(NODEPTR*);											// mirror the BST
 void displayNodesAtDepth(NODEPTR, int, int);						// displays all nodes at a given depth
-void displayLevelOrderBST(NODEPTR);										// displays the level order traversal of the BST
+void displayLevelOrderBST(NODEPTR);									// displays the level order traversal of the BST
 void delBST(NODEPTR*);                                           	// deletes a BST
 void swapNodes(NODEPTR*, NODEPTR*);									// swaps two nodes of the tree
 
