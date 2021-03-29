@@ -34,9 +34,11 @@ int max(int, int);                  							    // returns the greater of two val
 int getNodeDepth(NODEPTR, int);                           			// returns the depth of a given node in the BST
 void delRoot(NODEPTR*);												// deletes the root of the tree
 void displayBST(NODEPTR);											// displays the BST
+void mirrorBST(NODEPTR*);											// mirror the BST
 void displayNodesAtDepth(NODEPTR, int, int);						// displays all nodes at a given depth
-void getLevelOrderBST(NODEPTR);										// displays the level order traversal of the BST
+void displayLevelOrderBST(NODEPTR);										// displays the level order traversal of the BST
 void delBST(NODEPTR*);                                           	// deletes a BST
+void swapNodes(NODEPTR*, NODEPTR*);									// swaps two nodes of the tree
 
 int main()
 {
@@ -60,7 +62,8 @@ int main()
 		printf("\n 11. Get the depth of a node with a particular value in the binary search tree.\n");
 		printf("\n 12. Delete the root of the tree.\n");
 		printf("\n 13. Display the level order traversal of the binary search tree.\n");
-		// printf("\n 14. Display the binary search tree.\n");
+		printf("\n 14. Laterally invert the binary search tree. This will break the BST and will require reinverting it to be restored.\n");
+		// printf("\n 15. Display the binary search tree.\n");
 		printf("\n 0.  EXIT \n");
         printf("\n------------------------------\n");
         printf("\nPlease enter your choice : ");
@@ -70,11 +73,17 @@ int main()
 						scanf("%d",&x);
 						root = createTree(x);
 						printf("Element inserted. Tree created successfully.\n");
+						#ifdef DEBUG
+							printf("\nTotal number of memory allocations: %d\n", allocCount);
+						#endif
 						break;
 			
 			case 2: 	printf("Please enter the element to insert.\n");
 						scanf("%d",&x);
 						insertNodeBST(&root, x);
+						#ifdef DEBUG
+							printf("\nTotal number of memory allocations: %d\n", allocCount);
+						#endif
 						break;
 					
 			case 3: 	printf("Please enter the element to delete.\n");
@@ -82,6 +91,9 @@ int main()
 						index = parentIndex = NULL;
 						child = 0;
 						deleteNodeBST(&root, &index, &parentIndex, x, &child); // this function is dependent on searchBST() and delRoot()
+						#ifdef DEBUG
+							printf("\nTotal number of memory allocations: %d\n", allocCount);
+						#endif
 						break;
 						
 			case 4:		printf("The number of nodes in the tree is %d.\n", countNodeBST(root));
@@ -99,8 +111,10 @@ int main()
 							break;
 						}
 						displayInorderBST(root);
-						if (DEBUG)
+						
+						#ifdef DEBUG
 							printf("\nTotal number of memory allocations: %d\n", allocCount);
+						#endif						
 						break;
 						
 			case 8:		if(root == NULL)
@@ -109,8 +123,10 @@ int main()
 							break;
 						}
 						displayPreorderBST(root);
-						if (DEBUG)
+						
+						#ifdef DEBUG
 							printf("\nTotal number of memory allocations: %d\n", allocCount);
+						#endif						
 						break;
 						
 			case 9:		if(root == NULL)
@@ -119,8 +135,10 @@ int main()
 							break;
 						}
 						displayPostorderBST(root);
-						if (DEBUG)
+						
+						#ifdef DEBUG
 							printf("\nTotal number of memory allocations: %d\n", allocCount);
+						#endif						
 						break;
 						
 			case 10:	printf("Please enter the element you want to search for.\n");
@@ -150,26 +168,43 @@ int main()
 						}
 						delRoot(&root);
 						printf("Root deleted successfully.\n");
-						break;
 						
-			case 13:	getLevelOrderBST(root);
-						if (DEBUG)
+						#ifdef DEBUG
 							printf("\nTotal number of memory allocations: %d\n", allocCount);
+						#endif
 						break;
 						
-			// case 14:	displayBST(root);
+			case 13:	displayLevelOrderBST(root);
+						
+						#ifdef DEBUG
+							printf("\nTotal number of memory allocations: %d\n", allocCount);
+						#endif
+						
+						break;
+						
+			case 14:	mirrorBST(&root);
+						printf("Tree mirrored successfully.\n");
+						break;
+						
+			// case 15:	displayBST(root);
 						// break;
 			
 			case 0:		delBST(&root);
 						printf("Thank you.\n");
+						#ifdef DEBUG
+							printf("\nTotal number of memory allocations: %d\n", allocCount);
+						#endif
 						break;
 					
 			default:	printf("\nInvalid choice. Try again.\n");
 		}
 	}while(choice != 0);
 	delBST(&root); // cleanup
-	if (DEBUG)
+	
+	#ifdef DEBUG
 		printf("\nTotal number of memory allocations: %d\n", allocCount);
+	#endif
+						
 	return 0;
 } // end
 
@@ -212,6 +247,25 @@ void insertNodeBST(NODEPTR* proot, int val) // recursively inserts an element in
 	}
 }
 
+void swapNodes(NODEPTR* pa, NODEPTR* pb)
+{
+	NODEPTR tmp = *pb;
+	*pb = *pa;
+	*pa = tmp;	
+}
+
+void mirrorBST(NODEPTR* proot)
+{
+	if(*proot == NULL)
+		return;
+		
+	NODEPTR parent = *proot;
+	swapNodes(&(parent->left), &(parent->right));
+			
+	mirrorBST(&(parent->left));
+	mirrorBST(&(parent->right));	
+}
+
 /*
 void displayBST(root)
 {
@@ -219,19 +273,21 @@ void displayBST(root)
 }
 */
 
-
-void getLevelOrderBST(NODEPTR root)
+void displayLevelOrderBST(NODEPTR root)
 {
 	int maxDepth = calcHeightBST(root);
-	for(int i = 0; i < maxDepth; i++)
+	for(int i = 0; i <= maxDepth; i++)
 		displayNodesAtDepth(root, 0, i);
 }
 
 void displayNodesAtDepth(NODEPTR root, int currentDepth, int maxDepth)
 {
+	if(root == NULL)
+		return;
+		
 	if(currentDepth == maxDepth)
 	{
-		printf("%d", root->data);
+		printf("%d ", root->data);
 		return;
 	}
 	displayNodesAtDepth(root->left, currentDepth + 1, maxDepth);
@@ -308,6 +364,9 @@ int searchBST(NODEPTR root, NODEPTR* index, NODEPTR* parentIndex, int val, int* 
 		return FALSE;
 	if((root->data) == val)
 	{
+		if(*parentIndex == NULL)
+			*parentIndex = root;
+			
 		*index = root;		// returns a pointer to the found element
 		return TRUE;
 	}
@@ -459,6 +518,7 @@ void delRoot(NODEPTR* proot) // deletes the root node of the tree
 			(*proot)->left = toDel->left;
 			free(toDel);
 			allocCount--;
+			toDel = NULL;
 			printf("Element deleted successfully.\n");
 			return;
 		}
