@@ -39,12 +39,13 @@ void displayNodesAtDepth(NODEPTR, int, int);						// displays all nodes at a giv
 void displayLevelOrderBST(NODEPTR);									// displays the level order traversal of the BST
 void delBST(NODEPTR*);                                           	// deletes a BST
 void swapNodes(NODEPTR*, NODEPTR*);									// swaps two nodes of the tree
+void findLowestCommonAncestor(NODEPTR, int, int, NODEPTR*);  		// find the lowest common ancestor for two given nodes
 
 int main()
 {
 	NODEPTR root, index, parentIndex;
 	initTree(&root);
-	int choice = 0, x = 0, child = 0;
+	int choice = 0, x = 0, y = 0, child = 0;
 	printf("This program implements a binary search tree with the following basic operations.\n");
 	do
 	{
@@ -63,7 +64,7 @@ int main()
 		printf("\n 12. Delete the root of the tree.\n");
 		printf("\n 13. Display the level order traversal of the binary search tree.\n");
 		printf("\n 14. Laterally invert the binary search tree. This will break the BST and will require reinverting it to be restored.\n");
-		// printf("\n 15. Display the binary search tree.\n");
+		printf("\n 15. Find the lowest common ancestor for two given nodes in the binary search tree.\n");
 		printf("\n 0.  EXIT \n");
         printf("\n------------------------------\n");
         printf("\nPlease enter your choice : ");
@@ -184,6 +185,28 @@ int main()
 						
 			case 14:	mirrorBST(&root);
 						printf("Tree mirrored successfully.\n");
+						break;			
+			
+			case 15:	printf("Enter the values of the nodes for which you need the lowest common ancestor.\n");
+						scanf("%d", &x);
+						scanf("%d", &y);
+
+						NODEPTR indexX, parentIndexX, indexY, parentIndexY;
+						int childX = 0, childY = 0;
+						int foundX = searchBST(root, &indexX, &parentIndexX, x, &childX);
+						int foundY = searchBST(root, &indexY, &parentIndexY, y, &childY);
+						
+						if(foundX == FALSE || foundY == FALSE)
+						{
+							printf("Invalid input. Operation failed. Check if the elements searched for are in the BST.\n");
+							break;
+						}
+	
+						findLowestCommonAncestor(root, x, y, &index);		
+						
+						if(index != NULL)
+							printf("Lowest Common Ancestor is %d.", index->data);
+							
 						break;
 						
 			// case 15:	displayBST(root);
@@ -265,13 +288,6 @@ void mirrorBST(NODEPTR* proot)
 	mirrorBST(&(parent->left));
 	mirrorBST(&(parent->right));	
 }
-
-/*
-void displayBST(root)
-{
-	
-}
-*/
 
 void displayLevelOrderBST(NODEPTR root)
 {
@@ -400,6 +416,21 @@ int searchBST(NODEPTR root, NODEPTR* index, NODEPTR* parentIndex, int val, int* 
 		}
 		searchBST(root, index, parentIndex, val, child);
 	}
+}
+
+void findLowestCommonAncestor(NODEPTR root, int x, int y, NODEPTR* lca)
+{
+	if((x <= root->data && y >= root->data) || (y <= root->data && x >= root->data))
+	{
+		*lca = root;
+		return;
+	}
+	
+	if(x < root->data && y < root->data)
+		findLowestCommonAncestor(root->left, x, y, lca);
+		
+	if(x > root->data && y > root->data)
+		findLowestCommonAncestor(root->right, x, y, lca);
 }
 
 int calcHeightBST(NODEPTR root) // recursively calculates the height of the tree
