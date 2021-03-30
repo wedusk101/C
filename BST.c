@@ -63,7 +63,7 @@ int main()
 		printf("\n 11. Get the depth of a node with a particular value in the binary search tree.\n");
 		printf("\n 12. Delete the root of the tree.\n");
 		printf("\n 13. Display the level order traversal of the binary search tree.\n");
-		printf("\n 14. Laterally invert the binary search tree. This will break the BST and will require reinverting it to be restored.\n");
+		printf("\n 14. Laterally invert the tree. This will break the BST properties and will require reinversion to be restored.\n");
 		printf("\n 15. Find the lowest common ancestor for two given nodes in the binary search tree.\n");
 		printf("\n 0.  EXIT \n");
         printf("\n------------------------------\n");
@@ -205,7 +205,7 @@ int main()
 						findLowestCommonAncestor(root, x, y, &index);		
 						
 						if(index != NULL)
-							printf("Lowest Common Ancestor is %d.", index->data);
+							printf("Lowest Common Ancestor is %d.\n", index->data);
 							
 						break;
 						
