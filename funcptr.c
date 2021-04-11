@@ -1,4 +1,4 @@
-/*Sample function to demonstrate the use of function pointers in C.*/
+/*Sample function to demonstrate the use of function pointers (callbacks) in C.*/
 #include <stdio.h>
 #include <stdlib.h>
 
