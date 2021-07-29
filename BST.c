@@ -6,7 +6,7 @@
 #define TRUE 1
 #define FALSE 0
 
-// #define DEBUG 1 // uncomment for memory debug mode
+// #define DEBUG 1 // uncomment for memory debug mode or compile with"-DDEBUG" flag
 
 int allocCount = 0;
 
@@ -45,7 +45,7 @@ void getLeftNodeAtDepth(NODEPTR, int, int, int*, int*);                     // r
 
 int main()
 {
-	NODEPTR root, index, parentIndex;
+	NODEPTR root = NULL, index = NULL, parentIndex = NULL;
 	initTree(&root);
 	int choice = 0, x = 0, y = 0, child = 0;
 	printf("This program implements a binary search tree with the following basic operations.\n");
@@ -72,9 +72,18 @@ int main()
         printf("\n------------------------------\n");
         printf("\nPlease enter your choice : ");
         scanf("%d",&choice);
+        
 		switch(choice)
-		{	case 1: 	printf("\nPlease enter the first element of the tree.\n");
+		{
+			case 1: 	printf("\nPlease enter the first element of the tree.\n");
 						scanf("%d",&x);
+						
+						if(root != NULL)
+						{
+						 	printf("Invalid operation attempted! Tree already exists.\n");
+						 	break;
+						}
+						
 						root = createTree(x);
 						printf("Element inserted. Tree created successfully.\n");
 						#ifdef DEBUG
@@ -226,9 +235,6 @@ int main()
 			
 			case 0:		delBST(&root);
 						printf("Thank you.\n");
-						#ifdef DEBUG
-							printf("\nTotal number of memory allocations: %d\n", allocCount);
-						#endif
 						break;
 					
 			default:	printf("\nInvalid choice. Try again.\n");
@@ -237,7 +243,7 @@ int main()
 	delBST(&root); // cleanup
 	
 	#ifdef DEBUG
-		printf("\nTotal number of memory allocations: %d\n", allocCount);
+		printf("\nTotal number of unreleased memory allocations: %d\n", allocCount);
 	#endif
 						
 	return 0;
@@ -252,11 +258,13 @@ NODEPTR createTree(int val) // creates a tree with the user input value as the r
 {
 	NODEPTR tmp;
 	tmp = malloc(sizeof(struct treeNode));
+	
 	if(tmp == NULL)
 	{
 		perror("Error allocating memory.\n");
 		exit(EXIT_FAILURE);
 	}
+	
 	allocCount++;
 	tmp->data = val;
 	tmp->left = tmp->right = NULL;
@@ -271,6 +279,7 @@ void insertNodeBST(NODEPTR* proot, int val) // recursively inserts an element in
 		printf("Element inserted successfully.\n");
 		return;
 	}
+	
 	if(val < (*proot)->data)
 		insertNodeBST(&((*proot)->left), val);
 	else if(val > (*proot)->data)
@@ -305,7 +314,10 @@ void displayLevelOrderBST(NODEPTR root)
 {
 	int maxDepth = calcHeightBST(root);
 	for(int i = 0; i <= maxDepth; i++)
+	{
 		displayNodesAtDepth(root, 0, i);
+		printf("\n");
+	}
 }
 
 void displayNodesAtDepth(NODEPTR root, int currentDepth, int maxDepth)
@@ -345,6 +357,8 @@ void displayLeftViewBST(NODEPTR root)
 	int maxDepth = calcHeightBST(root);
 	
 	int *isDepthVisited = (int*)malloc(maxDepth * sizeof(maxDepth));
+	allocCount++;
+	
 	for (int k = 0; k < maxDepth; k++)
 		isDepthVisited[k] = FALSE;	
 	
@@ -358,6 +372,7 @@ void displayLeftViewBST(NODEPTR root)
 	}	
 	
 	free(isDepthVisited);
+	allocCount--;
 }	
 
 int countNodeBST(NODEPTR root) // recursively counts the number of nodes in the tree
@@ -372,8 +387,9 @@ int getNodeDepth(NODEPTR root, int val) // recursively calculates the depth of a
 {
 	if(root == NULL || (root->left == NULL && root->right == NULL))
 		return 0;
+		
 	if(root->data == val)
-		return 0;
+		return 0;		
 	else if (val < (root->data))
 		return 1 + getNodeDepth(root->left, val);
 	else
@@ -414,6 +430,7 @@ int countLeafBST(NODEPTR root) // recursively counts the leaf nodes in the tree
 {
 	if(root == NULL)
 		return 0;
+		
 	if(root != NULL)
 	{
 		if(root->left == NULL && root->right == NULL)
@@ -428,6 +445,7 @@ int searchBST(NODEPTR root, NODEPTR* index, NODEPTR* parentIndex, int val, int* 
 	NODEPTR tmp = root; // backs up the pointer to the root into a temporary pointer
 	if(root == NULL)
 		return FALSE;
+		
 	if((root->data) == val)
 	{
 		if(*parentIndex == NULL)
@@ -440,6 +458,7 @@ int searchBST(NODEPTR root, NODEPTR* index, NODEPTR* parentIndex, int val, int* 
 	{
 		if(root->left == NULL)
 			return FALSE;
+			
 		*parentIndex = root; // backs up the pointer to the parent of the current node
 		root = root->left;
 		if((root->data) == val) // checks if the left child is the required element
@@ -455,6 +474,7 @@ int searchBST(NODEPTR root, NODEPTR* index, NODEPTR* parentIndex, int val, int* 
 	{
 		if(root->right == NULL)
 			return FALSE;
+			
 		*parentIndex = root; // backs up the pointer to the parent of the current node
 		root = root->right;
 		if((root->data) == val)	// checks if the right child is the required element
@@ -506,6 +526,7 @@ void deleteNodeBST(NODEPTR* proot, NODEPTR* index, NODEPTR* parentIndex, int val
 		printf("Empty tree. Operation aborted.\n");
 		return;
 	}
+	
 	if(searchBST(*proot, index, parentIndex, val, child) == FALSE) // search for the element fails 
 	{
 		printf("Element not found! Operation failed.\n");
@@ -515,8 +536,10 @@ void deleteNodeBST(NODEPTR* proot, NODEPTR* index, NODEPTR* parentIndex, int val
 	{
 		if(*child == 1)
 			(*parentIndex)->right = (*index)->left; // connects the right child of the parent to the left child of the node to be deleted
+			
 		if(*child == -1)
 			(*parentIndex)->left = (*index)->left;	// connects the left child of the parent to the left child of the node to be deleted
+			
 		delRoot(index);
 		return;
 	}
@@ -524,8 +547,10 @@ void deleteNodeBST(NODEPTR* proot, NODEPTR* index, NODEPTR* parentIndex, int val
 	{
 		if(*child == 1)
 			(*parentIndex)->right = (*index)->right; // connects the right child of the parent to the left child of the node to be deleted
+			
 		if(*child == -1)
 			(*parentIndex)->left = (*index)->right;	// connects the left child of the parent to the left child of the node to be deleted
+			
 		delRoot(index);
 		return;
 	}
@@ -547,9 +572,11 @@ void deleteNodeBST(NODEPTR* proot, NODEPTR* index, NODEPTR* parentIndex, int val
 		{
 			if(*child == -1)
 				(*parentIndex)->left = NULL; // sets the left child of the parent of the element to be deleted to NULL
+				
 			if(*child == 1)
 				(*parentIndex)->right = NULL; // sets the right child of the parent of the element to be deleted to NULL
 		}
+		
 		if((*index)->left != NULL && (*index)->right != NULL)	// the node to be deleted has both children
 		{
 			if(*child == -1)
@@ -558,6 +585,7 @@ void deleteNodeBST(NODEPTR* proot, NODEPTR* index, NODEPTR* parentIndex, int val
 				(*parentIndex)->left = *index;	// sets the left child of the parent to the element that has replaced the deleted element
 				return;
 			}
+			
 			if(*child == 1)
 			{
 				delRoot(index);
@@ -579,6 +607,7 @@ void delRoot(NODEPTR* proot) // deletes the root node of the tree
 		printf("Element deleted successfully.\n");
 		return;
 	}
+	
 	if((*proot)->left != NULL && (*proot)->right == NULL) // root has only left child
 	{
 		toDel = *proot;
@@ -589,11 +618,13 @@ void delRoot(NODEPTR* proot) // deletes the root node of the tree
 		printf("Element deleted successfully.\n");
 		return;
 	}
+	
 	if(((*proot)->right != NULL && (*proot)->left == NULL) || ((*proot)->right != NULL && (*proot)->left != NULL)) // root has only right child or both children
 	{
 		toDel = *proot; 			// backs up the pointer to the node to be deleted
 		*proot = (*proot)->right;	// traverses to the right child of the node to be deleted
 		parent = toDel;				// holds the pointer to the parent of the current node
+		
 		if(((*proot)->left == NULL && (*proot)->right == NULL) || ((*proot)->left == NULL && (*proot)->right != NULL)) // the right child has no children or only has right child
 		{
 			(*proot)->left = toDel->left;
@@ -603,17 +634,21 @@ void delRoot(NODEPTR* proot) // deletes the root node of the tree
 			printf("Element deleted successfully.\n");
 			return;
 		}
+		
 		while((*proot)->left != NULL) // the right child has left child or both children
 		{
 			parent = *proot;
 			*proot = (*proot)->left;
 		}
+		
 		toDel->data = (*proot)->data;
 		tmp = parent->left; 		// traverses to the left of the right child of the node to be deleted
+		
 		if(tmp->left == NULL && tmp->right != NULL)
 			parent->left = tmp->right;
 		else
 			parent->left = NULL; 	// sets the left child of the parent to NULL
+			
 		free(*proot);
 		allocCount--;
 		*proot = toDel;
@@ -627,6 +662,7 @@ void delBST(NODEPTR *proot)
 {
 	if (*proot == NULL)
 		return;
+		
 	if((*proot)->left == NULL && (*proot)->right == NULL)
 	{
 		free(*proot);
