@@ -346,7 +346,7 @@ void displayLeftViewBST(NODEPTR root)
 	
 	int *isDepthVisited = (int*)malloc(maxDepth * sizeof(maxDepth));
 	for (int k = 0; k < maxDepth; k++)
-			isDepthVisited[k] = FALSE;	
+		isDepthVisited[k] = FALSE;	
 	
 	for(int i = 0; i <= maxDepth; i++)
 	{
