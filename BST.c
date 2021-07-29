@@ -6,7 +6,7 @@
 #define TRUE 1
 #define FALSE 0
 
-// #define DEBUG 1 // uncomment for memory debug mode or compile with"-DDEBUG" flag
+// #define DEBUG 1 // uncomment for memory debug mode or compile with "-DDEBUG" flag
 
 int allocCount = 0;
 
