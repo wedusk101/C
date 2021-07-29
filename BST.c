@@ -19,27 +19,29 @@ struct treeNode
 
 typedef struct treeNode *NODEPTR;
 
-int countNodeBST(NODEPTR); 											// counts the number of nodes in the tree
-void insertNodeBST(NODEPTR*, int); 									// inserts a node into the tree
-void deleteNodeBST(NODEPTR*, NODEPTR*, NODEPTR*, int, int*); 		// deletes a node from the tree
-int countLeafBST(NODEPTR); 											// counts the number of leaf nodes in the tree
-int calcHeightBST(NODEPTR); 										// calculates the height of the tree
-NODEPTR createTree(int); 											// creates a new binary search tree
-void displayInorderBST(NODEPTR);								    // displays the inorder traversal of the tree
-void displayPreorderBST(NODEPTR);									// displays the preorder traversal of the tree
-void displayPostorderBST(NODEPTR); 									// displays the post order traversal of the tree
-int searchBST(NODEPTR, NODEPTR*, NODEPTR*, int, int*); 				// searches the tree for a particular element and returns a pointer to the node and its parent
-void initTree(NODEPTR*); 											// initializes the tree
-int max(int, int);                  							    // returns the greater of two values
-int getNodeDepth(NODEPTR, int);                           			// returns the depth of a given node in the BST
-void delRoot(NODEPTR*);												// deletes the root of the tree
-void displayBST(NODEPTR);											// displays the BST
-void mirrorBST(NODEPTR*);											// mirror the BST
-void displayNodesAtDepth(NODEPTR, int, int);						// displays all nodes at a given depth
-void displayLevelOrderBST(NODEPTR);									// displays the level order traversal of the BST
-void delBST(NODEPTR*);                                           	// deletes a BST
-void swapNodes(NODEPTR*, NODEPTR*);									// swaps two nodes of the tree
-void findLowestCommonAncestor(NODEPTR, int, int, NODEPTR*);  		// find the lowest common ancestor for two given nodes
+int countNodeBST(NODEPTR);                                                  // counts the number of nodes in the tree
+void insertNodeBST(NODEPTR*, int);                                          // inserts a node into the tree
+void deleteNodeBST(NODEPTR*, NODEPTR*, NODEPTR*, int, int*);                // deletes a node from the tree
+int countLeafBST(NODEPTR);                                                  // counts the number of leaf nodes in the tree
+int calcHeightBST(NODEPTR);                                                 // calculates the height of the tree
+NODEPTR createTree(int);                                                    // creates a new binary search tree
+void displayInorderBST(NODEPTR);                                            // displays the inorder traversal of the tree
+void displayPreorderBST(NODEPTR);                                           // displays the preorder traversal of the tree
+void displayPostorderBST(NODEPTR);                                          // displays the post order traversal of the tree
+int searchBST(NODEPTR, NODEPTR*, NODEPTR*, int, int*);                      // searches the tree for a particular element and returns a pointer to the node and its parent
+void initTree(NODEPTR*);                                                    // initializes the tree
+int max(int, int);                                                          // returns the greater of two values
+int getNodeDepth(NODEPTR, int);                                             // returns the depth of a given node in the BST
+void delRoot(NODEPTR*);                                                     // deletes the root of the tree
+void displayBST(NODEPTR);                                                   // displays the BST
+void mirrorBST(NODEPTR*);                                                   // mirror the BST
+void displayNodesAtDepth(NODEPTR, int, int);                                // displays all nodes at a given depth
+void displayLevelOrderBST(NODEPTR);                                         // displays the level order traversal of the BST
+void delBST(NODEPTR*);                                                      // deletes a BST
+void swapNodes(NODEPTR*, NODEPTR*);                                         // swaps two nodes of the tree
+void findLowestCommonAncestor(NODEPTR, int, int, NODEPTR*);                 // find the lowest common ancestor for two given nodes
+void displayLeftViewBST(NODEPTR);                                           // displays the left view of the BST
+void getLeftNodeAtDepth(NODEPTR, int, int, int*, int*);                     // returns the value of the leftmost node at a given depth;
 
 int main()
 {
@@ -65,6 +67,7 @@ int main()
 		printf("\n 13. Display the level order traversal of the binary search tree.\n");
 		printf("\n 14. Laterally invert the tree. This will break the BST properties and will require reinversion to be restored.\n");
 		printf("\n 15. Find the lowest common ancestor for two given nodes in the binary search tree.\n");
+		printf("\n 16. Display the left side view of the binary search tree.\n");
 		printf("\n 0.  EXIT \n");
         printf("\n------------------------------\n");
         printf("\nPlease enter your choice : ");
@@ -208,6 +211,15 @@ int main()
 							printf("Lowest Common Ancestor is %d.\n", index->data);
 							
 						break;
+			
+			case 16:	if (root == NULL)
+						{
+							printf("Tree is empty.\n");
+							break;
+						}
+						
+						displayLeftViewBST(root);
+						break;
 						
 			// case 15:	displayBST(root);
 						// break;
@@ -306,19 +318,47 @@ void displayNodesAtDepth(NODEPTR root, int currentDepth, int maxDepth)
 		printf("%d ", root->data);
 		return;
 	}
+	
 	displayNodesAtDepth(root->left, currentDepth + 1, maxDepth);
 	displayNodesAtDepth(root->right, currentDepth + 1, maxDepth);
-}		
+}	
 
-void displayInorderBST(NODEPTR root) // recursively displays the inorder traversal of the tree
+void getLeftNodeAtDepth(NODEPTR root, int currentDepth, int maxDepth, int *isDepthVisited, int *nodeVal)
 {
-	if(root != NULL)
+	if(root == NULL)
+		return;
+		
+	if(currentDepth == maxDepth && !isDepthVisited[currentDepth])
 	{
-		displayInorderBST(root->left);
-		printf("%d ", root->data);
-		displayInorderBST(root->right);
+		isDepthVisited[currentDepth] = TRUE;
+		*nodeVal = root->data;
+		return;
 	}
+	
+	getLeftNodeAtDepth(root->left, currentDepth + 1, maxDepth, isDepthVisited, nodeVal);
+	getLeftNodeAtDepth(root->right, currentDepth + 1, maxDepth, isDepthVisited, nodeVal);
 }
+
+void displayLeftViewBST(NODEPTR root)
+{
+	int val = -1;
+	int maxDepth = calcHeightBST(root);
+	
+	int *isDepthVisited = (int*)malloc(maxDepth * sizeof(maxDepth));
+	for (int k = 0; k < maxDepth; k++)
+			isDepthVisited[k] = FALSE;	
+	
+	for(int i = 0; i <= maxDepth; i++)
+	{
+		getLeftNodeAtDepth(root, 0, i, isDepthVisited, &val);
+		if (val != -1)
+			printf("%d ", val);
+			
+		val = -1;
+	}	
+	
+	free(isDepthVisited);
+}	
 
 int countNodeBST(NODEPTR root) // recursively counts the number of nodes in the tree
 {
@@ -357,6 +397,16 @@ void displayPostorderBST(NODEPTR root) // recursively displays the postorder tra
 		displayPostorderBST(root->left);
 		displayPostorderBST(root->right);
 		printf("%d ", root->data);
+	}
+}
+
+void displayInorderBST(NODEPTR root) // recursively displays the inorder traversal of the tree
+{
+	if(root != NULL)
+	{
+		displayInorderBST(root->left);
+		printf("%d ", root->data);
+		displayInorderBST(root->right);
 	}
 }
 
