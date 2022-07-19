@@ -30,7 +30,7 @@ void circular_buf_init(CircularBuffer* cb, size_t capacity, int* error, int isCo
 		isInitialized = 1234; // magic number to ensure initialized state
 		*error = 0;
 	}
-	else if (isCopy > 0 && isCopyValid == 1234)
+	else if (isCopy > 0 && isCopyValid != 1234)
 	{
 		cb->buffer = malloc(capacity * sizeof(size_t));
 		cb->capacity = capacity;
@@ -134,6 +134,12 @@ void circular_buf_copy(CircularBuffer* cb, CircularBuffer* copy, int* error)
 
 void circular_buf_print(CircularBuffer* cb)
 {
+	if (cb->nItems == 0)
+	{
+		printf("Buffer is empty!\n");
+		return;
+	}
+	
 	if (isInitialized)
 	{
 		int error = 0;	
@@ -149,14 +155,14 @@ void circular_buf_print(CircularBuffer* cb)
 		for (size_t i = 0; i < copy.capacity; ++i)
 		{
 			int data = circular_buf_get(&copy, &error);
+			
 			if (error)
-			{
-				printf("Buffer empty!\n");
-				return;
-			}
+				break;
+			
 			printf("%d\n", data);
 		}
 		circular_buf_cleanup(&copy, 1);
+		isCopyValid = 0;
 	}
 	else
 		printf("Buffer not initialized properly. Operation failed.\n");
