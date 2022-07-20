@@ -1,10 +1,8 @@
-/* The following code implements a basic Circular Queue data structure. */
+/* The following code implements a basic Circular Buffer data structure. */
 
 #include <stdio.h>
-#include <stddef.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <string.h>
 
 typedef struct 
 {
@@ -16,71 +14,79 @@ typedef struct
 } CircularBuffer;
 
 int isInitialized = 0;
-int isCopyValid = 0;
 
-void circular_buf_init(CircularBuffer* cb, size_t capacity, int* error, int isCopy)
+/*
+	Initializes the circular buffer by 
+	allocating memory for it.
+	
+	NOTE: Sets error code to 1 in case 
+	an error is encountered.
+*/	
+void circular_buf_init(CircularBuffer* cb, size_t capacity, int* error)
 {
-	if (isCopy < 0 && isInitialized != 1234)
+	if (!isInitialized)
 	{
 		cb->buffer = malloc(capacity * sizeof(size_t));
 		cb->capacity = capacity;
 		cb->read_ptr = cb->buffer;
 		cb->write_ptr = cb->buffer;
 		cb->nItems = 0;
-		isInitialized = 1234; // magic number to ensure initialized state
-		*error = 0;
-	}
-	else if (isCopy > 0 && isCopyValid != 1234)
-	{
-		cb->buffer = malloc(capacity * sizeof(size_t));
-		cb->capacity = capacity;
-		cb->read_ptr = cb->buffer;
-		cb->write_ptr = cb->buffer;
-		cb->nItems = 0;
-		isCopyValid = 1234; // magic number to ensure validity state of the copied buffer
+		isInitialized = 1;
 		*error = 0;
 	}
 	else
 		*error = 1;
 }
 
-void circular_buf_reset(CircularBuffer* cb)
+/*
+	Resets the state of the circular buffer
+	but does not destroy it. After this operation
+	the buffer will appear empty.
+	
+	NOTE: Sets error code to 1 in case 
+	an error is encountered.
+*/
+void circular_buf_reset(CircularBuffer* cb, int* error)
 {
 	if (isInitialized)
 	{
 		cb->nItems = 0;
-		isInitialized = 0;
 		cb->read_ptr = cb->buffer;
 		cb->write_ptr = cb->buffer;
-	}
-}
-
-void circular_buf_cleanup(CircularBuffer* cb, int isCopy)
-{
-	if (isCopy > 0)
-	{
-		if (isCopyValid)
-		{			
-			free(cb->buffer);
-			cb->buffer = NULL;
-			isCopyValid = 0;
-			cb->read_ptr = NULL;
-			cb->write_ptr = NULL;
-		}
+		*error = 0;
 	}
 	else
-	{
-		if (isInitialized)
-		{
-			free(cb->buffer);
-			cb->buffer = NULL;
-			isInitialized = 0;
-			cb->read_ptr = NULL;
-			cb->write_ptr = NULL;
-		}
-	}			
+		*error = 1;
 }
 
+/*
+	Destroys the circular buffer and
+	releases any resource it holds.
+	
+	NOTE: Sets error code to 1 in case 
+	an error is encountered.
+*/
+void circular_buf_cleanup(CircularBuffer* cb, int* error)
+{
+	if (isInitialized)
+	{
+		free(cb->buffer);
+		cb->buffer = NULL;
+		isInitialized = 0;
+		cb->read_ptr = NULL;
+		cb->write_ptr = NULL;
+		*error = 0;
+	}
+	else
+		*error = 1;
+}
+
+/*
+	Inserts an item into the circular buffer.
+	
+	NOTE: Sets error code to 1 in case 
+	an error is encountered.
+*/
 void circular_buf_put(CircularBuffer* cb, size_t data, int* error)
 {
 	if (cb->nItems < cb->capacity)
@@ -90,11 +96,7 @@ void circular_buf_put(CircularBuffer* cb, size_t data, int* error)
 		if (((cb->write_ptr - cb->buffer)) < cb->capacity)
 			(cb->write_ptr)++; 
 		else
-		{
-			int cap = cb->capacity + 1;
-			int idx = cap - cb->capacity;
-			cb->write_ptr = &cb->buffer[idx];
-		}
+			cb->write_ptr = cb->buffer;
 		
 		*error = 0;
 		(cb->nItems)++;
@@ -102,7 +104,13 @@ void circular_buf_put(CircularBuffer* cb, size_t data, int* error)
 	else
 		*error = 1;
 }
+
+/*
+	Retrieves an item from the circular buffer.
 	
+	NOTE: Sets error code to 1 in case 
+	an error is encountered.
+*/	
 size_t circular_buf_get(CircularBuffer* cb, int* error)
 {
 	if (cb->nItems > 0)
@@ -112,14 +120,10 @@ size_t circular_buf_get(CircularBuffer* cb, int* error)
 		if ((cb->read_ptr - cb->buffer) < cb->capacity)
 			(cb->read_ptr)++;
 		else
-		{
-			int cap = cb->capacity + 1;
-			int idx = cap - cb->capacity;
-			cb->read_ptr = &cb->buffer[idx];
-		}
-		
-		*error = 0;
-		--(cb->nItems);
+			cb->read_ptr = cb->buffer;
+			
+		--(cb->nItems);		
+		*error = 0;	
 		return data;
 	}
 	else
@@ -129,80 +133,50 @@ size_t circular_buf_get(CircularBuffer* cb, int* error)
 	}
 }
 
-void circular_buf_copy(CircularBuffer* cb, CircularBuffer* copy, int* error)
+int circular_buf_empty(CircularBuffer* cb)
 {
-	int err = 0;
-	printf("Before init\n");
-	circular_buf_init(copy, cb->capacity, &err, 1);	
-	printf("After init\n");
-	
-	if (!err)
-	{
-		copy->read_ptr = cb->read_ptr;
-		copy->write_ptr = cb->write_ptr;
-		copy->nItems = cb->nItems;	
-		printf("Before memcpy\n");
-		memcpy(copy->buffer, cb->buffer, cb->capacity);
-		printf("After memcpy\n");
-		isCopyValid = 1234;
-		*error = 0; 
-	}
-	else
-	{
-		isCopyValid = 0;
-		*error = 1;
-	}
+	return (cb->nItems > 0) ? 0 : 1;
 }
 
+/*
+	Retrieves each item in the buffer and
+	displays it on the command line. The buffer
+	will be empty after calling this function.
+*/
 void circular_buf_print(CircularBuffer* cb)
 {
-	if (cb->nItems == 0)
-	{
-		printf("Buffer is empty!\n");
-		return;
-	}
-	
 	if (isInitialized)
 	{
-		int error = 0;	
-		CircularBuffer copy;
-		printf("Before copy\n");
-		circular_buf_copy(cb, &copy, &error);
-		
-		printf("After copy\n");
-			
-		if (error)
+		if (cb->nItems == 0)
 		{
-			printf("Error occured in copy operation.\n");
+			printf("Buffer is empty!\n");
 			return;
 		}
 		
-		for (size_t i = 0; i < copy.capacity; ++i)
-		{
-			int data = circular_buf_get(&copy, &error);
-			
-			printf("After get\n");
-			
+		printf("Items in the buffer are:\n");
+		while (!circular_buf_empty(cb))
+		{	
+			int error = 0;
+			int data = circular_buf_get(cb, &error);
+				
 			if (error)
 			{
 				printf("Error occured in get operation.\n");
 				break;
 			}
-			
-			printf("%d\n", data);
+			else
+				printf("%d\n", data);
 		}
-		circular_buf_cleanup(&copy, 1);
-		printf("After cleanup\n");
 	}
 	else
-		printf("Buffer not initialized properly. Operation failed.\n");
+		printf("Buffer has not been initialized yet. Operation failed.\n");
 }
 
 int main()
 {
 	CircularBuffer cb;
 	size_t len = 0; 
-	int choice = 1;
+	int choice = 1, error = 0;
 	
 	do
 	{	
@@ -210,7 +184,7 @@ int main()
         printf("\n 1.  Initialize the circular buffer.\n");
 		printf("\n 2.  Insert an element into the circular buffer.\n");
 		printf("\n 3.  Read an element from the circular buffer.\n");
-		printf("\n 4.  Print the contents of the circular buffer.\n");
+		printf("\n 4.  Print the contents of the circular buffer, thus clearing it.\n");
 		printf("\n 5.  Reset the circular buffer.\n");
 		printf("\n 0.  EXIT.\n");
 		printf("\n------------------------------\n");
@@ -222,11 +196,11 @@ int main()
 		{
 			case 1:	
 			{			
-				printf("Please enter the capacity of the ring buffer.\n");
+				printf("Please enter the capacity of the circular buffer.\n");
 				scanf("%zu", &len);
 			
 				int error = 0;
-				circular_buf_init(&cb, len, &error, -1);
+				circular_buf_init(&cb, len, &error);
 				if (error)
 					printf("Operation failed. Buffer already initialized!\n");
 				else
@@ -237,7 +211,6 @@ int main()
 				
 			case 2:
 			{
-				int error = 0;
 				size_t input = 0;				
 				printf("Please enter the element to insert.\n");
 				scanf("%zu", &input);
@@ -253,13 +226,13 @@ int main()
 				
 			case 3:
 			{
-				int error = 0, output = 0;
+				size_t output = 0;
 				output = circular_buf_get(&cb, &error);
 				
 				if (error)
 					printf("Read operation failed. Buffer empty!\n");
 				else
-					printf("Element read: %d\n", output);
+					printf("Element read: %zu\n", output);
 				
 				break;
 			}
@@ -269,7 +242,13 @@ int main()
 				break;
 				
 			case 5:
-				circular_buf_reset(&cb);
+				circular_buf_reset(&cb, &error);
+				
+				if (error)
+					printf("Buffer has not been initialized yet. Operation failed.\n"); 
+				else
+					printf("Buffer reset successfully.\n");
+				
 				break;
 				
 			case 0:	
@@ -282,7 +261,6 @@ int main()
 		}
 	} while (choice != 0);
 	
-	
-	circular_buf_cleanup(&cb, 0);
+	circular_buf_cleanup(&cb, &error);
 	return 0;
 }
