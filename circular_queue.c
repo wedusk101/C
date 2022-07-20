@@ -8,9 +8,9 @@
 
 typedef struct 
 {
-    size_t * buffer;
-    size_t * read_ptr;
-    size_t * write_ptr;
+    size_t* buffer;
+    size_t* read_ptr;
+    size_t* write_ptr;
     size_t capacity;
 	size_t nItems;	
 } CircularBuffer;
@@ -37,10 +37,10 @@ void circular_buf_init(CircularBuffer* cb, size_t capacity, int* error, int isCo
 		cb->read_ptr = cb->buffer;
 		cb->write_ptr = cb->buffer;
 		cb->nItems = 0;
-		isCopyValid = 1234; // magic number to ensure initialized state
+		isCopyValid = 1234; // magic number to ensure validity state of the copied buffer
 		*error = 0;
 	}
-	else	
+	else
 		*error = 1;
 }
 
@@ -48,11 +48,10 @@ void circular_buf_reset(CircularBuffer* cb)
 {
 	if (isInitialized)
 	{
-		free(cb->buffer);
-		cb->buffer = NULL;
-		cb->capacity = 0;
 		cb->nItems = 0;
 		isInitialized = 0;
+		cb->read_ptr = cb->buffer;
+		cb->write_ptr = cb->buffer;
 	}
 }
 
@@ -64,6 +63,9 @@ void circular_buf_cleanup(CircularBuffer* cb, int isCopy)
 		{			
 			free(cb->buffer);
 			cb->buffer = NULL;
+			isCopyValid = 0;
+			cb->read_ptr = NULL;
+			cb->write_ptr = NULL;
 		}
 	}
 	else
@@ -72,6 +74,9 @@ void circular_buf_cleanup(CircularBuffer* cb, int isCopy)
 		{
 			free(cb->buffer);
 			cb->buffer = NULL;
+			isInitialized = 0;
+			cb->read_ptr = NULL;
+			cb->write_ptr = NULL;
 		}
 	}			
 }
@@ -103,7 +108,16 @@ size_t circular_buf_get(CircularBuffer* cb, int* error)
 	if (cb->nItems > 0)
 	{
 		size_t data = *(cb->read_ptr);
-		(cb->read_ptr)++;
+		
+		if ((cb->read_ptr - cb->buffer) < cb->capacity)
+			(cb->read_ptr)++;
+		else
+		{
+			int cap = cb->capacity + 1;
+			int idx = cap - cb->capacity;
+			cb->read_ptr = &cb->buffer[idx];
+		}
+		
 		*error = 0;
 		--(cb->nItems);
 		return data;
@@ -118,18 +132,26 @@ size_t circular_buf_get(CircularBuffer* cb, int* error)
 void circular_buf_copy(CircularBuffer* cb, CircularBuffer* copy, int* error)
 {
 	int err = 0;
+	printf("Before init\n");
 	circular_buf_init(copy, cb->capacity, &err, 1);	
+	printf("After init\n");
 	
 	if (!err)
 	{
 		copy->read_ptr = cb->read_ptr;
 		copy->write_ptr = cb->write_ptr;
 		copy->nItems = cb->nItems;	
+		printf("Before memcpy\n");
 		memcpy(copy->buffer, cb->buffer, cb->capacity);
+		printf("After memcpy\n");
+		isCopyValid = 1234;
 		*error = 0; 
 	}
 	else
+	{
+		isCopyValid = 0;
 		*error = 1;
+	}
 }
 
 void circular_buf_print(CircularBuffer* cb)
@@ -144,7 +166,10 @@ void circular_buf_print(CircularBuffer* cb)
 	{
 		int error = 0;	
 		CircularBuffer copy;
+		printf("Before copy\n");
 		circular_buf_copy(cb, &copy, &error);
+		
+		printf("After copy\n");
 			
 		if (error)
 		{
@@ -156,13 +181,18 @@ void circular_buf_print(CircularBuffer* cb)
 		{
 			int data = circular_buf_get(&copy, &error);
 			
+			printf("After get\n");
+			
 			if (error)
+			{
+				printf("Error occured in get operation.\n");
 				break;
+			}
 			
 			printf("%d\n", data);
 		}
 		circular_buf_cleanup(&copy, 1);
-		isCopyValid = 0;
+		printf("After cleanup\n");
 	}
 	else
 		printf("Buffer not initialized properly. Operation failed.\n");
