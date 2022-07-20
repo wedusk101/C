@@ -1,4 +1,4 @@
-/* The following code implements a basic Circular Buffer data structure. */
+/* The following code implements a basic, fixed size, Circular Buffer data structure. */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,6 +26,32 @@ void circular_buf_init(CircularBuffer* cb, size_t capacity, int* error)
 {
 	if (!isInitialized)
 	{
+		cb->buffer = malloc(capacity * sizeof(size_t));
+		cb->capacity = capacity;
+		cb->read_ptr = cb->buffer;
+		cb->write_ptr = cb->buffer;
+		cb->nItems = 0;
+		isInitialized = 1;
+		*error = 0;
+	}
+	else
+		*error = 1;
+}
+
+/*
+	Updates the capacity of the circular buffer 
+	to the value specified by the user. This opertation
+	will reset the state of the buffer clearing all 
+	its contents.
+	
+	NOTE: Sets error code to 1 in case 
+	an error is encountered.
+*/	
+void circular_buf_resize(CircularBuffer* cb, size_t capacity, int* error)
+{
+	if (isInitialized)
+	{	
+		free(cb->buffer);
 		cb->buffer = malloc(capacity * sizeof(size_t));
 		cb->capacity = capacity;
 		cb->read_ptr = cb->buffer;
@@ -138,6 +164,11 @@ int circular_buf_empty(CircularBuffer* cb)
 	return (cb->nItems > 0) ? 0 : 1;
 }
 
+size_t circular_buf_len(CircularBuffer* cb)
+{
+	return cb->nItems;
+}
+
 /*
 	Retrieves each item in the buffer and
 	displays it on the command line. The buffer
@@ -184,8 +215,10 @@ int main()
         printf("\n 1.  Initialize the circular buffer.\n");
 		printf("\n 2.  Insert an element into the circular buffer.\n");
 		printf("\n 3.  Read an element from the circular buffer.\n");
-		printf("\n 4.  Print the contents of the circular buffer, thus clearing it.\n");
-		printf("\n 5.  Reset the circular buffer.\n");
+		printf("\n 4.  Print the number of elements currently in the buffer.\n");
+		printf("\n 5.  Print the contents of the circular buffer, thus clearing it.\n");
+		printf("\n 6.  Resize the circular buffer.\n");
+		printf("\n 7.  Reset the circular buffer.\n");
 		printf("\n 0.  EXIT.\n");
 		printf("\n------------------------------\n");
 		
@@ -236,12 +269,28 @@ int main()
 				
 				break;
 			}
-				
+			
 			case 4:
-				circular_buf_print(&cb);
+				printf("No. of elements in the buffer: %zu\n", circular_buf_len(&cb));
 				break;
 				
 			case 5:
+				circular_buf_print(&cb);
+				break;
+				
+			case 6:
+				printf("Please enter the new capacity of the circular buffer.\n");
+				scanf("%zu", &len);
+				circular_buf_resize(&cb, len, &error);
+				
+				if (error)
+					printf("Buffer has not been initialized yet. Operation failed.\n"); 
+				else
+					printf("Buffer resized successfully.\n");
+				
+				break;
+				
+			case 7:
 				circular_buf_reset(&cb, &error);
 				
 				if (error)
