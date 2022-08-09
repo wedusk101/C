@@ -6,11 +6,12 @@
 
 typedef struct 
 {
-    size_t* buffer;
+	size_t* buffer;
     size_t* read_ptr;
     size_t* write_ptr;
     size_t capacity;
 	size_t nItems;	
+	
 } CircularBuffer;
 
 int isInitialized = 0;
@@ -19,14 +20,30 @@ int isInitialized = 0;
 	Initializes the circular buffer by 
 	allocating memory for it.
 	
-	NOTE: Sets error code to 1 in case 
-	an error is encountered.
+	NOTE: 
+	
+	- Sets error code to 1 in case the buffer is already in an initalized state
+	- Sets error code to -1 in case allocation of memory fails during initialization
+	- A failure leaves the state of the buffer unchanged
+	
+		[*] if the error was due to the buffer already being in an initialized state,
+		it will remain in that state with its data intact
+		
+		[*] if the error occurred during memory allocation, the buffer will remain in
+		an unintialized state and the init operation can be retried by the user
 */	
 void circular_buf_init(CircularBuffer* cb, size_t capacity, int* error)
 {
 	if (!isInitialized)
 	{
 		cb->buffer = malloc(capacity * sizeof(size_t));
+		
+		if (!cb->buffer)
+		{
+			*error = -1;
+			return;
+		}
+		
 		cb->capacity = capacity;
 		cb->read_ptr = cb->buffer;
 		cb->write_ptr = cb->buffer;
@@ -40,24 +57,37 @@ void circular_buf_init(CircularBuffer* cb, size_t capacity, int* error)
 
 /*
 	Updates the capacity of the circular buffer 
-	to the value specified by the user. This opertation
-	will reset the state of the buffer clearing all 
-	its contents.
+	to the value specified by the user. Upon success, 
+	this opertation will reset the state of the buffer  
+	clearing all its contents.
 	
-	NOTE: Sets error code to 1 in case 
-	an error is encountered.
+	NOTE: 
+	
+	- Sets error code to 1 in case the buffer is in an uninitalized state
+	- Sets error code to -1 in case allocation of memory fails during the resize operation
+	- A failure leaves the state of the buffer unchanged - i.e. the buffer will behave as 
+	  if circular_buf_resize was never called. Existing data can be accessed safely and the
+	  resize operation can be retried by the user.
 */	
 void circular_buf_resize(CircularBuffer* cb, size_t capacity, int* error)
 {
 	if (isInitialized)
 	{	
+		size_t* ptr = malloc(capacity * sizeof(size_t));
+		
+		if (!ptr)
+		{
+			*error = -1;
+			return;
+		}
+		
 		free(cb->buffer);
-		cb->buffer = malloc(capacity * sizeof(size_t));
+		cb->buffer = ptr;
+		
 		cb->capacity = capacity;
 		cb->read_ptr = cb->buffer;
 		cb->write_ptr = cb->buffer;
 		cb->nItems = 0;
-		isInitialized = 1;
 		*error = 0;
 	}
 	else
@@ -118,11 +148,9 @@ void circular_buf_put(CircularBuffer* cb, size_t data, int* error)
 	if (cb->nItems < cb->capacity)
 	{
 		*(cb->write_ptr) = data;
-
-		if (((cb->write_ptr - cb->buffer)) < cb->capacity)
-			(cb->write_ptr)++; 
-		else
-			cb->write_ptr = cb->buffer;
+				
+		size_t widx = cb->write_ptr - cb->buffer;
+		cb->write_ptr = &cb->buffer[(widx + 1) % cb->capacity];
 		
 		*error = 0;
 		(cb->nItems)++;
@@ -143,10 +171,8 @@ size_t circular_buf_get(CircularBuffer* cb, int* error)
 	{
 		size_t data = *(cb->read_ptr);
 		
-		if ((cb->read_ptr - cb->buffer) < cb->capacity)
-			(cb->read_ptr)++;
-		else
-			cb->read_ptr = cb->buffer;
+		size_t ridx = cb->read_ptr - cb->buffer;
+		cb->read_ptr = &cb->buffer[(ridx + 1) % cb->capacity];
 			
 		--(cb->nItems);		
 		*error = 0;	
@@ -234,8 +260,10 @@ int main()
 			
 				int error = 0;
 				circular_buf_init(&cb, len, &error);
-				if (error)
+				if (error > 0)
 					printf("Operation failed. Buffer already initialized!\n");
+				else if (error < 0)
+					fprintf(stderr, "Failed to initialize buffer due to system error. Perhaps the requested buffer size was too large.\n");
 				else
 					printf("Buffer initialized successfully.\n");
 				
@@ -283,8 +311,10 @@ int main()
 				scanf("%zu", &len);
 				circular_buf_resize(&cb, len, &error);
 				
-				if (error)
+				if (error > 0)
 					printf("Buffer has not been initialized yet. Operation failed.\n"); 
+				else if (error < 0)
+					fprintf(stderr, "Failed to resize buffer due to system error. Perhaps the requested buffer size was too large.\n");
 				else
 					printf("Buffer resized successfully.\n");
 				
